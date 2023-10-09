@@ -1,2 +1,0 @@
-# Blitzed
-Frontend for drikkesiden
