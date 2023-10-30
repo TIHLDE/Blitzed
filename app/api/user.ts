@@ -1,6 +1,6 @@
 import { IFetch } from '@/app/api/fetch';
 
-const API_URL = "http://localhost:8000/";
+const API_URL = 'http://localhost:8000/';
 const AUTH_ENDPOINT = 'auth';
 
 interface LoginRequestResponse {
@@ -8,7 +8,10 @@ interface LoginRequestResponse {
   user?: any;
 }
 
-export const authenticate = async (username: string, password: string): Promise<LoginRequestResponse> => {
+export const authenticate = async (
+  username: string,
+  password: string,
+): Promise<LoginRequestResponse> => {
   const endpoint = `${AUTH_ENDPOINT}/login/`;
 
   const data = {
@@ -18,7 +21,7 @@ export const authenticate = async (username: string, password: string): Promise<
 
   const response = await IFetch<LoginRequestResponse>(endpoint, {
     method: 'POST',
-    data: data
+    data: data,
   });
 
   return response;

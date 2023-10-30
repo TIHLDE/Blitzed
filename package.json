@@ -7,10 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prettier": "prettier --write ."
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["next lint --fix", "prettier --write"]
+    "*.{js,jsx,ts,tsx}": [
+      "next lint --fix",
+      "prettier --write"
+    ]
   },
   "husky": {
     "hooks": {
@@ -19,11 +23,13 @@
   },
   "dependencies": {
     "axios": "^1.5.1",
+    "clsx": "^2.0.0",
     "cookie": "^0.5.0",
     "js-cookie": "^3.0.5",
     "next": "13.5.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -39,5 +45,4 @@
     "tailwindcss": "^3",
     "typescript": "^5"
   }
-
 }
