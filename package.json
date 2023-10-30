@@ -13,14 +13,16 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "next lint --fix",
-      "prettier --write"
+      "prettier --write", "git add"
     ]
   },
   "husky": {
     "hooks": {
+      "post-checkout": "lint-staged",
       "pre-commit": "lint-staged"
     }
-  },
+  }
+,
   "dependencies": {
     "axios": "^1.5.1",
     "clsx": "^2.0.0",
