@@ -23,7 +23,10 @@ export const getServerCookie = (req, name) => {
 };
 
 export const removeServerCookie = (res, name) => {
-  res.setHeader('Set-Cookie', cookie.serialize(name, '', {
-    maxAge: -1,
-  }));
+  res.setHeader(
+    'Set-Cookie',
+    cookie.serialize(name, '', {
+      maxAge: -1,
+    }),
+  );
 };

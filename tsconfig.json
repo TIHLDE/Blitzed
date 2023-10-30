@@ -22,6 +22,14 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/page.tsx", "app/layout.tsx", "app/utils/cookieStore.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/page.tsx",
+    "app/layout.tsx",
+    "app/utils/cookieStore.js"
+  ],
   "exclude": ["node_modules"]
 }

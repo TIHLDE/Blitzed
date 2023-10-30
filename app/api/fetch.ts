@@ -1,20 +1,23 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getClientCookie } from '@/app/utils/cookieStore';
 
-const API_URL = process.env.VITE_API_URL || "http://localhost:8000/";
+const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
 
 interface IFetchOptions extends Omit<AxiosRequestConfig, 'url'> {
   withAuth?: boolean;
   file?: File | File[] | Blob;
 }
 
-export const IFetch = async <T = any>(endpoint: string, options?: IFetchOptions): Promise<T> => {
+export const IFetch = async <T = any>(
+  endpoint: string,
+  options?: IFetchOptions,
+): Promise<T> => {
   const headers: Record<string, string> = {};
 
   if (options?.withAuth) {
     const token = getClientCookie('tokenDrinking');
     if (token) {
-      headers.Authorization = `Bearer ${token}`
+      headers.Authorization = `Bearer ${token}`;
     }
   }
 

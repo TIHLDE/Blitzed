@@ -10,7 +10,7 @@ export const useUser = () => {
       const data = await authenticate(username, password);
       setClientCookie('tokenDrinking', data.token, { expires: 365 });
     } catch (error) {
-      console.error("Failed to login:", error);     
+      console.error('Failed to login:', error);
     }
   }, []);
 
