@@ -17,11 +17,9 @@
   },
   "husky": {
     "hooks": {
-      "post-checkout": "lint-staged",
       "pre-commit": "lint-staged"
     }
-  }
-,
+  },
   "dependencies": {
     "material-icons": "^1.13.12",
     "axios": "^1.5.1",
