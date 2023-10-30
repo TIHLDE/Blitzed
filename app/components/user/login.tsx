@@ -19,7 +19,6 @@ export default function Login() {
         <main className="min-h-screen flex items-center justify-center bg-gray-200">
             <div className="p-8 bg-white rounded-lg shadow-md w-96">
                 <h2 className="text-2xl font-semibold mb-5">Logg inn</h2>
-                
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700">Brukernavn</label>

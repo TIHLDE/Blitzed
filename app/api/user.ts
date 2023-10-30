@@ -1,4 +1,4 @@
-import { IFetch } from '../api/fetch';  // Husk å oppdatere denne import-pathen
+import { IFetch } from '@/app/api/fetch';
 
 const API_URL = "http://localhost:8000/";
 const AUTH_ENDPOINT = 'auth';
@@ -21,6 +21,5 @@ export const authenticate = async (username: string, password: string): Promise<
     data: data
   });
 
-  console.log("Response:", response);
   return response;
 };

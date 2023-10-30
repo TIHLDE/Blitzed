@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { getClientCookie } from '../../app/utils/cookieStore';
+import { getClientCookie } from '@/app/utils/cookieStore';
 
 const API_URL = process.env.VITE_API_URL || "http://localhost:8000/";
 
@@ -29,7 +29,6 @@ export const IFetch = async <T = any>(endpoint: string, options?: IFetchOptions)
 
   config.headers = { ...headers, ...(options?.headers ?? {}) };
 
-  // Handle file uploads
   if (options?.file) {
     const formData = new FormData();
 
