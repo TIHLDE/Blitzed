@@ -14,7 +14,7 @@ export const IFetch = async <T = any>(endpoint: string, options?: IFetchOptions)
   if (options?.withAuth) {
     const token = getClientCookie('tokenDrinking');
     if (token) {
-      headers.Authorization = `Bearer ${token}`;
+      headers.Authorization = `Bearer ${token}`
     }
   }
 
