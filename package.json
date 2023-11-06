@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "material-icons": "^1.13.12",
     "react": "^18",
     "react-dom": "^18",
     "next": "13.5.4"
