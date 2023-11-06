@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Logo from '../Logo';
 
 export default function Navbar() {
   return (
@@ -9,12 +10,10 @@ export default function Navbar() {
             menu
           </span>
         </button>
-        <Image
-          src="/icons/logo_jub.svg"
-          alt=""
-          className="mt-2"
-          width={240}
-          height={48}
+        <Logo
+          className="fill-green-500 dark:fill-green-200"
+          width={200}
+          height={'auto'}
         />
         <div className="w-16 h-16" />
       </div>
