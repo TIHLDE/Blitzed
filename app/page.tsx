@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <main className='"bg-slate-950 justify-center h-screen"'>
