@@ -1,4 +1,6 @@
 import 'material-icons/iconfont/material-icons.css';
+import './globals.css';
+import 'material-icons/iconfont/material-icons.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
