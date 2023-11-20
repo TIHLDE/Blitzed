@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-[rgb(1,24,48)] text-white py-5 md:py-20">
+    <footer className="bg-primary text-white py-5 md:py-20">
       <div className="flex flex-wrap justify-between max-w-6xl mx-auto text-center">
         <div className="w-full px-4 md:w-1/3 md:px-10 mb-10 pt-5">
           <h2 className="text-2xl font-semibold uppercase mb-3">Kontakt</h2>
