@@ -16,7 +16,6 @@ export default function Navbar() {
           width={200}
           height={'auto'}
         />
-        <div className="w-16 h-16" />
         <ThemeToggler />
       </div>
       <div id="sideBar" className="h-screen w-32 bg-dark hidden"></div>

@@ -11,7 +11,13 @@ export default function ThemeToggler(): JSX.Element {
   const isDarkModeFromBrowser = useMediaQuery('(prefers-color-scheme: dark)');
 
   useEffect(() => {
-    handleSetTheme(isDarkModeFromBrowser);
+    let cookieValue;
+    if (Cookies.get('theme') == 'dark') {
+      cookieValue = true;
+    } else if (Cookies.get('theme') == 'light') {
+      cookieValue = false;
+    }
+    handleSetTheme(cookieValue ?? isDarkModeFromBrowser);
   }, []);
 
   const handleSetTheme = (isDarkMode: boolean) => {
