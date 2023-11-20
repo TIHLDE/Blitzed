@@ -5,6 +5,7 @@ import { useState } from 'react';
 import useMediaQuery from '../hooks/useMediaQuery';
 import Cookies from 'js-cookie';
 import classNames from 'classnames';
+import { getClientCookie, setClientCookie } from '../utils/cookieStore';
 
 export default function ThemeToggler(): JSX.Element {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -12,9 +13,9 @@ export default function ThemeToggler(): JSX.Element {
 
   useEffect(() => {
     let cookieValue;
-    if (Cookies.get('theme') == 'dark') {
+    if (getClientCookie('theme') == 'dark') {
       cookieValue = true;
-    } else if (Cookies.get('theme') == 'light') {
+    } else if (getClientCookie('theme') == 'light') {
       cookieValue = false;
     }
     handleSetTheme(cookieValue ?? isDarkModeFromBrowser);
@@ -25,11 +26,11 @@ export default function ThemeToggler(): JSX.Element {
 
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
-      Cookies.set('theme', 'dark');
+      setClientCookie('theme', 'dark');
       localStorage.theme = 'dark';
     } else {
       document.documentElement.classList.remove('dark');
-      Cookies.set('theme', 'light');
+      setClientCookie('theme', 'light');
       localStorage.theme = 'light';
     }
   };
