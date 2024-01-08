@@ -17,18 +17,14 @@ export default function Login() {
   // @ts-ignore
   const { isLoggedIn } = useAuth();
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      console.log('Logged in')
-      router.push('/')
-    }else{
-      console.log('Not logged in')
-    }
-  }, [isLoggedIn]);
+  if (isLoggedIn) {
+    router.push('/');
+    return <div>Loading...</div>;
+  }
 
   const handleSubmit = () => {
     try{
-      login(username, password);
+      login(username, password).then(r => console.log(r));
       const success = getClientCookie('tokenDrinking');
       if(success){
         console.log('Logged in')
