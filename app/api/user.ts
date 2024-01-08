@@ -8,7 +8,7 @@ interface LoginRequestResponse {
   user?: any;
 }
 
-export const authenticate = async (
+export const authenticate  = async (
   username: string,
   password: string,
 ): Promise<LoginRequestResponse> => {
