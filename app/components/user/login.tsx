@@ -1,67 +1,85 @@
 'use client';
 
 import { useUser } from '@/app/hooks/useUser';
-import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from "react";
 import Input from '@/app/components/defaults/input';
+import {getClientCookie } from '@/app/utils/stores/cookieStore';
+import {useAuth} from "@/app/user/auth/context/AuthContext";
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const { login } = useUser();
+  const router = useRouter()
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    login(username, password);
+  // @ts-ignore
+  const { isLoggedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log('Logged in')
+      router.push('/')
+    }else{
+      console.log('Not logged in')
+    }
+  }, [isLoggedIn]);
+
+  const handleSubmit = () => {
+    try{
+      login(username, password);
+      const success = getClientCookie('tokenDrinking');
+      if(success){
+        console.log('Logged in')
+        router.push('/user/template/home')
+      }
+    }catch(e){
+      setError('En feil oppsto under innloggingen.');
+    }
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-200">
-      <div className="p-8 bg-white rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-semibold mb-5">Logg inn</h2>
-        <form onSubmit={handleSubmit}>
+    <div className="flex justify-center items-center h-screen w-full">
+      <div className="w-full max-w-md p-4 border rounded-md bg-white shadow-lg">
+        <form className="w-full" onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
               Brukernavn
             </label>
             <Input
+              id="email"
+              type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              id="username"
+              className="w-full px-3 py-2 border rounded shadow-sm"
             />
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
               Passord
             </label>
             <Input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              id="password"
+              className="w-full px-3 py-2 border rounded shadow-sm"
             />
           </div>
 
-          <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
-            >
+          <div className="flex items-center justify-between mb-6">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Logg inn
             </button>
+            <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+              Glemt passord?
+            </a>
           </div>
-          <div className=" flex justify-between ">
-            <button>Glemt passord?</button>
-            <button>Registrer deg</button>
-          </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
         </form>
       </div>
-    </main>
+    </div>
   );
-}
+};

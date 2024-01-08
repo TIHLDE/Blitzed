@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { authenticate } from '@/app/api/user';
-import { setClientCookie } from '@/app/utils/cookieStore';
+import { setClientCookie } from '@/app/utils/stores/cookieStore';
 
 export const useUser = () => {
   const [user, setUser] = useState<any | null>(null);
