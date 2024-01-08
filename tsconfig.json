@@ -29,7 +29,7 @@
     ".next/types/**/*.ts",
     "app/page.tsx",
     "app/layout.tsx",
-    "app/utils/cookieStore.js"
+    "app/utils/stores/cookieStore.js"
   ],
   "exclude": ["node_modules"]
 }

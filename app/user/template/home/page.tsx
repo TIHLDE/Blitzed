@@ -1,6 +1,10 @@
 'use client';
 
 import Card from '@/app/components/template/Card';
+import { useAuth } from "@/app/user/auth/context/AuthContext";
+import { useEffect } from "react";
+import { useRouter } from 'next/navigation'
+
 
 const games = [
   {
@@ -23,6 +27,8 @@ const games = [
 
 
 export default function UserHomePage() {
+  const router = useRouter()
+
   return (
     <div className="flex flex-col w-full justify-center items-center">
       {games.map((cardData, index) => (
