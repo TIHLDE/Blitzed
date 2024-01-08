@@ -2,7 +2,7 @@
 
 import { useUser } from '@/app/hooks/useUser';
 import React, { useState } from 'react';
-import Input from '@/app/components/defaults/input';
+import Input from '@/components/layout/input';
 
 export default function Login() {
   const [username, setUsername] = useState('');
