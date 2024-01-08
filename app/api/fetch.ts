@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { getClientCookie } from '@/app/utils/cookieStore';
+import { getClientCookie } from '@/app/utils/stores/cookieStore';
 
 const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
 
