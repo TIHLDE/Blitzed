@@ -17,3 +17,7 @@ body {
     'Helvetica Neue',
     sans-serif;
 }
+
+.thickIcon {
+  font-variation-settings: 'wght' 900;
+}

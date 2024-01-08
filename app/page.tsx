@@ -1,9 +1,7 @@
-import Link from 'next/link';
-
 export default function Home() {
   return (
-    <main className='"bg-slate-950 justify-center h-screen"'>
-      <div className='"bg-slate-600 ml-60 mr-60 h-screen"'>
+    <main className="">
+      <div className="">
         <h2>Dashboard</h2>
       </div>
     </main>

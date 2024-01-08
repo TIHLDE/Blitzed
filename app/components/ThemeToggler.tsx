@@ -42,8 +42,10 @@ export default function ThemeToggler(): JSX.Element {
         <input type="checkbox" name="toggle" id="toggle" className="sr-only" />
         <div
           className={classNames({
-            'block bg-gray-600 w-14 h-8 rounded-full duration-300': isDarkMode,
-            'block bg-white w-14 h-8 rounded-full duration-300': !isDarkMode,
+            'block bg-gray-600 w-14 h-8 rounded-full duration-300 shadow-inner shadow-gray-800':
+              isDarkMode,
+            'block bg-white w-14 h-8 rounded-full duration-300 shadow-inner shadow-gray-300':
+              !isDarkMode,
           })}
         ></div>
         <div

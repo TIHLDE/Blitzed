@@ -1,10 +1,10 @@
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white py-5 md:py-20">
+    <footer className="bg-primary dark:bg-primaryDark text-text dark:text-textDark py-5 md:py-20">
       <div className="flex flex-wrap justify-between max-w-6xl mx-auto text-center">
         <div className="w-full px-4 md:w-1/3 md:px-10 mb-10 pt-5">
           <h2 className="text-2xl font-semibold uppercase mb-3">Kontakt</h2>
-          <hr className="isolate ms-10 me-10 border-1 border-white mb-6" />
+          <hr className="isolate ms-10 me-10 border-1 border-text dark:border-textDark mb-6" />
           <ul className="font-medium text-sm md:text-base">
             <li className="mb-4">
               <span className="block">EPOST</span>
@@ -26,7 +26,7 @@ export default function Footer() {
 
         <div className="w-full px-5 md:w-1/3 md:px-10 mb-10 pb-5">
           <h2 className="text-2xl font-semibold uppercase mb-3">Samarbeid</h2>
-          <hr className="isolate ms-10 me-10 border-1 border-white mb-6" />
+          <hr className="isolate ms-10 me-10 border-1 border-text dark:border-textDark mb-6" />
           <ul>
             <li className="mb-4">
               <a href="https://vercel.com/?utm_source=kvark&utm_campaign=oss">
@@ -45,8 +45,8 @@ export default function Footer() {
           <h2 className="text-2xl font-semibold uppercase mb-3">
             Sosiale medier
           </h2>
-          <hr className="isolate ms-10 me-10 border-1 border-white mb-6" />
-          <div className="grid grid-cols-[auto,auto,auto] md:gap-x-0 md:gap-y-0 gap-x-6 gap-y-4 items-center md:flex md:justify-center md:space-x-4 place-content-center">
+          <hr className="isolate ms-10 me-10 border-1 border-text dark:border-textDark mb-6" />
+          <div className="grid grid-cols-[auto,auto,auto] md:gap-x-0 md:gap-y-0 gap-x-6 gap-y-4 items-center md:flex md:justify-center md:space-x-4 place-content-center invert dark:invert-0">
             <a
               href="https://www.facebook.com/tihlde/"
               target="_blank"

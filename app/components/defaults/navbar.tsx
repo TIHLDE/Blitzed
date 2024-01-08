@@ -6,7 +6,7 @@ export default function Navbar() {
     <nav className="bg-primary dark:bg-primaryDark">
       <div className="flex justify-between items-center p-3 shadow-xl">
         <button className="w-12 h-12">
-          <span className="material-icons-round text-text dark:text-textDark scale-150">
+          <span className="material-icons-round text-text dark:text-textDark scale-150 font-bold thickIcon">
             menu
           </span>
         </button>
