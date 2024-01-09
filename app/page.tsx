@@ -1,11 +1,25 @@
-"use client"
+'use client';
 
-import Image from "next/image";
-import cvExample from '../public/100.jpg';
-import React, { useEffect, useMemo, useState } from "react";
-import {getClientCookie, removeClientCookie} from '@/app/utils/stores/cookieStore';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
+import { Facebook, Instagram, Twitter } from 'lucide-react';
+import {
+  getClientCookie,
+  removeClientCookie,
+} from '@/app/utils/stores/cookieStore';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default function Home() {
+/// Main card displayed with login buttons etc
+function HeroCard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -14,92 +28,122 @@ export default function Home() {
   }, []);
 
   function checkIfLoggedIn() {
-    const token = getClientCookie('tokenDrinking');
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    const token: string = getClientCookie('tokenDrinking');
+    setIsLoggedIn(!!token);
     setIsLoading(false);
   }
 
   const handleLogout = () => {
-    removeClientCookie("tokenDrinking")
-  }
+    setIsLoggedIn(false);
+    removeClientCookie('tokenDrinking');
+  };
 
-  const authButtons = useMemo(() => {
+  const loginButtons = useMemo(() => {
     if (isLoading) {
-      return null;
-    } else if (isLoggedIn) {
+      return <Skeleton className={'w-full h-10'} />;
+    }
+    if (isLoggedIn) {
       return (
-        <>
-          <button className="bg-red-200 shadow-[rgba(0,0,0,0.4)_0px_30px_90px] px-4 py-2 rounded-lg">
-            <a className="text-xl" href="/user/template/home">
-              Spill
-            </a>
-          </button>
-          <button className="bg-red-200 shadow-[rgba(0,0,0,0.4)_0px_30px_90px] px-4 py-2 rounded-lg">
-            <a onClick={handleLogout} className="text-xl" href="/">
-              Logg ut
-            </a>
-          </button>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <button className="bg-red-200 shadow-[rgba(0,0,0,0.4)_0px_30px_90px] px-4 py-2 rounded-lg">
-            <a className="text-xl" href="/user/template/home">
-            Spill
-            </a>
-          </button>
-          <button className="bg-red-200 shadow-[rgba(0,0,0,0.4)_0px_30px_90px] px-4 py-2 rounded-lg">
-            <a className="text-xl" href="user/auth/login">
-              Logg inn
-            </a>
-          </button>
-          <button className="bg-red-200 shadow-[rgba(0,0,0,0.4)_0px_30px_90px] px-4 py-2 rounded-lg">
-            <a className="text-xl" href="https://tihlde.org/ny-bruker/">
-              Register
-            </a>
-          </button>
-        </>
+        <Button variant={'outline'} className={'w-full'} onClick={handleLogout}>
+          Logg ut
+        </Button>
       );
     }
-  }, [isLoading, isLoggedIn]);
+
+    return (
+      <>
+        <Button variant={'outline'} className={'w-full'}>
+          Logg inn
+        </Button>
+        <Button variant={'outline'} className={'w-full'}>
+          Registrer deg
+        </Button>
+      </>
+    );
+  }, [isLoggedIn, isLoading]);
 
   return (
-    <div className={'flex flex-col'}>
-      <div className="flex justify-center items-center h-screen px-4 py-2">
-        <div className="flex flex-col justify-center items-start mr-8">
-          <div className={''}>
-            <p className="text-3xl text-cyan-600">
-              Tihldes egen nettside for drikkeleker,
-            </p>
-            <br />
-            <p className="text-2xl text-cyan-600">
-              {isLoading
-                ? 'Laster...'
-                : isLoggedIn
-                ? ''
-                : 'Register eller login for å starte'}
-            </p>
-          </div>
-          <div className="flex mt-4">{authButtons}</div>
+    <Card
+      className={'my-20 absolute left-3 right-3 max-w-[372px] ml-auto mr-auto'}
+    >
+      <CardHeader>
+        <CardDescription className={'lg:text-xl text-lg text-center'}>
+          Tihldes nettside for
+        </CardDescription>
+        <CardTitle
+          className={
+            'text-center lg:text-3xl text-2xl mt-0 font-bold space-y-0'
+          }
+        >
+          DRIKKELEKER
+        </CardTitle>
+      </CardHeader>
+      <CardContent
+        className={'flex gap-2 flex-col w-full items-center justify-evenly'}
+      >
+        <Button className={'lg:w-[80%] w-full max-w-full h-12'}>
+          START NÅ
+        </Button>
+        <div
+          className={'flex flex-row gap-2 justify-between w-full lg:w-[80%]'}
+        >
+          {loginButtons}
         </div>
-        <div className="rotate-12 relative">
-          <div className="mt-1 p-2 w-11/12 h-full border rounded-md bg-white shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px]">
-            <div className="flex flex-col items-center justify-center">
-              <div className={''}>
-                <Image src={cvExample} alt={'cv'} />
-              </div>
-            </div>
-          </div>
+        <Separator className={'my-6 min-w-[60%]'} />
+        <CardDescription className={'mb-2 text-md text-center'}>
+          Følg oss på sosiale medier
+        </CardDescription>
+        <div className="flex md:gap-x-0 md:gap-y-0 gap-x-6 gap-y-4 items-center md:flex md:justify-center md:space-x-4 place-content-center">
+          <Link
+            href="https://www.facebook.com/tihlde/"
+            target="_blank"
+            className="flex justify-center"
+          >
+            <Button variant={'outline'} size={'icon'}>
+              <Facebook />
+            </Button>
+          </Link>
+
+          <a
+            href="https://www.instagram.com/tihlde/"
+            target="_blank"
+            className="flex justify-center"
+          >
+            <Button variant={'outline'} size={'icon'}>
+              <Instagram />
+            </Button>
+          </a>
+
+          <a
+            href="https://twitter.com/tihlde"
+            target="_blank"
+            className="flex justify-center"
+          >
+            <Button variant={'outline'} size={'icon'}>
+              <Twitter />
+            </Button>
+          </a>
         </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function Home() {
+  return (
+    <div className={'md:flex h-[90vh] flex-row justify-between'}>
+      <div className="md:basis-2/5 md:bg-accent md:h-full md:flex relative flex-col md:items-center md:justify-center z-10 px-4">
+        <HeroCard />
       </div>
-      <br />
-      <br />
-      <br />
+      <div className="md:basis-3/5 h-full md:w-full z-0">
+        <img
+          src={
+            'https://images.unsplash.com/photo-1558383409-ab7ef8db3e01?q=80&w=1786&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+          }
+          className={'object-cover h-full w-full'}
+          alt={'People sharing drinks'}
+        />
+      </div>
     </div>
   );
 }

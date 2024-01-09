@@ -31,6 +31,11 @@ export default function Navbar() {
             </SheetHeader>
           </SheetContent>
         </Sheet>
+        <Logo
+          className="fill-primary opacity-0 sm:opacity-100"
+          width={200}
+          height={'auto'}
+        />
         <Logo className="fill-primary" width={200} height={'auto'} />
         <div className="flex gap-3">
           <Button size={'icon'} variant={'ghost'}>
