@@ -36,6 +36,7 @@ export default function Navbar() {
           width={200}
           height={'auto'}
         />
+        <Logo className="fill-primary" width={200} height={'auto'} />
         <div className="flex gap-3">
           <Button size={'icon'} variant={'ghost'}>
             <Avatar className=" hover:brightness-90 duration-100">
