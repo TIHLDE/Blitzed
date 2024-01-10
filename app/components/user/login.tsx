@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-full">
+    <div className="flex justify-center items-center my-52 w-full">
       <div className="w-full max-w-sm p-4 border rounded-md bg-white shadow-lg">
         <h2 className={'text-center text-2xl font-bold mb-6'}>
           Logg inn til Blitzed
