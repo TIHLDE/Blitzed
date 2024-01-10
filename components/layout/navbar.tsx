@@ -1,4 +1,5 @@
 import Logo from '@/components/logo';
+import LogoSmall from '@/components/logo-small';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,16 +11,20 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { ThemeModeToggler } from '@/components/ui/theme-mode-toggler';
-import { AlignJustify, UserRound } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 
 export default function Navbar() {
   return (
     <nav className="bg-background flex flex-col content-start">
       <div className="flex justify-between items-center p-3 border-b-[1px]">
+        {/*
         <Sheet>
           <SheetTrigger asChild>
             <Button size={'icon'} variant={'ghost'}>
-              <AlignJustify size={30} className="fill-primary stroke-[2px]" />
+              <HamburgerMenuIcon
+                size={30}
+                className="fill-primary stroke-[2px]"
+              />
             </Button>
           </SheetTrigger>
           <SheetContent side={'left'}>
@@ -31,8 +36,14 @@ export default function Navbar() {
             </SheetHeader>
           </SheetContent>
         </Sheet>
+*/}
         <Logo
-          className="fill-primary opacity-0 sm:opacity-100"
+          className="fill-primary hidden sm:block"
+          width={200}
+          height={'auto'}
+        />
+        <LogoSmall
+          className="fill-primary sm:hidden block"
           width={200}
           height={'auto'}
         />
