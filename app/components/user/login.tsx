@@ -73,6 +73,12 @@ export default function Login() {
           <Button className={'mt-4'} type={'submit'}>
             Logg inn
           </Button>
+          <a
+            className="inline-block font-medium text-sm underline text-end mt-3"
+            href="#"
+          >
+            Glemt passord?
+          </a>
           {error && (
             <Label
               className={
