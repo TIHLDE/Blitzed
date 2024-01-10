@@ -52,11 +52,11 @@ function HeroCard() {
 
     return (
       <>
-        <Button variant={'outline'} className={'w-full'}>
-          Logg inn
+        <Button variant={'outline'} className={'w-full'} asChild>
+          <Link href={'user/auth/login'}>Logg inn</Link>
         </Button>
-        <Button variant={'outline'} className={'w-full'}>
-          Registrer deg
+        <Button variant={'outline'} className={'w-full'} asChild>
+          <Link href={'https://tihlde.org/ny-bruker/'}>Registrer deg</Link>
         </Button>
       </>
     );
@@ -81,8 +81,8 @@ function HeroCard() {
       <CardContent
         className={'flex gap-2 flex-col w-full items-center justify-evenly'}
       >
-        <Button className={'lg:w-[80%] w-full max-w-full h-12'}>
-          START NÅ
+        <Button className={'lg:w-[80%] w-full max-w-full h-12'} asChild>
+          <Link href={'/user/template/home'}>START NÅ</Link>
         </Button>
         <div
           className={'flex flex-row gap-2 justify-between w-full lg:w-[80%]'}
