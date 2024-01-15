@@ -48,7 +48,7 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center my-52 w-full">
-      <div className="w-full max-w-sm p-4 border rounded-md bg-white shadow-lg">
+      <div className="w-full max-w-sm p-4 border rounded-md shadow-lg">
         <h2 className={'text-center text-2xl font-bold mb-6'}>
           Logg inn til Blitzed
         </h2>
@@ -65,7 +65,7 @@ export default function Login() {
           </div>
           <Label htmlFor="password">Passord</Label>
           <Input
-            type="name"
+            type="password"
             id="password"
             onChange={handleChange('password')}
             value={password}
