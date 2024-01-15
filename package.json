@@ -7,19 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install",
     "prettier": "prettier --write ."
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "next lint --fix",
-      "prettier --write"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
