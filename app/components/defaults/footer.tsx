@@ -1,4 +1,64 @@
+'use client';
+
+import React, { useEffect } from 'react';
+import { createSession, getSessionById, fetchSessions, updateSession, deleteSession } from '@/app/api/session';
+
 export default function Footer() {
+  useEffect(() => {
+    const testAPIFunctions = async () => {
+      // Test createSession
+      const sessionData = {
+        start_time: '2022-01-01T12:00:00',
+        end_time: '2022-01-01T14:00:00',
+      };
+      try {
+        const createdSession = await createSession(sessionData);
+        console.log('Created Session:', createdSession);
+      } catch (error) {
+        console.error('Error creating session:', error);
+      }
+
+      // Test getSessionById
+      const sessionId = 5; // Replace with a valid session ID
+      try {
+        const session = await getSessionById(sessionId);
+        console.log('Fetched Session by ID:', session);
+      } catch (error) {
+        console.error('Error fetching session by ID:', error);
+      }
+
+      // Test fetchSessions
+      try {
+        const sessions = await fetchSessions();
+        console.log('Fetched Sessions:', sessions);
+      } catch (error) {
+        console.error('Error fetching sessions:', error);
+      }
+
+      // Test updateSession
+      const updatedSessionData = {
+        // Replace with the data you want to update
+      };
+      try {
+        const updatedSession = await updateSession(sessionId, updatedSessionData);
+        console.log('Updated Session:', updatedSession);
+      } catch (error) {
+        console.error('Error updating session:', error);
+      }
+
+      // Test deleteSession
+      try {
+        const response = await deleteSession(sessionId);
+        console.log('Deleted Session:', response);
+      } catch (error) {
+        console.error('Error deleting session:', error);
+      }
+    };
+
+    // Run the test
+    testAPIFunctions();
+  }, []);
+  
     return (
         
 <footer className="bg-[rgb(1,24,48)] text-white py-5 md:py-20">
