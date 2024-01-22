@@ -1,17 +1,16 @@
-import { Check as CheckIcon } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import TournamentDetails from './tournament_details';
 import { Separator } from '../../components/ui/separator';
+import TournamentPinForm from './tournament_pin_form';
 
 export default async function BrowseTournamentsPage() {
   return (
     <main className="flex flex-col justify-between items-center w-full gap-4 h-[calc(100svh-70px)] px-4">
       <div className="flex flex-col items-center justify-between w-full overflow-y-auto">
-        <JoinForm />
+        <TournamentPinForm />
         <div className="text-2xl ml-2 mb-2 font-bold mt-8">
-          Åpne turneringer
+          Åpne turneringer T
         </div>
         <div className="flex flex-col justify-start items-center w-full max-w-md gap-2">
           {tournaments.map((t) => (
@@ -64,40 +63,3 @@ const tournaments: Tournament[] = [
     name: 'Beer pong',
   },
 ];
-
-function JoinForm() {
-  return (
-    <div className="flex flex-col items-center justify-start w-full">
-      <div className="text-lg ml-2 mb-2 font-bold mt-4">Join med PIN-kode</div>
-      <div className="flex flex-row justify-between items-center gap-2 w-full max-w-md h-14">
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Button
-          className="h-full flex items-center justify-center flex-1"
-          variant="default"
-          size="icon"
-        >
-          <CheckIcon size={36} />
-        </Button>
-      </div>
-    </div>
-  );
-}
