@@ -3,6 +3,8 @@
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from "@/app/user/auth/context/AuthContext";
+import { useEffect } from "react";
 
 interface Game {
   link: string;
@@ -28,7 +30,11 @@ const games: Game[] = [
 
 export default function UserHomePage() {
   const router = useRouter();
+  const {login} = useAuth();
 
+  useEffect(() => {
+    login();
+  }, []);
   return (
     <div className={'flex flex-col w-full h-[90vh] justify-center'}>
       <h1 className={'text-3xl font-bold text-center text-primary'}>
