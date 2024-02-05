@@ -3,6 +3,7 @@ import { Card } from '../../components/ui/card';
 import TournamentDetails from './tournament_details';
 import { Separator } from '../../components/ui/separator';
 import JoinTournamentForm from '../../components/tournament/joinTournamentForm';
+import Link from 'next/link';
 
 export default async function BrowseTournamentsPage() {
   return (
@@ -23,8 +24,8 @@ export default async function BrowseTournamentsPage() {
           ))}
         </div>
       </div>
-      <Button className="w-full max-w-md h-20 text-4xl font-bold mb-4">
-        Lag ny
+      <Button asChild className="w-full max-w-md h-20 text-4xl font-bold mb-4">
+        <Link href="/tournament/create">Lag ny</Link>
       </Button>
     </main>
   );
