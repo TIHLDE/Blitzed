@@ -37,7 +37,7 @@ export interface Tournament {
   name: string;
 }
 
-interface TournameCardProps {
+export interface TournameCardProps {
   tournament: Tournament;
 }
 

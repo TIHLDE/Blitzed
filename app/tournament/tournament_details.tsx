@@ -9,11 +9,11 @@ import {
 } from '../../components/ui/tooltip';
 import { Tournament } from './page';
 
-interface TournameCardProps {
+interface TournamentCardProps {
   tournament: Tournament;
 }
 
-export default function TournamentDetails(props: TournameCardProps) {
+export default function TournamentDetails(props: TournamentCardProps) {
   return (
     <div className="text-end gap-3 flex">
       <TooltipProvider>
