@@ -31,12 +31,12 @@ interface TournameCardProps {
 
 function TournamentCard({ tournament }: TournameCardProps) {
   return (
-    <Card className="flex flex-row justify-between items-center w-full px-4 py-2">
+    <Card className="flex flex-col sm:flex-row justify-between items-center w-full px-4 py-2 gap-2">
       <div className="text-2xl font-light flex h-full gap-2">
         #{tournament.id}
-        <Separator orientation="vertical" className="m-0" />
+        <Separator orientation="vertical" className="m-0 hidden sm:block" />
       </div>
-      <div className="text-xl font-bold">{tournament.name}</div>
+      <div className="text-lg font-bold">{tournament.name}</div>
       <TournamentDetails tournament={tournament} />
     </Card>
   );
