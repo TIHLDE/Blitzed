@@ -1,20 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import {
-  createSession,
-  getSessionById,
-  fetchSessions,
-  updateSession,
-  deleteSession,
-} from '@/app/api/session';
-import {
-  createWastedLevel,
-  getWastedLevel,
-  getWastedLevels,
-  updateWastedLevel,
-  deleteWastedLevel,
-} from '@/app/api/user_wasted_level';
+import { createSession, getSessionById, fetchSessions, updateSession, deleteSession, } from '@/app/api/session';
+import { createWastedLevel, getWastedLevel, getWastedLevels, updateWastedLevel, deleteWastedLevel,} from '@/app/api/user_wasted_level';
 import ReactApexChart from 'react-apexcharts';
 
 export default function Footer() {
