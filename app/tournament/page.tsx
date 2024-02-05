@@ -8,7 +8,12 @@ export default async function BrowseTournamentsPage() {
   return (
     <main className="flex flex-col justify-between items-center w-full gap-4 h-[calc(100svh-70px)] px-4">
       <div className="flex flex-col items-center justify-between w-full overflow-y-auto">
-        <JoinForm />
+        <div className="flex flex-col items-center justify-start w-full">
+          <div className="text-lg ml-2 mb-2 font-bold mt-4">
+            Join med PIN-kode
+          </div>
+          <JoinTournamentForm />
+        </div>
         <div className="text-2xl ml-2 mb-2 font-bold mt-8">
           Åpne turneringer
         </div>
@@ -23,6 +28,13 @@ export default async function BrowseTournamentsPage() {
       </Button>
     </main>
   );
+}
+
+export interface Tournament {
+  id: string;
+  numPlayers: number;
+  teamCount: number;
+  name: string;
 }
 
 interface TournameCardProps {
@@ -42,13 +54,6 @@ function TournamentCard({ tournament }: TournameCardProps) {
   );
 }
 
-export interface Tournament {
-  id: string;
-  numPlayers: number;
-  teamCount: number;
-  name: string;
-}
-
 const tournaments: Tournament[] = [
   {
     id: '8294',
@@ -63,12 +68,3 @@ const tournaments: Tournament[] = [
     name: 'Beer pong',
   },
 ];
-
-function JoinForm() {
-  return (
-    <div className="flex flex-col items-center justify-start w-full">
-      <div className="text-lg ml-2 mb-2 font-bold mt-4">Join med PIN-kode</div>
-      <JoinTournamentForm />
-    </div>
-  );
-}
