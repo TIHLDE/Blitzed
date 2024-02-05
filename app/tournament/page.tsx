@@ -1,9 +1,8 @@
-import { Check as CheckIcon } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import TournamentDetails from './tournament_details';
 import { Separator } from '../../components/ui/separator';
+import JoinTournamentForm from '../../components/tournament/joinTournamentForm';
 
 export default async function BrowseTournamentsPage() {
   return (
@@ -69,35 +68,7 @@ function JoinForm() {
   return (
     <div className="flex flex-col items-center justify-start w-full">
       <div className="text-lg ml-2 mb-2 font-bold mt-4">Join med PIN-kode</div>
-      <div className="flex flex-row justify-between items-center gap-2 w-full max-w-md h-14">
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Input
-          className="h-full text-center text-2xl font-medium flex-1"
-          type="text"
-          maxLength={1}
-        />
-        <Button
-          className="h-full flex items-center justify-center flex-1"
-          variant="default"
-          size="icon"
-        >
-          <CheckIcon size={36} />
-        </Button>
-      </div>
+      <JoinTournamentForm />
     </div>
   );
 }
