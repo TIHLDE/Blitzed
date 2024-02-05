@@ -11,12 +11,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
-  first: z.string().regex(/\d/).length(1),
-  second: z.string().regex(/\d/).length(1),
-  third: z.string().regex(/\d/).length(1),
-  fourth: z.string().regex(/\d/).length(1),
+  first: z.coerce.number().min(0).max(9),
+  second: z.coerce.number().min(0).max(9),
+  third: z.coerce.number().min(0).max(9),
+  fourth: z.coerce.number().min(0).max(9),
 });
 
 export default function JoinTournamentForm() {
@@ -24,18 +25,24 @@ export default function JoinTournamentForm() {
     resolver: zodResolver(formSchema),
   });
 
-  form.watch((data) => {
-    const values = [data.first, data.second, data.third, data.fourth];
-    const ids = ['first', 'second', 'third', 'fourth'];
-    const indexNextEmpty = values.findIndex((v) => !v);
+  // Callback version of watch.  It's your responsibility to unsubscribe when done.
+  useEffect(() => {
+    const subscription = form.watch((data) => {
+      // Find the next formfield that is empty, and focus it
+      // this way the user automatically traverses all of the input fields :)
+      const values = [data.first, data.second, data.third, data.fourth];
+      const ids = ['first', 'second', 'third', 'fourth'];
+      const indexNextEmpty = values.findIndex((v) => !v);
 
-    if (indexNextEmpty !== -1) {
-      document.getElementById(ids[indexNextEmpty]).focus();
-    } else {
-      // We should submit the form since all fields have been filled out
-      form.handleSubmit(onSubmit)();
-    }
-  });
+      if (indexNextEmpty !== -1) {
+        document.getElementById(ids[indexNextEmpty]).focus();
+      } else {
+        // We should submit the form since all fields have been filled out
+        form.handleSubmit(onSubmit)();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     const code = [
