@@ -2,13 +2,13 @@
 
 import { useUser } from '@/app/hooks/useUser';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { getClientCookie } from '@/app/utils/stores/cookieStore';
 import { useAuth } from '@/app/user/auth/context/AuthContext';
 import Input from '@/components/layout/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import Loading from "@/app/components/loading";
+import Loading from '@/app/components/loading';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -52,9 +52,8 @@ export default function Login() {
   };
 
   if (!authChecked) {
-    return <Loading/>
+    return <Loading />;
   }
-
 
   return (
     <div className="flex justify-center items-center my-52 w-full">
@@ -103,4 +102,3 @@ export default function Login() {
     </div>
   );
 }
-
