@@ -21,7 +21,7 @@ const games: Game[] = [
     alt: 'folk som tar shots',
   },
   {
-    link: 'string1',
+    link: '/tournament',
     title: 'Beer pong turnering',
     svgSrc: '/beerpong.png',
     alt: 'beer pong tournament poster',
@@ -42,7 +42,7 @@ export default function UserHomePage() {
       </h1>
       <div className="flex flex-col md:flex-row w-full justify-center items-center gap-4 mt-4 h-fit">
         {games.map((cardData, index) => (
-          <Link href={cardData.link}>
+          <Link href={cardData.link} key={cardData.title}>
             <Card
               key={index}
               className={

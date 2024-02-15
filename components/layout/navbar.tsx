@@ -2,14 +2,6 @@ import Logo from '@/components/logo';
 import LogoSmall from '@/components/logo-small';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 import { ThemeModeToggler } from '@/components/ui/theme-mode-toggler';
 import { UserRound } from 'lucide-react';
 
@@ -37,16 +29,18 @@ export default function Navbar() {
           </SheetContent>
         </Sheet>
 */}
-        <Logo
-          className="fill-primary hidden sm:block"
-          width={200}
-          height={'auto'}
-        />
-        <LogoSmall
-          className="fill-primary sm:hidden block"
-          width={200}
-          height={'auto'}
-        />
+        <a href="/user/template/home">
+          <Logo
+            className="fill-primary hidden sm:block"
+            width={200}
+            height={'auto'}
+          />
+          <LogoSmall
+            className="fill-primary sm:hidden block"
+            width={200}
+            height={'auto'}
+          />
+        </a>
         <div className="flex gap-3">
           <Button size={'icon'} variant={'ghost'}>
             <Avatar className=" hover:brightness-90 duration-100">
