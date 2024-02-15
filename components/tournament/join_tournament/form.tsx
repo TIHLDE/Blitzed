@@ -12,13 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useEffect } from 'react';
-
-const formSchema = z.object({
-  first: z.coerce.number().min(0).max(9),
-  second: z.coerce.number().min(0).max(9),
-  third: z.coerce.number().min(0).max(9),
-  fourth: z.coerce.number().min(0).max(9),
-});
+import formSchema from './schema';
 
 export default function JoinTournamentForm() {
   const form = useForm<z.infer<typeof formSchema>>({

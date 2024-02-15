@@ -16,27 +16,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-
-const formSchema = z.object({
-  tournamentName: z.string().min(2, {
-    message: 'Minst 2 tegn',
-  }),
-  randomTeams: z.boolean().default(false).optional(),
-  thildeExclusive: z.boolean().default(false).optional(),
-  bronzeFinal: z.boolean().default(false).optional(),
-  maxParticipants: z.boolean().default(false).optional(),
-  maxParticipantsNumber: z.coerce
-    .number()
-    .min(2, {
-      message: 'Minst 2 spillere',
-    })
-    .max(64, {
-      message: 'Max 64 spillere',
-    })
-    .default(8)
-    .optional(),
-  privateTournament: z.boolean().default(false).optional(),
-});
+import formSchema from './schema';
 
 export function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({

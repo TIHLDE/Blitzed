@@ -9,18 +9,11 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from '../../components/ui/form';
-import { Input } from '../../components/ui/input';
-import { Button } from '../../components/ui/button';
+} from '../../ui/form';
+import { Input } from '../../ui/input';
+import { Button } from '../../ui/button';
 import { Check as CheckIcon } from 'lucide-react';
-import { useEffect } from 'react';
-
-const formSchema = z.object({
-  one: z.string({ required_error: '👆' }).max(1),
-  two: z.string({ required_error: '👆' }).max(1),
-  three: z.string({ required_error: '👆' }).max(1),
-  four: z.string({ required_error: '👆' }).max(1),
-});
+import formSchema from './schema';
 
 export default function TournamentPinForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -28,7 +21,7 @@ export default function TournamentPinForm() {
     defaultValues: {},
   });
 
-  function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {}
+  // function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {}
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);

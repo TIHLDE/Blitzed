@@ -1,4 +1,4 @@
-import { ProfileForm } from '../../../components/tournament/createTournamentForm';
+import { ProfileForm } from '../../../components/tournament/create_tournament/form';
 
 export default async function CreateTournamentPage() {
   return (
