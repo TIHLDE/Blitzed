@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Trash2Icon as DeleteIcon, PlusIcon } from 'lucide-react';
 import { useState } from 'react';
-import { Card } from '../../../../components/ui/card';
+import { Card } from '../ui/card';
 
 export function CreateTeamDialog() {
   const [users, setUsers] = useState<string[]>([]);

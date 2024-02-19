@@ -9,21 +9,25 @@ import {
   CardHeader,
   CardTitle,
 } from '../../../components/ui/card';
-import { CreateTeamDialog } from './components/create_team_dialog';
+import { CreateTeamDialog } from '../../../components/tournament/create_team_dialog';
+import { TeamDetailsDialog } from '@/components/tournament/teamDetailsDialog';
 
-interface Team {
+export interface Team {
   name: string;
-  players: number;
+  players: string[];
+  wins?: number;
 }
 
 const teams: Team[] = [
   {
     name: 'Embret sitt lag',
-    players: 1,
+    players: ['Embret', 'Mori', 'Henrik', 'Eirik'],
+    wins: 3,
   },
   {
     name: 'Henrik sitt lag',
-    players: 4,
+    players: ['Henrik', 'Mori', 'Eirik', 'Embret'],
+    wins: 7,
   },
 ];
 
@@ -33,15 +37,21 @@ interface TeamCardProps {
 
 function TeamCard({ team }: TeamCardProps) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row justify-between items-center">
-        <div className="flex flex-col gap-1">
-          <CardTitle>{team.name}</CardTitle>
-          <CardDescription>Antall spillere: {team.players}</CardDescription>
-        </div>
-        <Button className="mt-[0px!important]">Bli med</Button>
-      </CardHeader>
-    </Card>
+    <TeamDetailsDialog team={team}>
+      <Card>
+        <CardHeader className="flex flex-row justify-between items-center">
+          <div className="flex flex-col gap-1 items-start">
+            <CardTitle>{team.name}</CardTitle>
+            <CardDescription>
+              Antall spillere: {team.players.length}
+            </CardDescription>
+          </div>
+          <Button className="mt-[0px!important] z-50" variant={'outline'}>
+            Bli med
+          </Button>
+        </CardHeader>
+      </Card>
+    </TeamDetailsDialog>
   );
 }
 
@@ -63,11 +73,8 @@ export default function Before() {
             ))}
           </div>
         </div>
-        <Button
-          asChild
-          className="w-full max-w-md h-20 text-4xl font-bold mb-4"
-        >
-          <Link href="/tournament/create">Start!</Link>
+        <Button className="w-full max-w-md h-20 text-4xl font-bold mb-4">
+          Start!
         </Button>
       </main>
     </div>

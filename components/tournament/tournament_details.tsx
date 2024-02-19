@@ -6,8 +6,8 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../../components/ui/tooltip';
-import { Tournament } from './page';
+} from '../ui/tooltip';
+import { Tournament } from '../../app/tournament/page';
 
 interface TournamentCardProps {
   tournament: Tournament;
