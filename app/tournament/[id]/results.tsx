@@ -50,7 +50,7 @@ export default function ResultsPage() {
   const sortedTeams = teams.sort((a, b) => (a.wins || 0) - (b.wins || 0));
 
   return (
-    <main className="flex flex-col justify-between items-center w-full max-w-xl gap-4 h-[calc(100svh-70px)] px-4">
+    <main className="flex flex-col justify-center items-center max-w-xl mx-auto w-full [calc(100svh-70px)] px-4">
       <div className="w-full flex flex-col justify-center items-center">
         <div className="mb-1 mt-4">My tournament title</div>
         <div className="text-3xl font-bold">Resultater</div>
@@ -88,9 +88,7 @@ function Losers({ teams }: { teams: Team[] }) {
 function Podium({ teams }: { teams: Team[] }) {
   return (
     <div
-      className={
-        'flex mt-12 flex-row justify-between gap-2 h-96 items-end w-full'
-      }
+      className={'flex mt-12 flex-row justify-between gap-2 h-96 items-end w-full'}
     >
       <div className="flex flex-col gap-2 h-[70%] justify-end items-center flex-1">
         <div className={'font-bold'}>{teams[1].name}</div>
