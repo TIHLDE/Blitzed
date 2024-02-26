@@ -20,7 +20,7 @@ export const IFetch = async <T = any>(
   if (options?.withAuth) {
     const token = getClientCookie('tokenDrinking');
     if (token) {
-      headers["x-csrf-token"] = token;
+      headers['x-csrf-token'] = token;
     }
   }
 

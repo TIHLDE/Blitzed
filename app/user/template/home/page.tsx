@@ -13,7 +13,7 @@ interface Game {
 
 const games: Game[] = [
   {
-    link: 'string1',
+    link: 'games/100spm',
     title: '100 Spørsmål',
     svgSrc: '/100.jpg',
     alt: 'folk som tar shots',

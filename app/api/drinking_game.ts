@@ -15,7 +15,9 @@ export interface DrinkingGameResponse {
   icon: string;
 }
 
-export const createDrinkingGame = async (drinkingGameData: CreateDrinkingGameRequest): Promise<any> => {
+export const createDrinkingGame = async (
+  drinkingGameData: CreateDrinkingGameRequest,
+): Promise<any> => {
   try {
     const response = await IFetch<any>(DRINKING_GAME_ENDPOINT, {
       method: 'POST',
@@ -28,9 +30,13 @@ export const createDrinkingGame = async (drinkingGameData: CreateDrinkingGameReq
   }
 };
 
-export const getDrinkingGameById = async (drinkingGameId: number): Promise<DrinkingGameResponse> => {
+export const getDrinkingGameById = async (
+  drinkingGameId: number,
+): Promise<DrinkingGameResponse> => {
   try {
-    const response = await IFetch<any>(`${DRINKING_GAME_ENDPOINT}${drinkingGameId}/`);
+    const response = await IFetch<any>(
+      `${DRINKING_GAME_ENDPOINT}${drinkingGameId}/`,
+    );
     return response;
   } catch (error) {
     console.error('Failed to get drinking game:', error);
@@ -48,12 +54,18 @@ export const fetchDrinkingGames = async (): Promise<any> => {
   }
 };
 
-export const updateDrinkingGame = async (drinkingGameId: number, drinkingGameData: any): Promise<any> => {
+export const updateDrinkingGame = async (
+  drinkingGameId: number,
+  drinkingGameData: any,
+): Promise<any> => {
   try {
-    const response = await IFetch<any>(`${DRINKING_GAME_ENDPOINT}${drinkingGameId}/`, {
-      method: 'PUT',
-      data: drinkingGameData,
-    });
+    const response = await IFetch<any>(
+      `${DRINKING_GAME_ENDPOINT}${drinkingGameId}/`,
+      {
+        method: 'PUT',
+        data: drinkingGameData,
+      },
+    );
     return response;
   } catch (error) {
     console.error('Failed to update drinking game:', error);
@@ -61,11 +73,16 @@ export const updateDrinkingGame = async (drinkingGameId: number, drinkingGameDat
   }
 };
 
-export const deleteDrinkingGame = async (drinkingGameId: number): Promise<any> => {
+export const deleteDrinkingGame = async (
+  drinkingGameId: number,
+): Promise<any> => {
   try {
-    const response = await IFetch<any>(`${DRINKING_GAME_ENDPOINT}${drinkingGameId}/`, {
-      method: 'DELETE',
-    });
+    const response = await IFetch<any>(
+      `${DRINKING_GAME_ENDPOINT}${drinkingGameId}/`,
+      {
+        method: 'DELETE',
+      },
+    );
     return response;
   } catch (error) {
     console.error('Failed to delete drinking game:', error);

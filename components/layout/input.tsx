@@ -1,7 +1,7 @@
 import React from 'react';
-import {cn} from "@/app/utils/tailwindCN";
+import { cn } from '@/app/utils/tailwindCN';
 
-type InputProps = {} & React.InputHTMLAttributes<HTMLInputElement>
+type InputProps = {} & React.InputHTMLAttributes<HTMLInputElement>;
 
 function Input({
   value,

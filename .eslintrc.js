@@ -25,7 +25,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["@/app/**/*.{js,jsx,ts,tsx}"],
+      files: ['@/app/**/*.{js,jsx,ts,tsx}'],
     },
   ],
 };
