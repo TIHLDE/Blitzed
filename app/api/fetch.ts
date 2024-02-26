@@ -14,10 +14,13 @@ export const IFetch = async <T = any>(
 ): Promise<T> => {
   const headers: Record<string, string> = {};
 
+  // TODO: Remove this
+  // headers["x-csrf-token"] = "606d9b0894c798fa511d85f876fd8611b7109e32";
+
   if (options?.withAuth) {
     const token = getClientCookie('tokenDrinking');
     if (token) {
-      headers.Authorization = `Bearer ${token}`;
+      headers["x-csrf-token"] = token;
     }
   }
 

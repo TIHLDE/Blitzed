@@ -4,8 +4,15 @@ const DRINKING_GAME_ENDPOINT = 'blitzed/drinking_game/';
 
 export interface CreateDrinkingGameRequest {
   name: string;
-  description: string;
+  description?: string;
   icon?: string;
+}
+
+export interface DrinkingGameResponse {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
 }
 
 export const createDrinkingGame = async (drinkingGameData: CreateDrinkingGameRequest): Promise<any> => {
@@ -21,7 +28,7 @@ export const createDrinkingGame = async (drinkingGameData: CreateDrinkingGameReq
   }
 };
 
-export const getDrinkingGameById = async (drinkingGameId: number): Promise<any> => {
+export const getDrinkingGameById = async (drinkingGameId: number): Promise<DrinkingGameResponse> => {
   try {
     const response = await IFetch<any>(`${DRINKING_GAME_ENDPOINT}${drinkingGameId}/`);
     return response;
