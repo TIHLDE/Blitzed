@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getClientCookie } from '@/app/utils/stores/cookieStore';
 
-const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/';
 
 interface IFetchOptions extends Omit<AxiosRequestConfig, 'url'> {
   withAuth?: boolean;
