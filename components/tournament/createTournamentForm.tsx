@@ -20,7 +20,7 @@ import { Switch } from '@/components/ui/switch';
 const formSchema = z.object({
   tournamentName: z.string().min(2, {
     message: 'Minst 2 tegn',
-  }),
+  }).max(22, {message: 'Maks 22 tegn'}),
   randomTeams: z.boolean().default(false).optional(),
   thildeExclusive: z.boolean().default(false).optional(),
   bronzeFinal: z.boolean().default(false).optional(),
