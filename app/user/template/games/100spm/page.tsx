@@ -5,18 +5,21 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useDrinkingGame } from '@/app/hooks/useDrinking_game';
 import { useEffect } from 'react';
+import { useUser } from '@/app/hooks/useUser';
 
 export default function UserHomePage() {
   const { drinkingGame, getDrinkingGames } = useDrinkingGame();
+  const { user } = useUser();
 
   useEffect(() => {
     getDrinkingGames();
+    console.log(user);
   }, [getDrinkingGames]);
 
   return (
     <div className="flex flex-col w-full min-h-screen justify-between px-4">
       <div>
-        <div className="absolute top-[80px] right-4">
+        <div className="absolute top-[80px] right-4 py-2">
           <Button className="lg:w-[100%] w-full max-w-full h-12" asChild>
             <Link href="/user/admin/question-game">LAG DRIKKELEK</Link>
           </Button>
