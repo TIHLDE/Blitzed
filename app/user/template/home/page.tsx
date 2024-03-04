@@ -3,6 +3,8 @@
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from "@/app/user/auth/context/AuthContext";
+import { useEffect } from "react";
 
 interface Game {
   link: string;
@@ -19,7 +21,7 @@ const games: Game[] = [
     alt: 'folk som tar shots',
   },
   {
-    link: 'string1',
+    link: '/tournament',
     title: 'Beer pong turnering',
     svgSrc: '/beerpong.png',
     alt: 'beer pong tournament poster',
@@ -28,7 +30,11 @@ const games: Game[] = [
 
 export default function UserHomePage() {
   const router = useRouter();
+  const {login} = useAuth();
 
+  useEffect(() => {
+    login();
+  }, []);
   return (
     <div className={'flex flex-col w-full h-[90vh] justify-center'}>
       <h1 className={'text-3xl font-bold text-center text-primary'}>
@@ -36,7 +42,7 @@ export default function UserHomePage() {
       </h1>
       <div className="flex flex-col md:flex-row w-full justify-center items-center gap-4 mt-4 h-fit">
         {games.map((cardData, index) => (
-          <Link href={cardData.link}>
+          <Link href={cardData.link} key={cardData.title}>
             <Card
               key={index}
               className={
