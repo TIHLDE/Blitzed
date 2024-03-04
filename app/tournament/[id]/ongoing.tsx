@@ -112,7 +112,7 @@ function MatchPages() {
             className={'basis-1/2 flex flex-col justify-evenly gap-2 mt-10 '}
             key={i.toString()}
           >
-            <h1 className="top-2 absolute self-center font-bold text-nowrap">Runde {i + 1} </h1>
+          <h1 className="top-2 absolute self-center font-bold whitespace-nowrap">Runde {i + 1} </h1>
             {matches
               .filter((_) => _.round == i + 1)
               .map((t) => (
