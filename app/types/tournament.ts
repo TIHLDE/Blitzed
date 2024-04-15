@@ -39,4 +39,12 @@ export interface PongTournament {
     id?: number;
     name?: string;
     matches?: PongMatch[];
+    status: TournamentStatus;
+    pin_code?: string;
+    creator: User;
+    access: TournamentAccess;
 }
+
+export type TournamentStatus = "PENDING" | "ACTIVE" | "FINISHED"
+
+export type TournamentAccess = "PUBLIC" | "PIN";
