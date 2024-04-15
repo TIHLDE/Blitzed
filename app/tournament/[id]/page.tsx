@@ -1,4 +1,5 @@
 import Before from './before';
+import ResultsPage from '@/app/tournament/[id]/results';
 
 interface TournamentPageProps {
   params: {
@@ -7,5 +8,5 @@ interface TournamentPageProps {
 }
 
 export default function TournamentPage(props: TournamentPageProps) {
-  return <Before />;
+  return <ResultsPage />;
 }

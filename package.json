@@ -9,7 +9,6 @@
     "lint": "next lint",
     "eslint": "eslint . --fix",
     "prettier": "prettier --write ."
-
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",

@@ -1,16 +1,15 @@
 'use client';
 
+import { TeamDetailsDialog } from '@/components/tournament/teamDetailsDialog';
 import { useParams } from 'next/navigation';
+import { CreateTeamDialog } from '../../../components/tournament/create_team_dialog';
 import { Button } from '../../../components/ui/button';
-import Link from 'next/link';
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '../../../components/ui/card';
-import { CreateTeamDialog } from '../../../components/tournament/create_team_dialog';
-import { TeamDetailsDialog } from '@/components/tournament/teamDetailsDialog';
 
 export interface Team {
   name: string;
@@ -73,7 +72,7 @@ export default function Before() {
             ))}
           </div>
         </div>
-        <Button className="w-full max-w-md h-20 text-4xl font-bold mb-4">
+        <Button className="w-full max-w-md h-20 text-4xl font-bold mb-4 text-foreground">
           Start!
         </Button>
       </main>
