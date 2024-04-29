@@ -31,12 +31,12 @@ export default function Navbar() {
 */}
         <a href="/user/template/home">
           <Logo
-            className="fill-primary hidden sm:block"
+            className="fill-black hidden sm:block"
             width={200}
             height={'auto'}
           />
           <LogoSmall
-            className="fill-primary sm:hidden block"
+            className="fill-black sm:hidden block"
             width={200}
             height={'auto'}
           />
