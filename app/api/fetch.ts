@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getClientCookie } from '@/app/utils/stores/cookieStore';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/';
+const API_URL = process.env.VITE_API_URL || 'http://localhost:8000/';
 
 interface IFetchOptions extends Omit<AxiosRequestConfig, 'url'> {
   withAuth?: boolean;
@@ -14,10 +14,13 @@ export const IFetch = async <T = any>(
 ): Promise<T> => {
   const headers: Record<string, string> = {};
 
+  // TODO: Remove this
+  // headers["x-csrf-token"] = "606d9b0894c798fa511d85f876fd8611b7109e32";
+
   if (options?.withAuth) {
     const token = getClientCookie('tokenDrinking');
     if (token) {
-      headers['x-csrf-token'] = token;
+      headers["x-csrf-token"] = token;
     }
   }
 

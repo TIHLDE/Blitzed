@@ -22,14 +22,10 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     '@next/next/no-pages-dir': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@next/next/no-img-element': 'off',
-    '@typescript-eslint/ban-types': 'off',
   },
   overrides: [
     {
-      files: ['@/app/**/*.{js,jsx,ts,tsx}'],
+      files: ["@/app/**/*.{js,jsx,ts,tsx}"],
     },
   ],
 };

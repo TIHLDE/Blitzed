@@ -17,14 +17,11 @@ import {
   removeClientCookie,
 } from '@/app/utils/stores/cookieStore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from "@/app/user/auth/context/AuthContext";
 
 /// Main card displayed with login buttons etc
 function HeroCard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const {logout} = useAuth();
 
   useEffect(() => {
     checkIfLoggedIn();
@@ -38,7 +35,6 @@ function HeroCard() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    logout();
     removeClientCookie('tokenDrinking');
   };
 
@@ -111,7 +107,7 @@ function HeroCard() {
           <a
             href="https://www.instagram.com/tihlde/"
             target="_blank"
-            className="flex justify-center" rel="noreferrer"
+            className="flex justify-center"
           >
             <Button variant={'outline'} size={'icon'}>
               <Instagram />
@@ -121,7 +117,7 @@ function HeroCard() {
           <a
             href="https://twitter.com/tihlde"
             target="_blank"
-            className="flex justify-center" rel="noreferrer"
+            className="flex justify-center"
           >
             <Button variant={'outline'} size={'icon'}>
               <Twitter />

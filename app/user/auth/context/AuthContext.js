@@ -1,34 +1,27 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useLayoutEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getClientCookie } from '@/app/utils/stores/cookieStore';
+const AuthContext = createContext(null);
 
-const AuthContext = createContext({
-  isLoggedIn: false,
-  login: () => {},
-  logout: () => {}
-});
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useLayoutEffect(() => {
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  const checkLoginStatus = () => {
     const token = getClientCookie('tokenDrinking');
     if (token) {
       setIsLoggedIn(true);
     }
-  }, []);
-
-  const login = () => {
-    setIsLoggedIn(true);
-  };
-
-  const logout = () => {
-    setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );
