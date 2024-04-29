@@ -3,9 +3,9 @@ import { IFetch } from '@/app/api/fetch';
 const DRINKING_GAME_ENDPOINT = 'blitzed/drinking_game/';
 
 export interface CreateDrinkingGameRequest {
-  name: string;
+  name?: string;
   description?: string;
-  icon?: string;
+  image?: string;
 }
 
 export interface DrinkingGameResponse {
@@ -17,12 +17,14 @@ export interface DrinkingGameResponse {
 
 export const createDrinkingGame = async (
   drinkingGameData: CreateDrinkingGameRequest,
-): Promise<any> => {
+): Promise<DrinkingGameResponse> => {
   try {
-    const response = await IFetch<any>(DRINKING_GAME_ENDPOINT, {
+    const response = await IFetch<DrinkingGameResponse>(DRINKING_GAME_ENDPOINT, {
       method: 'POST',
       data: drinkingGameData,
+      withAuth: true
     });
+    console.log(response)
     return response;
   } catch (error) {
     console.error('Failed to create drinking game:', error);
