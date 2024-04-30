@@ -4,6 +4,9 @@ const nextConfig = {
       // Ignorer ESLint under byggesteg
       ignoreDuringBuilds: true,
     },
+    experimental: {
+      serverActions: true,
+    },
   };
   
   module.exports = nextConfig;

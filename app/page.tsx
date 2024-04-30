@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -12,60 +12,9 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
 import { Facebook, Instagram, Twitter } from 'lucide-react';
-import {
-  getClientCookie,
-  removeClientCookie,
-} from '@/app/utils/stores/cookieStore';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from "@/app/user/auth/context/AuthContext";
 
 /// Main card displayed with login buttons etc
 function HeroCard() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const {logout} = useAuth();
-
-  useEffect(() => {
-    checkIfLoggedIn();
-  }, []);
-
-  function checkIfLoggedIn() {
-    const token: string = getClientCookie('tokenDrinking');
-    setIsLoggedIn(!!token);
-    setIsLoading(false);
-  }
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    logout();
-    removeClientCookie('tokenDrinking');
-  };
-
-  const loginButtons = useMemo(() => {
-    if (isLoading) {
-      return <Skeleton className={'w-full h-10'} />;
-    }
-    if (isLoggedIn) {
-      return (
-        <Button variant={'outline'} className={'w-full'} onClick={handleLogout}>
-          Logg ut
-        </Button>
-      );
-    }
-
-    return (
-      <>
-        <Button variant={'outline'} className={'w-full'} asChild>
-          <Link href={'user/auth/login'}>Logg inn</Link>
-        </Button>
-        <Button variant={'outline'} className={'w-full'} asChild>
-          <Link href={'https://tihlde.org/ny-bruker/'}>Registrer deg</Link>
-        </Button>
-      </>
-    );
-  }, [isLoggedIn, isLoading]);
-
   return (
     <Card
       className={'my-20 absolute left-3 right-3 max-w-[372px] ml-auto mr-auto'}
@@ -88,11 +37,6 @@ function HeroCard() {
         <Button className={'lg:w-[80%] w-full max-w-full h-12'} asChild>
           <Link href={'/user/template/home'}>START NÅ</Link>
         </Button>
-        <div
-          className={'flex flex-row gap-2 justify-between w-full lg:w-[80%]'}
-        >
-          {loginButtons}
-        </div>
         <Separator className={'my-6 min-w-[60%]'} />
         <CardDescription className={'mb-2 text-md text-center'}>
           Følg oss på sosiale medier

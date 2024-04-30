@@ -1,5 +1,8 @@
+'use server'
+
+import { ACCESS_TOKEN_COOKIE } from '@/lib/constants';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { getClientCookie } from '@/app/utils/stores/cookieStore';
+import { cookies } from 'next/headers';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/';
 
@@ -15,7 +18,7 @@ export const IFetch = async <T = any>(
   const headers: Record<string, string> = {};
 
   if (options?.withAuth) {
-    const token = getClientCookie('tokenDrinking');
+    const token = cookies().get(ACCESS_TOKEN_COOKIE)?.value;
     if (token) {
       headers.Authorization = `Bearer ${token}`;
     }

@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import loginUser from '../(actions)/user';
+import { useRouter } from 'next/navigation';
 
 
 const formSchema = z.object({
@@ -17,6 +19,8 @@ const formSchema = z.object({
 })
 
 const Login = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,9 +31,16 @@ const Login = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      
-    } catch (error) {
+      await loginUser(values.user_id, values.password)
 
+      router.push('/');
+    } catch (error) {
+      console.error(error)
+    } finally {
+      form.reset({
+        user_id: '',
+        password: ''
+      })
     }
   }
 
