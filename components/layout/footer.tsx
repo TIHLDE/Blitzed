@@ -84,7 +84,7 @@ function SocialMediaCol() {
         <a
           href="https://www.instagram.com/tihlde/"
           target="_blank"
-          className="flex justify-center"
+          className="flex justify-center" rel="noreferrer"
         >
           <Button variant={'outline'} size={'icon'}>
             <Instagram />
@@ -94,7 +94,7 @@ function SocialMediaCol() {
         <a
           href="https://twitter.com/tihlde"
           target="_blank"
-          className="flex justify-center"
+          className="flex justify-center" rel="noreferrer"
         >
           <Button variant={'outline'} size={'icon'}>
             <Twitter />
@@ -112,7 +112,7 @@ function SocialMediaCol() {
         <a
           href="https://www.facebook.com/tihlde/"
           target="_blank"
-          className="flex justify-center"
+          className="flex justify-center" rel="noreferrer"
         >
           <Button variant={'outline'} size={'icon'}>
             <Slack />
