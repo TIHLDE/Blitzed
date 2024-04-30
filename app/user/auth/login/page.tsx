@@ -32,9 +32,9 @@ const Login = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await loginUser(values.user_id, values.password)
-
       router.push('/');
     } catch (error) {
+      // TODO: Add toast when implemented in the app
       console.error(error)
     } finally {
       form.reset({
