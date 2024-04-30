@@ -20,16 +20,15 @@ function PartnershipCol() {
     <div className="px-4 flex items-center flex-col justify-between min-h-full">
       <div>
         <h2 className="text-2xl font-semibold mb-3">Samarbeid</h2>
-        <Separator className={'mb-4'} />
+        <Separator />
         <ul>
           <li className="mb-4">
             <a href="https://vercel.com/?utm_source=kvark&utm_campaign=oss">
               <img
-                src="favicon.ico"
+                src="/vercel.svg"
                 alt="vercel"
-                className="inline w-5 h-5 mr-2"
+                className="inline w-16 h-16"
               />
-              Powered by Vercel
             </a>
           </li>
         </ul>

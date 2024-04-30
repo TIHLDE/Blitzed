@@ -38,7 +38,7 @@ const Login = () => {
       <Card className='max-w-md w-full mx-auto'>
         <CardHeader>
           <CardTitle>
-            <Logo className='w-44 mx-auto' />
+            <Logo className='fill-black dark:fill-white w-44 mx-auto' />
           </CardTitle>
         </CardHeader>
         <CardContent>
