@@ -24,15 +24,16 @@ export const env = createEnv({
     ),
     LEPTON_API_URL: z.string({
       message:
-        "You must add a url pointing to the Lepton backend.\nIf hosting locally via docker: 'http://localhost:8000', else: 'https://api.tihlde.org'",
+        "Legg til en URL som peker til Lepton backenden vår. Hvis du kjører denne lokalt, bruk 'http://localhost:8000', eller den offisielle på 'https://api.tihlde.org'",
     }),
     ALLOWED_GROUP_SLUGS: z
       .string()
       .refine((i) => i.split(",").length > 0, {
         message:
-          "Denne parameteren skal være TIHLDE gruppenavn separert med komma ',' (ingen mellomrom)",
+          "Denne parameteren skal være TIHLDE gruppenavn (slug) separert med komma",
       })
-      .transform((s) => s.split(",")),
+      .transform((s) => s.split(","))
+      .transform((p) => p.map((s) => s.trim())),
   },
 
   /**
