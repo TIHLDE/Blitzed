@@ -19,12 +19,10 @@ import {
 } from "./service/lepton/get-memberships";
 import { getTIHLDEUser } from "./service/lepton/get-user";
 import { DefaultJWT } from "next-auth/jwt";
-import { log } from "console";
 
 // Session type declaration (what the backend can access on the user object)
 declare module "next-auth" {
   interface User extends DefaultUser {
-    id: string;
     nickname: string;
     role: UserRole;
   }
@@ -37,11 +35,9 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     user: {
-      name?: string;
       nickname: string;
       role: UserRole;
       id: string;
-      email?: string;
     };
   }
 }
@@ -81,6 +77,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     // Login with TIHLDE username and password
     Credentials({
+      id: "tihlde",
       name: "TIHLDE",
       credentials: {
         username: { label: "Brukernavn", type: "text" },
@@ -109,16 +106,65 @@ export const authOptions: NextAuthOptions = {
           getTIHLDEUser(token, credentials.username),
         ]);
 
+        const nickname = user.first_name;
+        const userId = user.user_id;
+
+        // Check if user is already in db
+        const existingUser = await db.user.findUnique({
+          where: {
+            id: userId,
+          },
+        });
+
+        // If not, create them
+        if (!existingUser) {
+          await db.user.create({
+            data: {
+              id: userId,
+              nickname,
+              isAnonymous: false,
+            },
+          });
+        }
+
         const session = {
-          id: user.user_id,
-          email: user.email,
-          image: null,
-          name: user.first_name + " " + user.last_name,
-          nickname: user.first_name,
+          id: userId,
+          nickname,
           role: getRoleForUser(memberships),
-          tihldeToken: token,
         };
         return session;
+      },
+    }),
+    Credentials({
+      name: "Anonymous",
+      id: "anonymous",
+      credentials: {
+        nickname: { label: "Kallenavn", type: "text" },
+      },
+      async authorize(credentials, _req) {
+        if (!credentials) {
+          console.error("No credentials sent in login request!");
+          return null;
+        }
+
+        // Create anon user in db
+        const user = await db.user.create({
+          data: {
+            isAnonymous: true,
+            nickname: credentials.nickname,
+            // auto-generate cuid id
+            id: undefined,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        return {
+          id: user.id,
+          nickname: credentials.nickname,
+          role: "ANONYMOUS",
+        };
       },
     }),
   ],

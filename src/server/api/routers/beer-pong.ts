@@ -17,6 +17,7 @@ import { joinBeerPongTournament } from "~/server/service/beer-pong/team/join/mut
 import { deleteBeerPongTeamById } from "~/server/service/beer-pong/team/delete/mutation";
 import { selectBeerPongMatchWinner } from "~/server/service/beer-pong/match/select-winner/mutation";
 import { SelectBeerPongMatchWinnerInputSchema } from "~/server/service/beer-pong/match/select-winner/schema";
+import { TRPCError } from "@trpc/server";
 
 export const beerPongRouter = createTRPCRouter({
   getAllPublicTournaments: protectedProcedure
@@ -40,9 +41,16 @@ export const beerPongRouter = createTRPCRouter({
   createTournament: protectedProcedure
     .input(CreateBeerPongTournamentInputSchema)
     .output(z.object({ id: z.string() }))
-    .mutation(({ input, ctx }) =>
-      createBeerPongTournament(input, ctx.session.user.id),
-    ),
+    .mutation(({ input, ctx }) => {
+      if (ctx.session.user.role === "ANONYMOUS") {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Anonymous users cannot create a tournament",
+        });
+      }
+
+      return createBeerPongTournament(input, ctx.session.user.id);
+    }),
 
   deleteTournamentById: protectedProcedure
     .input(z.string())
