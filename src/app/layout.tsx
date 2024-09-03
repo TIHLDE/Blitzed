@@ -1,11 +1,12 @@
-import "~/style/globals.css";
+import "../style/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { TRPCReactProvider } from "~/trpc/react";
+import { TRPCReactProvider } from "../trpc/react";
 import Navbar from "../components/layout/navbar";
 import Footer from "../components/layout/footer";
 import { ThemeProvider } from "next-themes";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Blitzed",
