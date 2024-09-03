@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Necessary for Next auth
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refresh_token_expires_in Int?
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id                 String               @id @default(cuid())
+  nickname           String
+  email              String?              @unique
+  emailVerified      DateTime?
+  accounts           Account[]
+  sessions           Session[]
+  createdTournaments BeerPongTournament[]
+  beerPongTeams      UserBeerPongTeam[]
+}
+
+model BeerPongTournament {
+  id        String                   @id @default(cuid())
+  createdAt DateTime                 @default(now())
+  updatedAt DateTime                 @updatedAt
+  status    BeerPongTournamentStatus @default(CREATED)
+  access    BeerPongTournamentAccess
+  pinCode   String?                  @unique
+  creator   User                     @relation(fields: [creatorId], references: [id])
+  creatorId String
+  matches   BeerPongMatch[]
+  teams     BeerPongTeam[]
+}
+
+model BeerPongMatch {
+  id              String             @id @default(cuid())
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  tournament      BeerPongTournament @relation(fields: [tournamentId], references: [id])
+  tournamentId    String
+  round           Int
+  team1           BeerPongTeam       @relation(fields: [team1Id], references: [id], name: "team1")
+  team1Id         String
+  team2           BeerPongTeam       @relation(fields: [team2Id], references: [id], name: "team2")
+  team2Id         String
+  winner          BeerPongTeam?      @relation(fields: [winnerTeamId], references: [id], name: "winnerTeam")
+  winnerTeamId    String?
+  nextMatch       BeerPongMatch?     @relation(fields: [beerPongMatchId], references: [id], name: "nextMatch")
+  nextMatchId     String?
+  previousMatches BeerPongMatch[]    @relation("nextMatch")
+  beerPongMatchId String?
+}
+
+model BeerPongTeam {
+  id            String             @id @default(cuid())
+  name          String
+  team1Matches  BeerPongMatch[]    @relation("team1")
+  team2Matches  BeerPongMatch[]    @relation("team2")
+  winnerMatches BeerPongMatch[]    @relation("winnerTeam")
+  tournament    BeerPongTournament @relation(fields: [tournamentId], references: [id])
+  tournamentId  String
+  members       UserBeerPongTeam[]
+}
+
+model UserBeerPongTeam {
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  beerPongTeam   BeerPongTeam @relation(fields: [beerPongTeamId], references: [id], onDelete: Cascade)
+  beerPongTeamId String
+
+  @@id([userId, beerPongTeamId])
+}
+
+enum BeerPongTournamentAccess {
+  PUBLIC
+  PIN
+}
+
+enum BeerPongTournamentStatus {
+  CREATED
+  ACTIVE
+  FINISHED
+}
