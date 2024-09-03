@@ -1,15 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type Adapter } from "next-auth/adapters";
 import Credentials from "next-auth/providers/credentials";
-
-import {
-  getServerSession,
-  DefaultSession,
-  NextAuthOptions,
-  DefaultUser,
-  User,
-} from "next-auth";
-
+import { getServerSession, NextAuthOptions, DefaultUser } from "next-auth";
 import { env } from "~/env";
 import { db } from "~/server/db";
 import { loginToTIHLDE } from "./service/lepton/login";
@@ -22,17 +14,25 @@ import { DefaultJWT } from "next-auth/jwt";
 
 // Session type declaration (what the backend can access on the user object)
 declare module "next-auth" {
+  // A Blitzed user
+  // We don't want add sensitive info here, since this is sent to
+  // the client
   interface User extends DefaultUser {
+    id: string;
     nickname: string;
     role: UserRole;
   }
 
+  // The session object only contains the user info
   interface Session {
     user: User;
   }
 }
 
 declare module "next-auth/jwt" {
+  // This info is added to JWT tokens (used for signing in)
+  // this info will be used in the session, so the server (and the client)
+  // can know who the user is when they make a request
   interface JWT extends DefaultJWT {
     user: {
       nickname: string;
@@ -116,13 +116,15 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
+        const role = getRoleForUser(memberships);
+
         // If not, create them
         if (!existingUser) {
           await db.user.create({
             data: {
               id: userId,
               nickname,
-              isAnonymous: false,
+              role: role,
             },
           });
         }
@@ -135,6 +137,9 @@ export const authOptions: NextAuthOptions = {
         return session;
       },
     }),
+    // Users can log in anonymously, using only a nickname,
+    // we create a random user id (instead of tihlde username),
+    // to make a database record for them (for joining teams etc ...)
     Credentials({
       name: "Anonymous",
       id: "anonymous",
@@ -150,9 +155,9 @@ export const authOptions: NextAuthOptions = {
         // Create anon user in db
         const user = await db.user.create({
           data: {
-            isAnonymous: true,
+            role: "ANONYMOUS",
             nickname: credentials.nickname,
-            // auto-generate cuid id
+            // auto-generate cuid id in the DB
             id: undefined,
           },
           select: {
@@ -176,6 +181,8 @@ export const authOptions: NextAuthOptions = {
  * - ADMIN: Can create and edit games, and have admin control
  * - USER: Regular user logged in with TIHLDE
  * - ANONYMOUS: Anonymous user who has not logged in with TIHLDE, and uses a custom name
+ *
+ *  Anonymous users have more limited access
  */
 export type UserRole = "ADMIN" | "USER" | "ANONYMOUS";
 
