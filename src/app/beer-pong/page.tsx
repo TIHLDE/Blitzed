@@ -1,52 +1,49 @@
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import TournamentDetails from '../../components/tournament/tournament_details';
-import { Separator } from '@/components/ui/separator';
-import JoinTournamentForm from '../../components/tournament/join_tournament/form';
-import Link from 'next/link';
+import { Button } from "../../components/ui/button";
+import { Card } from "../../components/ui/card";
+import TournamentDetails from "../../components/tournament/tournament_details";
+import { Separator } from "../../components/ui/separator";
+import JoinTournamentForm from "../../components/tournament/join_tournament/form";
+import Link from "next/link";
+import { BeerPongTournamentSummary } from "~/server/service/beer-pong/tournament/get-all-public/schema";
+import { api } from "../../trpc/server";
 
 export default async function BrowseTournamentsPage() {
+  const tournaments = await api.beerPong.getAllPublicTournaments.query({});
+
   return (
-    <main className="flex flex-col justify-between items-center w-full gap-4 h-[calc(100svh-70px)] px-4">
-      <div className="flex flex-col items-center justify-between w-full overflow-y-auto">
-        <div className="flex flex-col items-center justify-start w-full">
-          <div className="text-lg ml-2 mb-2 font-bold mt-4">
+    <main className="flex h-[calc(100svh-70px)] w-full flex-col items-center justify-between gap-4 px-4">
+      <div className="flex w-full flex-col items-center justify-between overflow-y-auto">
+        <div className="flex w-full flex-col items-center justify-start">
+          <div className="mb-2 ml-2 mt-4 text-lg font-bold">
             Join med PIN-kode
           </div>
           <JoinTournamentForm />
         </div>
-        <div className="text-2xl ml-2 mb-2 font-bold mt-8">
+        <div className="mb-2 ml-2 mt-8 text-2xl font-bold">
           Åpne turneringer
         </div>
-        <div className="flex flex-col justify-start items-center w-full max-w-md gap-2">
+        <div className="flex w-full max-w-md flex-col items-center justify-start gap-2">
           {tournaments.map((t) => (
             <TournamentCard tournament={t} key={t.id} />
           ))}
         </div>
       </div>
-      <Button asChild className="w-full max-w-md h-20 text-4xl font-bold mb-4">
+      <Button asChild className="mb-4 h-20 w-full max-w-md text-4xl font-bold">
         <Link href="/tournament/create">Lag ny</Link>
       </Button>
     </main>
   );
 }
 
-export interface Tournament {
-  id: string;
-  numPlayers: number;
-  teamCount: number;
-  name: string;
-}
-
 export interface TournameCardProps {
-  tournament: Tournament;
+  tournament: BeerPongTournamentSummary;
 }
 
 function TournamentCard({ tournament }: TournameCardProps) {
   return (
     <Link href={`/tournament/${tournament.id}`} className="w-full">
-      <Card className="flex flex-col sm:flex-row justify-between items-center w-full px-4 py-2 gap-2">
-        <div className="text-2xl font-light flex h-full gap-2">
+      <Card className="flex w-full flex-col items-center justify-between gap-2 px-4 py-2 sm:flex-row">
+        <div className="flex h-full gap-2 text-2xl font-light">
           #{tournament.id}
           <Separator orientation="vertical" className="m-0 hidden sm:block" />
         </div>
@@ -56,18 +53,3 @@ function TournamentCard({ tournament }: TournameCardProps) {
     </Link>
   );
 }
-
-const tournaments: Tournament[] = [
-  {
-    id: '8294',
-    numPlayers: 7,
-    teamCount: 2,
-    name: 'Super tournament!',
-  },
-  {
-    id: '8294',
-    numPlayers: 7,
-    teamCount: 2,
-    name: 'Beer pong',
-  },
-];

@@ -35,6 +35,7 @@ model BeerPongTournament {
   creatorId String
   matches   BeerPongMatch[]
   teams     BeerPongTeam[]
+  name      String
 }
 
 model BeerPongMatch {

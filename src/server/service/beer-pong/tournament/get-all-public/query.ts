@@ -1,4 +1,4 @@
-import { db } from "../../../db";
+import { db } from "~/server/db";
 import { type BeerPongTournamentSummary } from "./schema";
 
 export default async function getAllPublicTournaments(): Promise<
@@ -15,14 +15,25 @@ export default async function getAllPublicTournaments(): Promise<
         },
       },
       creator: true,
+      teams: {
+        select: {
+          _count: {
+            select: {
+              members: true,
+            },
+          },
+        },
+      },
     },
   });
 
   return tournaments.map((t) => ({
+    name: t.name,
     id: t.id,
     creatorNickname: t.creator.nickname,
-    teamCount: t._count.teams,
     createdAt: t.createdAt,
     status: t.status,
+    teamCount: t._count.teams,
+    playerCount: t.teams.reduce((acc, team) => acc + team._count.members, 0),
   }));
 }

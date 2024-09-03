@@ -17,7 +17,7 @@ const games: Game[] = [
     alt: "folk som tar shots",
   },
   {
-    link: "/tournament",
+    link: "/beer-pong",
     title: "Beer pong turnering",
     svgSrc: "/beerpong.png",
     alt: "beer pong tournament poster",
