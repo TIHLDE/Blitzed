@@ -1,4 +1,4 @@
-import { CreateTournamentForm } from "../../../components/tournament/create_tournament/form";
+import { CreateTournamentForm } from "../../../components/tournament/create-tournament/form";
 
 export default async function CreateTournamentPage() {
   return (

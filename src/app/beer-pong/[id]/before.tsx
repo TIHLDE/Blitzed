@@ -1,7 +1,7 @@
 "use client";
 
-import { TeamDetailsDialog } from "../../../components/tournament/teamDetailsDialog";
-import { CreateTeamDialog } from "../../../components/tournament/create_team_dialog";
+import { TeamDetailsDialog } from "../../../components/tournament/team-details-dialog";
+import { CreateTeamDialog } from "../../../components/tournament/create-team-dialog";
 import { Button } from "../../../components/ui/button";
 import {
   Card,

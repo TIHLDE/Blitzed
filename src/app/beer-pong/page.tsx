@@ -1,8 +1,8 @@
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
-import TournamentDetails from "../../components/tournament/tournament_details";
+import TournamentDetails from "../../components/tournament/tournament-details";
 import { Separator } from "../../components/ui/separator";
-import JoinTournamentForm from "../../components/tournament/join_tournament/form";
+import JoinTournamentForm from "../../components/tournament/join-tournament/form";
 import Link from "next/link";
 import { BeerPongTournamentSummary } from "~/server/service/beer-pong/tournament/get-all-public/schema";
 import { api } from "../../trpc/server";
