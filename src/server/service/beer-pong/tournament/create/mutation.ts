@@ -21,6 +21,7 @@ export default async function createTournament(
           id: userId,
         },
       },
+      name: input.name,
       pinCode: input.pinCode,
     },
     select: {

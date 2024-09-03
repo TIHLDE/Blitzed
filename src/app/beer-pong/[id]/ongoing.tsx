@@ -1,4 +1,4 @@
-"use client";
+"use server";
 
 import {
   Carousel,
@@ -7,64 +7,22 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../../../components/ui/carousel";
-import { cn } from "@/lib/utils";
+import {
+  BeerPongTournamentMatch,
+  BeerPongTournamentTeam,
+} from "../../../server/service/beer-pong/tournament/get/schema";
+import { api } from "../../../trpc/server";
+import { cn } from "../../../util/tailwind-cn";
 
-interface Team {
-  name: string;
-  players: string[];
-  wins?: number;
-}
-
-interface Match {
-  team1: Team;
-  team2: Team;
-  winner?: Team;
-  round: number;
-}
-
-interface TeamCardProps {
-  team: Team;
-}
-
-const teams: Team[] = [
-  { name: "", players: [""] },
-  {
-    name: "Anders Morille Beer Pong Fighter Gang Victorioussssssssssssssssssssssssssss",
-    players: ["Ola", "Per", "Kari"],
-  },
-  {
-    name: "Det beste laget",
-    players: ["Ola", "Per", "Kari"],
-    wins: 1,
-  },
-  { name: "Team 3", players: ["Ola", "Per", "Kari"] },
-  { name: "Team 4", players: ["Ola", "Per", "Kari", "Jon", "Jonny"] },
-  { name: "Team 5", players: ["Ola", "Per", "Kari", "Jon", "Jonny"] },
-  { name: "Team 6", players: ["Ola", "Per", "Kari", "Jon", "Jonny"] },
-  { name: "Team 7", players: ["Ola", "Per", "Kari", "Jon", "Jonny"] },
-  { name: "Team 8", players: ["Ola", "Per", "Kari", "Jon", "Jonny"] },
-  { name: "Team 9", players: ["Ola", "Per", "Kari", "Jon", "Jonny"] },
-  { name: "Team 10", players: ["Ola", "Per", "Kari", "Jon", "Jonny"] },
-];
-const matches: Match[] = [
-  { team1: teams[1], team2: teams[2], winner: teams[1], round: 1 },
-  { team1: teams[3], team2: teams[4], winner: teams[3], round: 1 },
-  { team1: teams[5], team2: teams[6], winner: teams[6], round: 1 },
-  { team1: teams[7], team2: teams[8], round: 1 },
-  { team1: teams[1], team2: teams[3], round: 2 },
-  { team1: teams[6], team2: teams[9], round: 2 },
-  { team1: teams[10], team2: teams[0], round: 3 },
-];
-const pagesAmount = Math.floor(Math.log2(matches.length)) + 1;
-
-export function MatchCard({ match }: { match: Match }) {
+export function MatchCard({ match }: { match: BeerPongTournamentMatch }) {
   const maxTeamNameLength = 29;
+
   return (
     <div className="flex h-24 text-xs min-[400px]:text-sm min-[440px]:text-base min-[500px]:text-lg">
       <div
         className={
           "flex h-full w-full border-[1px] " +
-          (match.team1 == match.winner ? "bg-green-600" : "bg-auto") +
+          (match.team1.id == match.winnerTeamId ? "bg-green-600" : "bg-auto") +
           " items-center justify-center text-wrap rounded-l-md p-1 text-center"
         }
       >
@@ -76,8 +34,8 @@ export function MatchCard({ match }: { match: Match }) {
         className={cn({
           "flex h-full w-full items-center justify-center overflow-hidden text-wrap break-all rounded-r-md border-[1px] p-1 text-center":
             true,
-          "bg-green-600": match.team2 == match.winner,
-          "bg-auto": match.team2 != match.winner,
+          "bg-green-600": match.team2.id == match.winnerTeamId,
+          "bg-auto": match.team2.id != match.winnerTeamId,
         })}
       >
         {match.team2.name.length > maxTeamNameLength
@@ -88,20 +46,31 @@ export function MatchCard({ match }: { match: Match }) {
   );
 }
 
+interface TeamCardProps {
+  team: BeerPongTournamentTeam;
+}
+
 function TeamCard({ team }: TeamCardProps) {
   return (
     <div className="flex max-h-60 w-full flex-col rounded-md border-[1px] p-2">
       <div className="truncate font-bold">{team.name}</div>
       <div className="truncate">
-        {team.players.reduce(
-          (p, c, i) => p + (i == team.players.length - 1 ? " og " : ", ") + c,
+        {team.members.reduce(
+          (p, c, i) =>
+            p + (i == team.members.length - 1 ? " og " : ", ") + c.nickname,
+          "",
         )}
       </div>
     </div>
   );
 }
 
-function MatchPages() {
+interface MatchPagesProps {
+  matches: BeerPongTournamentMatch[];
+}
+
+function MatchPages({ matches }: MatchPagesProps) {
+  const pagesAmount = Math.floor(Math.log2(matches.length)) + 1;
   return (
     <>
       {Array.from({ length: pagesAmount }, (i) => i).map((_, i) => {
@@ -125,12 +94,14 @@ function MatchPages() {
   );
 }
 
-export default function OnGoing() {
+export default async function OnGoing({ params }: { params: { id: string } }) {
+  const tournament = await api.beerPong.getTournamentById(params.id);
+
   return (
     <div className={"w-screen"}>
       <div className="mx-auto max-w-2xl">
         <div className="mt-2 text-center text-xl font-bold">
-          Min turnering #4329
+          {tournament.name}
         </div>
         <div>
           <Carousel
@@ -139,13 +110,13 @@ export default function OnGoing() {
           >
             <CarouselPrevious />
             <CarouselContent className="">
-              <MatchPages />
+              <MatchPages matches={tournament.matches} />
             </CarouselContent>
             <CarouselNext />
           </Carousel>
           <div className="mt-5 flex w-full flex-col gap-5 px-4">
-            {teams.slice(1).map((t) => (
-              <TeamCard team={t} key={t.name}></TeamCard>
+            {tournament.teams.slice(1).map((t) => (
+              <TeamCard team={t} key={t.name} />
             ))}
           </div>
         </div>

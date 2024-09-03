@@ -29,7 +29,8 @@ export default function JoinTournamentForm() {
       const indexNextEmpty = values.findIndex((v) => !v);
 
       if (indexNextEmpty !== -1) {
-        document.getElementById(ids[indexNextEmpty]).focus();
+        const id = ids[indexNextEmpty];
+        document.getElementById(id!)?.focus();
       } else {
         // We should submit the form since all fields have been filled out
         form.handleSubmit(onSubmit)();

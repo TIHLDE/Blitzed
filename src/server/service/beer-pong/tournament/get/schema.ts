@@ -43,6 +43,7 @@ export type BeerPongTournamentMatch = z.infer<
 
 export const BeerPongTournamentSchema = z.object({
   id: z.string(),
+  name: z.string(),
   /**
    * Whether the current user is the creator of the tournament
    */

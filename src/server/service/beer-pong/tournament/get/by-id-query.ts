@@ -40,6 +40,7 @@ export default async function getBeerPongTournamentById(
 
   return {
     id: tournament.id,
+    name: tournament.name,
     creatorNickname: tournament.creator.nickname,
     isCreator: tournament.creatorId === userId,
     access: tournament.access,
@@ -49,7 +50,7 @@ export default async function getBeerPongTournamentById(
       id: team.id,
       name: team.name,
       members: team.members.map((mem) => ({
-        id: mem.id,
+        id: mem.userId,
         nickname: mem.user.nickname,
       })),
     })),

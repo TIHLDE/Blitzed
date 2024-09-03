@@ -17,7 +17,7 @@ export const getBeerPongTeamBYId = async (id: string) => {
   return {
     ...team,
     members: team.members.map((mem) => ({
-      id: mem.id,
+      id: mem.userId,
       nickname: mem.user.nickname,
     })),
   };

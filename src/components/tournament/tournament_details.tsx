@@ -7,10 +7,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { type Tournament } from "../../app/beer-pong/page";
+import { BeerPongTournamentSummary } from "../../server/service/beer-pong/tournament/get-all-public/schema";
 
 interface TournamentCardProps {
-  tournament: Tournament;
+  tournament: BeerPongTournamentSummary;
 }
 
 export default function TournamentDetails(props: TournamentCardProps) {
@@ -20,7 +20,7 @@ export default function TournamentDetails(props: TournamentCardProps) {
         <Tooltip>
           <TooltipTrigger>
             <span className="flex gap-1 text-lg font-medium">
-              {props.tournament.numPlayers} <UserIcon />
+              {props.tournament.playerCount} <UserIcon />
             </span>
           </TooltipTrigger>
           <TooltipContent>

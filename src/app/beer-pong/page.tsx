@@ -8,7 +8,7 @@ import { BeerPongTournamentSummary } from "~/server/service/beer-pong/tournament
 import { api } from "../../trpc/server";
 
 export default async function BrowseTournamentsPage() {
-  const tournaments = await api.beerPong.getAllPublicTournaments.query({});
+  const tournaments = await api.beerPong.getAllPublicTournaments();
 
   return (
     <main className="flex h-[calc(100svh-70px)] w-full flex-col items-center justify-between gap-4 px-4">
@@ -29,7 +29,7 @@ export default async function BrowseTournamentsPage() {
         </div>
       </div>
       <Button asChild className="mb-4 h-20 w-full max-w-md text-4xl font-bold">
-        <Link href="/tournament/create">Lag ny</Link>
+        <Link href="/beer-pong/create">Lag ny</Link>
       </Button>
     </main>
   );
