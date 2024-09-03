@@ -13,6 +13,8 @@ import { Input } from "~/components/ui/input";
 import { useEffect } from "react";
 import formSchema from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "../../../trpc/react";
+import { useRouter } from "next/navigation";
 
 export default function JoinTournamentForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,13 +41,26 @@ export default function JoinTournamentForm() {
     return () => subscription.unsubscribe();
   }, [form]);
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const { mutateAsync: getTournamentByPin } =
+    api.beerPong.getTournamentByPin.useMutation();
+  const router = useRouter();
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const code = [
       values.first,
       values.second,
       values.third,
       values.fourth,
     ].join("");
+
+    const tournament = await getTournamentByPin(code);
+    if (!tournament) {
+      // TODO show snackbar or something ...
+      console.error("Could not find tournament with pin code", code);
+      return;
+    }
+
+    router.push(`/beer-pong/${tournament.id}`);
   };
 
   return (

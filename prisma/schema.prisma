@@ -25,17 +25,21 @@ enum UserRole {
 }
 
 model BeerPongTournament {
-  id        String                   @id @default(cuid())
-  createdAt DateTime                 @default(now())
-  updatedAt DateTime                 @updatedAt
-  status    BeerPongTournamentStatus @default(CREATED)
-  access    BeerPongTournamentAccess
-  pinCode   String?                  @unique
-  creator   User                     @relation(fields: [creatorId], references: [id])
-  creatorId String
-  matches   BeerPongMatch[]
-  teams     BeerPongTeam[]
-  name      String
+  id                String                   @id @default(cuid())
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  status            BeerPongTournamentStatus @default(CREATED)
+  access            BeerPongTournamentAccess
+  pinCode           String?                  @unique
+  creator           User                     @relation(fields: [creatorId], references: [id])
+  creatorId         String
+  matches           BeerPongMatch[]
+  teams             BeerPongTeam[]
+  name              String
+  randomizeTeams    Boolean
+  isTihldeExclusive Boolean
+  hasBronzeFinal    Boolean
+  maxParticipants   Int?
 }
 
 model BeerPongMatch {

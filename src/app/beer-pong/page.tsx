@@ -41,12 +41,8 @@ export interface TournameCardProps {
 
 function TournamentCard({ tournament }: TournameCardProps) {
   return (
-    <Link href={`/tournament/${tournament.id}`} className="w-full">
+    <Link href={`/beer-pong/${tournament.id}`} className="w-full">
       <Card className="flex w-full flex-col items-center justify-between gap-2 px-4 py-2 sm:flex-row">
-        <div className="flex h-full gap-2 text-2xl font-light">
-          #{tournament.id}
-          <Separator orientation="vertical" className="m-0 hidden sm:block" />
-        </div>
         <div className="text-lg font-bold">{tournament.name}</div>
         <TournamentDetails tournament={tournament} />
       </Card>

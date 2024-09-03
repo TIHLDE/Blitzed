@@ -3,8 +3,11 @@ import { BeerPongTournamentAccessSchema } from "../../schema";
 
 export const CreateBeerPongTournamentInputSchema = z.object({
   access: BeerPongTournamentAccessSchema,
-  pinCode: z.string().nullable(),
   name: z.string(),
+  randomTeams: z.boolean(),
+  thildeExclusive: z.boolean(),
+  bronzeFinal: z.boolean(),
+  maxParticipants: z.number().int().positive().nullable(),
 });
 
 export type CreateBeerPongTournamentInput = z.infer<

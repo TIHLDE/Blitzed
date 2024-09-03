@@ -1,49 +1,28 @@
-"use client";
+"use server";
 
-import { useParams } from "next/navigation";
 import { Card, CardHeader, CardTitle } from "../../../components/ui/card";
+import { BeerPongTournamentTeamResult } from "../../../server/service/beer-pong/tournament/get-results/schema";
+import {
+  BeerPongTournament,
+  BeerPongTournamentTeam,
+} from "../../../server/service/beer-pong/tournament/get/schema";
+import { api } from "../../../trpc/server";
 
-export interface Team {
-  name: string;
-  players: string[];
-  wins?: number;
+export interface ResultsPageProps {
+  tournament: BeerPongTournament;
 }
-const teams: Team[] = [
-  {
-    name: "Embret sitt lag",
-    players: ["Embret", "Mori", "Henrik", "Eirik"],
-    wins: 3,
-  },
-  {
-    name: "Henrik sitt lag",
-    players: ["Henrik", "Mori", "Eirik", "Embret"],
-    wins: 7,
-  },
-  {
-    name: "Mori sitt lag",
-    players: ["Henrik", "Mori", "Eirik", "Embret"],
-    wins: 10,
-  },
-  {
-    name: "Frida sitt lag",
-    players: ["Henrik", "Mori", "Eirik", "Embret"],
-    wins: 1,
-  },
-  {
-    name: "Jarand sitt lag",
-    players: ["Henrik", "Mori", "Eirik", "Embret"],
-    wins: 15,
-  },
-];
 
-export default function ResultsPage() {
-  const { id } = useParams();
-  const sortedTeams = teams.sort((a, b) => (a.wins || 0) - (b.wins || 0));
+export default async function ResultsPage({ tournament }: ResultsPageProps) {
+  const results = await api.beerPong.getTournamentResults({
+    tournamentId: tournament.id,
+  });
+
+  const sortedTeams = results.sort((a, b) => (a.wins || 0) - (b.wins || 0));
 
   return (
     <main className="[calc(100svh-70px)] mx-auto flex w-full max-w-xl flex-col items-center justify-center px-4">
       <div className="flex w-full flex-col items-center justify-center">
-        <div className="mb-1 mt-4">My tournament title</div>
+        <div className="mb-1 mt-4">{tournament.name}</div>
         <div className="text-3xl font-bold">Resultater</div>
         <Podium teams={sortedTeams} />
         <Losers teams={sortedTeams} />
@@ -52,13 +31,19 @@ export default function ResultsPage() {
   );
 }
 
-function TeamCard({ team, place }: { team: Team; place: number }) {
+function TeamCard({
+  team,
+  place,
+}: {
+  team: BeerPongTournamentTeamResult;
+  place: number;
+}) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex flex-col items-start gap-2">
           <CardTitle className={"font-medium"}>
-            #{place.toString()} {team.name}
+            #{place.toString()} {team.rank}
           </CardTitle>
         </div>
       </CardHeader>
@@ -66,7 +51,7 @@ function TeamCard({ team, place }: { team: Team; place: number }) {
   );
 }
 
-function Losers({ teams }: { teams: Team[] }) {
+function Losers({ teams }: { teams: BeerPongTournamentTeamResult[] }) {
   return (
     <div className="mt-4 flex w-full flex-col gap-4">
       {teams.slice(3).map((team, index) => (
@@ -76,7 +61,11 @@ function Losers({ teams }: { teams: Team[] }) {
   );
 }
 
-function Podium({ teams }: { teams: Team[] }) {
+function Podium({ teams }: { teams: BeerPongTournamentTeamResult[] }) {
+  const firstPlace = teams.find((team) => team.rank === 1);
+  const secondPlace = teams.find((team) => team.rank === 2);
+  const thirdPlace = teams.find((team) => team.rank === 3);
+
   return (
     <div
       className={
@@ -84,7 +73,7 @@ function Podium({ teams }: { teams: Team[] }) {
       }
     >
       <div className="flex h-[70%] flex-1 flex-col items-center justify-end gap-2">
-        <div className={"font-bold"}>{teams[1].name}</div>
+        <div className={"font-bold"}>{firstPlace!.teamName}</div>
         <div>Icon</div>
         <Card
           className={
@@ -97,7 +86,7 @@ function Podium({ teams }: { teams: Team[] }) {
         </Card>
       </div>
       <div className="flex h-full flex-1 flex-col items-center justify-end gap-2">
-        <div className={"text-center font-bold"}>{teams[0].name}</div>
+        <div className={"text-center font-bold"}>{secondPlace!.teamName}</div>
         <div>Icon</div>
         <Card
           className={
@@ -109,7 +98,7 @@ function Podium({ teams }: { teams: Team[] }) {
         </Card>
       </div>
       <div className="flex h-[50%] flex-1 flex-col items-center justify-end gap-2">
-        <div className={"font-bold"}>{teams[2].name}</div>
+        <div className={"font-bold"}>{thirdPlace!.teamName}</div>
         <div>Icon</div>
         <Card
           className={

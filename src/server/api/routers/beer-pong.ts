@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import getAllPublicBeerPongTournaments from "~/server/service/beer-pong/tournament/get-all-public/query";
 import { BeerPongTournamentSummarySchema } from "~/server/service/beer-pong/tournament/get-all-public/schema";
 import { BeerPongTournamentSchema } from "~/server/service/beer-pong/tournament/get/schema";
@@ -18,6 +22,8 @@ import { deleteBeerPongTeamById } from "~/server/service/beer-pong/team/delete/m
 import { selectBeerPongMatchWinner } from "~/server/service/beer-pong/match/select-winner/mutation";
 import { SelectBeerPongMatchWinnerInputSchema } from "~/server/service/beer-pong/match/select-winner/schema";
 import { TRPCError } from "@trpc/server";
+import { db } from "../../db";
+import { BeerPongTournamentTeamResultSchema } from "../../service/beer-pong/tournament/get-results/schema";
 
 export const beerPongRouter = createTRPCRouter({
   getAllPublicTournaments: protectedProcedure
@@ -34,7 +40,8 @@ export const beerPongRouter = createTRPCRouter({
   getTournamentByPin: protectedProcedure
     .input(z.string())
     .output(BeerPongTournamentSchema)
-    .query(({ input, ctx }) =>
+    // use mutation to make it easier to use in the frontend
+    .mutation(({ input, ctx }) =>
       getBeerPongTournamentByPin(input, ctx.session.user.id),
     ),
 
@@ -67,9 +74,32 @@ export const beerPongRouter = createTRPCRouter({
     }),
 
   getTournamentResults: protectedProcedure
-    .input(z.string())
-    .output(z.object({}))
-    .query(() => ({})),
+    .input(
+      z.object({
+        tournamentId: z.string(),
+      }),
+    )
+    .output(z.array(BeerPongTournamentTeamResultSchema))
+    .query(async ({ ctx, input }) => {
+      const tournament = await db.beerPongTournament.findUniqueOrThrow({
+        where: {
+          id: input.tournamentId,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (tournament.status !== "FINISHED") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Tournament is not finished",
+        });
+      }
+
+      // TODO implement this
+      return [];
+    }),
 
   createTeam: protectedProcedure
     .input(CreateBeerPongTeamSchema)

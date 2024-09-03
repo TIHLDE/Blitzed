@@ -1,7 +1,6 @@
 "use client";
 
 import { TeamDetailsDialog } from "../../../components/tournament/teamDetailsDialog";
-import { useParams } from "next/navigation";
 import { CreateTeamDialog } from "../../../components/tournament/create_team_dialog";
 import { Button } from "../../../components/ui/button";
 import {
@@ -10,28 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-
-export interface Team {
-  name: string;
-  players: string[];
-  wins?: number;
-}
-
-const teams: Team[] = [
-  {
-    name: "Embret sitt lag",
-    players: ["Embret", "Mori", "Henrik", "Eirik"],
-    wins: 3,
-  },
-  {
-    name: "Henrik sitt lag",
-    players: ["Henrik", "Mori", "Eirik", "Embret"],
-    wins: 7,
-  },
-];
+import {
+  BeerPongTournament,
+  BeerPongTournamentTeam,
+} from "../../../server/service/beer-pong/tournament/get/schema";
 
 interface TeamCardProps {
-  team: Team;
+  team: BeerPongTournamentTeam;
 }
 
 function TeamCard({ team }: TeamCardProps) {
@@ -42,7 +26,7 @@ function TeamCard({ team }: TeamCardProps) {
           <div className="flex flex-col items-start gap-1">
             <CardTitle>{team.name}</CardTitle>
             <CardDescription>
-              Antall spillere: {team.players.length}
+              Antall spillere: {team.members.length}
             </CardDescription>
           </div>
           <Button className="z-50 mt-[0px!important]" variant={"outline"}>
@@ -54,20 +38,26 @@ function TeamCard({ team }: TeamCardProps) {
   );
 }
 
-export default function Before() {
-  const { id } = useParams();
+export interface BeforePageProps {
+  tournament: BeerPongTournament;
+}
 
+export default function BeforePage({ tournament }: BeforePageProps) {
   return (
     <div>
       <main className="flex h-[calc(100svh-70px)] w-full flex-col items-center justify-between gap-4 px-4">
         <div className="flex w-full flex-col justify-center">
           <div className="mb-1 mt-4">My tournament title</div>
           <div className="mb-4 flex flex-row items-center justify-between">
-            <div className="text-3xl font-bold">Kode: {id}</div>
+            {Boolean(tournament.pinCode) && (
+              <div className="text-3xl font-bold">
+                Kode: {tournament.pinCode}
+              </div>
+            )}
             <CreateTeamDialog />
           </div>
           <div className="flex flex-col gap-2">
-            {teams.map((t) => (
+            {tournament.teams.map((t) => (
               <TeamCard team={t} key={t.name} />
             ))}
           </div>

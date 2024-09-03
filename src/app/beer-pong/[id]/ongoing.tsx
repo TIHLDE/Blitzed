@@ -8,13 +8,13 @@ import {
   CarouselPrevious,
 } from "../../../components/ui/carousel";
 import {
+  BeerPongTournament,
   BeerPongTournamentMatch,
   BeerPongTournamentTeam,
 } from "../../../server/service/beer-pong/tournament/get/schema";
-import { api } from "../../../trpc/server";
 import { cn } from "../../../util/tailwind-cn";
 
-export function MatchCard({ match }: { match: BeerPongTournamentMatch }) {
+function MatchCard({ match }: { match: BeerPongTournamentMatch }) {
   const maxTeamNameLength = 29;
 
   return (
@@ -50,7 +50,7 @@ interface TeamCardProps {
   team: BeerPongTournamentTeam;
 }
 
-function TeamCard({ team }: TeamCardProps) {
+async function TeamCard({ team }: TeamCardProps) {
   return (
     <div className="flex max-h-60 w-full flex-col rounded-md border-[1px] p-2">
       <div className="truncate font-bold">{team.name}</div>
@@ -69,7 +69,7 @@ interface MatchPagesProps {
   matches: BeerPongTournamentMatch[];
 }
 
-function MatchPages({ matches }: MatchPagesProps) {
+async function MatchPages({ matches }: MatchPagesProps) {
   const pagesAmount = Math.floor(Math.log2(matches.length)) + 1;
   return (
     <>
@@ -94,9 +94,11 @@ function MatchPages({ matches }: MatchPagesProps) {
   );
 }
 
-export default async function OnGoing({ params }: { params: { id: string } }) {
-  const tournament = await api.beerPong.getTournamentById(params.id);
+export interface ActivePageProps {
+  tournament: BeerPongTournament;
+}
 
+export default async function ActivePage({ tournament }: ActivePageProps) {
   return (
     <div className={"w-screen"}>
       <div className="mx-auto max-w-2xl">
@@ -109,7 +111,7 @@ export default async function OnGoing({ params }: { params: { id: string } }) {
             opts={{ align: "start" }}
           >
             <CarouselPrevious />
-            <CarouselContent className="">
+            <CarouselContent>
               <MatchPages matches={tournament.matches} />
             </CarouselContent>
             <CarouselNext />

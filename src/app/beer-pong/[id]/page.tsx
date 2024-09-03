@@ -1,11 +1,20 @@
-import Before from './before';
+import { api } from "../../../trpc/server";
+import BeforePage from "./before";
+import ActivePage from "./ongoing";
+import ResultsPage from "./results";
 
-interface TournamentPageProps {
-  params: {
-    id: string;
-  };
-}
+export default async function TournamentPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const tournament = await api.beerPong.getTournamentById(params.id);
 
-export default function TournamentPage(props: TournamentPageProps) {
-  return <Before />;
+  if (tournament.status === "CREATED") {
+    return <BeforePage tournament={tournament} />;
+  } else if (tournament.status === "ACTIVE") {
+    return <ActivePage tournament={tournament} />;
+  }
+
+  return <ResultsPage tournament={tournament} />;
 }

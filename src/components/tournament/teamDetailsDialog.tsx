@@ -11,10 +11,10 @@ import {
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
 import React, { type ReactNode } from "react";
-import { type Team } from "~/app/beer-pong/[id]/before";
+import { BeerPongTournamentTeam } from "../../server/service/beer-pong/tournament/get/schema";
 
 interface TeamCard {
-  team: Team;
+  team: BeerPongTournamentTeam;
   children: ReactNode;
 }
 
@@ -28,8 +28,8 @@ export function TeamDetailsDialog({ team, children }: TeamCard) {
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <Label>Spillere</Label>
-          {team.players.map((player) => (
-            <li key={player}>{player}</li>
+          {team.members.map((mem) => (
+            <li key={mem.id}>{mem.nickname}</li>
           ))}
         </div>
         <DialogFooter>

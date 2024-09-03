@@ -17,8 +17,11 @@ import {
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
 import formSchema from "./schema";
+import { api } from "../../../trpc/react";
+import { CreateBeerPongTournamentInput } from "../../../server/service/beer-pong/tournament/create/schema";
+import { useRouter } from "next/navigation";
 
-export function ProfileForm() {
+export function CreateTournamentForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,12 +35,26 @@ export function ProfileForm() {
     },
   });
   const maxParticipantsWatch = form.watch("maxParticipants", false);
+  const { mutateAsync: createTournament } =
+    api.beerPong.createTournament.useMutation();
+  const router = useRouter();
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-  }
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const tournament = {
+      name: values.tournamentName,
+      access: values.privateTournament ? "PIN" : "PUBLIC",
+      bronzeFinal: values.bronzeFinal ?? false,
+      maxParticipants: values.maxParticipants
+        ? values.maxParticipantsNumber!
+        : null,
+      randomTeams: values.randomTeams ?? false,
+      thildeExclusive: values.thildeExclusive ?? false,
+    } satisfies CreateBeerPongTournamentInput;
+
+    createTournament(tournament).then(({ id }) =>
+      router.replace(`/beer-pong/${id}`),
+    );
+  };
 
   return (
     <Form {...form}>

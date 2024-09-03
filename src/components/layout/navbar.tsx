@@ -11,7 +11,7 @@ export default async function Navbar() {
   return (
     <nav className="flex flex-col content-start bg-background">
       <div className="flex items-center justify-between border-b-[1px] p-3">
-        <a href="/user/template/home">
+        <a href="/home">
           <Logo
             className="hidden fill-primary sm:block"
             width={200}
