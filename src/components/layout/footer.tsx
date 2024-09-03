@@ -1,10 +1,11 @@
+"use server";
+
 import Link from "next/link";
-import Image from "next/image";
 import { Facebook, Instagram, Twitter, Slack, Bug } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 
-export default function Footer() {
+export default async function Footer() {
   return (
     <footer className="bg-background py-5 md:py-20">
       <div className="mx-auto flex max-w-6xl flex-wrap items-start justify-evenly text-center">
@@ -25,7 +26,7 @@ function PartnershipCol() {
         <ul>
           <li className="mb-4">
             <a href="https://vercel.com/?utm_source=kvark&utm_campaign=oss">
-              <Image
+              <img
                 src="favicon.ico"
                 alt="vercel"
                 className="mr-2 inline h-5 w-5"

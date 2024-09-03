@@ -1,3 +1,5 @@
+"use server";
+
 import Logo from "~/components/logo";
 import LogoSmall from "~/components/logo-small";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -5,18 +7,18 @@ import { Button } from "~/components/ui/button";
 import { ThemeModeToggler } from "~/components/ui/theme-mode-toggler";
 import { UserRound } from "lucide-react";
 
-export default function Navbar() {
+export default async function Navbar() {
   return (
-    <nav className="bg-background flex flex-col content-start">
+    <nav className="flex flex-col content-start bg-background">
       <div className="flex items-center justify-between border-b-[1px] p-3">
         <a href="/user/template/home">
           <Logo
-            className="fill-primary hidden sm:block"
+            className="hidden fill-primary sm:block"
             width={200}
             height={"auto"}
           />
           <LogoSmall
-            className="fill-primary block sm:hidden"
+            className="block fill-primary sm:hidden"
             width={200}
             height={"auto"}
           />

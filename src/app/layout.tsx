@@ -6,11 +6,12 @@ import { TRPCReactProvider } from "../trpc/react";
 import Navbar from "../components/layout/navbar";
 import Footer from "../components/layout/footer";
 import { ThemeProvider } from "next-themes";
-import React from "react";
+import ContextProviders from "~/components/layout/theme-provider";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Blitzed",
-  description: "TIHLDE's egne side for drikkeleker!",
+  description: "TIHLDE's egen side for drikkeleker!",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -21,16 +22,11 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <ContextProviders>
             <Navbar />
             {children}
             <Footer />
-          </ThemeProvider>
+          </ContextProviders>
         </TRPCReactProvider>
       </body>
     </html>
