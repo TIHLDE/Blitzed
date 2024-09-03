@@ -45,8 +45,6 @@ export default function JoinTournamentForm() {
       values.third,
       values.fourth,
     ].join("");
-
-    console.log("Submitted with the code", code);
   };
 
   return (

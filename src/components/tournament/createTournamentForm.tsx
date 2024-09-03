@@ -60,7 +60,6 @@ export function ProfileForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
   }
 
   return (
@@ -210,7 +209,7 @@ export function ProfileForm() {
         <div className="w-full max-w-md items-center gap-4 text-center text-xl font-bold">
           <Button
             type="submit"
-            className="bg-primary h-full w-full p-4 text-4xl font-bold"
+            className="h-full w-full bg-primary p-4 text-4xl font-bold"
           >
             Lag turnering
           </Button>

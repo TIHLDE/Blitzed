@@ -5,9 +5,8 @@ import { type Metadata } from "next";
 import { TRPCReactProvider } from "../trpc/react";
 import Navbar from "../components/layout/navbar";
 import Footer from "../components/layout/footer";
-import { ThemeProvider } from "next-themes";
-import ContextProviders from "~/components/layout/theme-provider";
-import { SessionProvider } from "next-auth/react";
+import ContextProviders from "~/components/layout/context-providers";
+import { getServerAuthSession } from "~/server/auth";
 
 export const metadata: Metadata = {
   title: "Blitzed",
@@ -15,14 +14,16 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const session = await getServerAuthSession();
+
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-          <ContextProviders>
+          <ContextProviders session={session}>
             <Navbar />
             {children}
             <Footer />

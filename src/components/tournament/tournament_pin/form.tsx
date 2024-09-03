@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '../../ui/form';
-import { Input } from '../../ui/input';
-import { Button } from '../../ui/button';
-import { Check as CheckIcon } from 'lucide-react';
-import formSchema from './schema';
+} from "../../ui/form";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
+import { Check as CheckIcon } from "lucide-react";
+import formSchema from "./schema";
 
 export default function TournamentPinForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -23,28 +23,26 @@ export default function TournamentPinForm() {
 
   // function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {}
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  function onSubmit(values: z.infer<typeof formSchema>) {}
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-start w-full">
-          <div className="text-lg ml-2 mb-2 font-bold mt-4">
+        <div className="flex w-full flex-col items-center justify-start">
+          <div className="mb-2 ml-2 mt-4 text-lg font-bold">
             Join med PIN-kode
           </div>
-          <div className="flex flex-row justify-between items-center gap-2 w-full max-w-md h-14">
+          <div className="flex h-14 w-full max-w-md flex-row items-center justify-between gap-2">
             <FormField
               control={form.control}
-              name={'one'}
+              name={"one"}
               render={({ field }) => {
                 return (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="h-full text-center text-2xl font-medium flex-1"
+                        className="h-full flex-1 text-center text-2xl font-medium"
                         type="text"
                         maxLength={1}
                       />
@@ -56,14 +54,14 @@ export default function TournamentPinForm() {
             />
             <FormField
               control={form.control}
-              name={'two'}
+              name={"two"}
               render={({ field }) => {
                 return (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="h-full text-center text-2xl font-medium flex-1"
+                        className="h-full flex-1 text-center text-2xl font-medium"
                         type="text"
                         maxLength={1}
                       />
@@ -75,14 +73,14 @@ export default function TournamentPinForm() {
             />
             <FormField
               control={form.control}
-              name={'three'}
+              name={"three"}
               render={({ field }) => {
                 return (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="h-full text-center text-2xl font-medium flex-1"
+                        className="h-full flex-1 text-center text-2xl font-medium"
                         type="text"
                         maxLength={1}
                       />
@@ -94,14 +92,14 @@ export default function TournamentPinForm() {
             />
             <FormField
               control={form.control}
-              name={'four'}
+              name={"four"}
               render={({ field }) => {
                 return (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className="h-full text-center text-2xl font-medium flex-1"
+                        className="h-full flex-1 text-center text-2xl font-medium"
                         type="text"
                         maxLength={1}
                       />
@@ -113,7 +111,7 @@ export default function TournamentPinForm() {
             />
             <Button
               type="submit"
-              className="h-full flex items-center justify-center flex-1"
+              className="flex h-full flex-1 items-center justify-center"
               variant="default"
               size="icon"
             >

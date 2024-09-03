@@ -1,12 +1,14 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import {
-  type DefaultSession,
-  type DefaultUser,
-  getServerSession,
-  type NextAuthOptions,
-} from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import Credentials from "next-auth/providers/credentials";
+
+import {
+  getServerSession,
+  DefaultSession,
+  NextAuthOptions,
+  DefaultUser,
+  User,
+} from "next-auth";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
@@ -16,30 +18,64 @@ import {
   type MembershipResponse,
 } from "./service/lepton/get-memberships";
 import { getTIHLDEUser } from "./service/lepton/get-user";
+import { DefaultJWT } from "next-auth/jwt";
+import { log } from "console";
 
 // Session type declaration (what the backend can access on the user object)
 declare module "next-auth" {
-  interface Session extends DefaultSession {
-    user: User & DefaultSession["user"];
-  }
-
   interface User extends DefaultUser {
-    name: string;
+    id: string;
     nickname: string;
     role: UserRole;
-    tihldeToken?: string;
+  }
+
+  interface Session {
+    user: User;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT extends DefaultJWT {
+    user: {
+      name?: string;
+      nickname: string;
+      role: UserRole;
+      id: string;
+      email?: string;
+    };
   }
 }
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        username: user.id,
-      },
-    }),
+    session: ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          id: token.user.id,
+          nickname: token.user.nickname,
+          role: token.user.role,
+        },
+      };
+    },
+    jwt: async ({ user, token }) => {
+      // Initial sign in
+      if (user) {
+        return {
+          user: {
+            nickname: user.nickname,
+            role: user.role,
+            id: user.id,
+          },
+        };
+      }
+
+      // Just return the token back, no need to refresh it :)
+      return token;
+    },
+  },
+  session: {
+    strategy: "jwt",
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
@@ -73,7 +109,7 @@ export const authOptions: NextAuthOptions = {
           getTIHLDEUser(token, credentials.username),
         ]);
 
-        return {
+        const session = {
           id: user.user_id,
           email: user.email,
           image: null,
@@ -82,6 +118,7 @@ export const authOptions: NextAuthOptions = {
           role: getRoleForUser(memberships),
           tihldeToken: token,
         };
+        return session;
       },
     }),
   ],
