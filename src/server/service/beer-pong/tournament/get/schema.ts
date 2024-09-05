@@ -19,6 +19,11 @@ export type BeerPongTournamentTeam = z.infer<
   typeof BeerPongTournamentTeamSchema
 >;
 
+export type BeerPongTournamentTeamSummary = Pick<
+  BeerPongTournamentTeam,
+  "id" | "name"
+>;
+
 export const BeerPongTournamentMatchTeamSchema = z.object({
   id: z.string(),
   name: z.string(),

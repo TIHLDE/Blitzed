@@ -79,8 +79,8 @@ export const createTRPCRouter = t.router;
 /**
  * Middleware for timing procedure execution and adding an artificial delay in development.
  *
- * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
- * network latency that would occur in production but not in local development.
+ * useful for testing loading states on the frontend, and getting a feel for the production
+ * experience
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
@@ -101,25 +101,23 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 /**
  * Public (unauthenticated) procedure
  *
- * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
- * guarantee that a user querying is authorized, but you can still access user session data if they
- * are logged in.
+ * Anyone has access to this procedure
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
 /**
  * Protected (authenticated) procedure
  *
- * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
- * the session is valid and guarantees `ctx.session.user` is not null.
- *
- * @see https://trpc.io/docs/procedures
+ * The user must be at least an anonymous user to access this procedure
  */
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session?.user) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Du må være logget inn",
+      });
     }
 
     return next({
@@ -130,9 +128,15 @@ export const protectedProcedure = t.procedure
     });
   });
 
+/**
+ * Procedure that requires admin access
+ */
 export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   if (ctx.session.user.role !== "ADMIN") {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Du må være administrator",
+    });
   }
 
   return next();

@@ -24,18 +24,25 @@ export const isBeerPongTournamentOwner = async (
   return tournament.creatorId === userId;
 };
 
+export interface AssertIsTournamentOwnerProps {
+  tournamentId: string;
+  userId: string;
+}
+
 /**
  * Throws a TRPCError if the user is not the owner of the beer pong tournament
+ *
+ * `TRPCError { status: FORBIDDEN }`
  */
-export const assertIsTournamentOwner = async (
-  tournamentId: string,
-  userId: string,
-) => {
+export const assertIsTournamentOwner = async ({
+  tournamentId,
+  userId,
+}: AssertIsTournamentOwnerProps) => {
   const isOwner = await isBeerPongTournamentOwner(tournamentId, userId);
   if (!isOwner) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "You are not the owner of this tournament",
+      message: "Du er ikke eieren av denne turneringen",
     });
   }
 };

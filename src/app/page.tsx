@@ -1,4 +1,7 @@
+"use client";
+
 import HeroCard from "~/components/hero";
+import { api } from "../trpc/react";
 
 export default function Home() {
   return (

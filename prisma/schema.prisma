@@ -49,10 +49,10 @@ model BeerPongMatch {
   tournament      BeerPongTournament @relation(fields: [tournamentId], references: [id])
   tournamentId    String
   round           Int
-  team1           BeerPongTeam       @relation(fields: [team1Id], references: [id], name: "team1")
-  team1Id         String
-  team2           BeerPongTeam       @relation(fields: [team2Id], references: [id], name: "team2")
-  team2Id         String
+  team1           BeerPongTeam?      @relation(fields: [team1Id], references: [id], name: "team1")
+  team1Id         String?
+  team2           BeerPongTeam?      @relation(fields: [team2Id], references: [id], name: "team2")
+  team2Id         String?
   winner          BeerPongTeam?      @relation(fields: [winnerTeamId], references: [id], name: "winnerTeam")
   winnerTeamId    String?
   nextMatch       BeerPongMatch?     @relation(fields: [beerPongMatchId], references: [id], name: "nextMatch")

@@ -1,4 +1,8 @@
-import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import {
+  createCallerFactory,
+  createTRPCRouter,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { beerPongRouter } from "./routers/beer-pong";
 import { questionsRouter } from "./routers/questions";
 

@@ -1,11 +1,11 @@
 import { db } from "~/server/db";
 
-export default async function deleteBeerPongTournamentById(
-  id: string,
-): Promise<void> {
+export const deleteBeerPongTournament = async (
+  tournamentId: string,
+): Promise<void> => {
   await db.beerPongTournament.delete({
     where: {
-      id: id,
+      id: tournamentId,
     },
   });
-}
+};

@@ -33,7 +33,7 @@ export default async function getBeerPongTournamentById(
 
   if (!tournament) {
     throw new TRPCError({
-      message: "Tournament not found",
+      message: "Turneringen ble ikke funnet",
       code: "NOT_FOUND",
     });
   }
