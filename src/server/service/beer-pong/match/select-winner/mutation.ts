@@ -1,17 +1,22 @@
 import { db } from "~/server/db";
+import { SelectBeerPongMatchWinnerInput } from "./schema";
 
-export const selectBeerPongMatchWinner = async (
-  matchId: string,
-  teamId: string,
-): Promise<void> => {
+export const selectBeerPongMatchWinner = async ({
+  matchId,
+  winnerTeamId,
+  tournamentId,
+}: SelectBeerPongMatchWinnerInput): Promise<void> => {
   await db.beerPongMatch.update({
     where: {
-      id: matchId,
+      id_tournamentId: {
+        id: matchId,
+        tournamentId: tournamentId,
+      },
     },
     data: {
       winner: {
         connect: {
-          id: teamId,
+          id: winnerTeamId,
         },
       },
     },

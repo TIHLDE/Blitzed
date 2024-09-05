@@ -9,8 +9,13 @@ export default async function startBeerPongTournament(
     where: {
       id,
     },
-    include: {
-      teams: true,
+    select: {
+      status: true,
+      teams: {
+        select: {
+          id: true,
+        },
+      },
     },
   });
 
@@ -34,9 +39,9 @@ export default async function startBeerPongTournament(
 
   await db.beerPongMatch.createMany({
     data: matches.map((match) => ({
+      id: match.matchId,
       tournamentId: id,
       round: match.round,
-      matchId: match.matchId,
       team1Id: match.team1Id,
       team2Id: match.team2Id,
       nextMatchId: match.nextMatchId,

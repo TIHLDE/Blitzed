@@ -1,10 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import { db } from "~/server/db";
+import { ProcedureCtx } from "../../../api/trpc";
 
 /**
  * Check if the user is the owner of the beer pong tournament
  */
-export const isBeerPongTournamentOwner = async (
+const isBeerPongTournamentOwner = async (
   tournamentId: string,
   userId: string,
 ): Promise<boolean> => {
@@ -24,9 +25,12 @@ export const isBeerPongTournamentOwner = async (
   return tournament.creatorId === userId;
 };
 
+/**
+ * Input for `assertHasTournamentControl`
+ */
 export interface AssertIsTournamentOwnerProps {
   tournamentId: string;
-  userId: string;
+  ctx: ProcedureCtx;
 }
 
 /**
@@ -34,15 +38,18 @@ export interface AssertIsTournamentOwnerProps {
  *
  * `TRPCError { status: FORBIDDEN }`
  */
-export const assertIsTournamentOwner = async ({
+export const assertHasTournamentControl = async ({
   tournamentId,
-  userId,
+  ctx,
 }: AssertIsTournamentOwnerProps) => {
-  const isOwner = await isBeerPongTournamentOwner(tournamentId, userId);
-  if (!isOwner) {
+  const isOwner = await isBeerPongTournamentOwner(
+    tournamentId,
+    ctx.session.user.id,
+  );
+  if (!isOwner && ctx.session.user.role !== "ADMIN") {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "Du er ikke eieren av denne turneringen",
+      message: "Du er ikke eieren av denne turneringen eller administrator",
     });
   }
 };

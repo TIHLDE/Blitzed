@@ -6,8 +6,8 @@ export const CreateBeerPongTournamentInputSchema = z.object({
   name: z.string(),
   randomTeams: z.boolean(),
   thildeExclusive: z.boolean(),
-  bronzeFinal: z.boolean(),
-  maxParticipants: z.number().int().positive().nullable(),
+  maxTeamCount: z.number().int().positive(),
+  maxTeamSize: z.number().int().positive(),
 });
 
 export type CreateBeerPongTournamentInput = z.infer<

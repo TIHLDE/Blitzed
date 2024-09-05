@@ -218,4 +218,13 @@ function getRoleForUser(memberships: MembershipResponse | null): UserRole {
   return "USER";
 }
 
+/**
+ * Returns whether the user has a role of TIHLDE or higher
+ *
+ * Is used for validation
+ */
+export const isUserRoleTihldeOrHigher = (role: UserRole): boolean => {
+  return role !== "ANONYMOUS";
+};
+
 export const getServerAuthSession = () => getServerSession(authOptions);

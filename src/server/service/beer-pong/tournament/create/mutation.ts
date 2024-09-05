@@ -15,9 +15,9 @@ export default async function createTournament(
   const { id } = await db.beerPongTournament.create({
     data: {
       access: input.access,
-      hasBronzeFinal: input.bronzeFinal,
       isTihldeExclusive: input.thildeExclusive,
-      maxParticipants: input.maxParticipants,
+      maxTeamCount: input.maxTeamCount,
+      maxTeamSize: input.maxTeamSize,
       randomizeTeams: input.randomTeams,
       creator: {
         connect: {

@@ -38,12 +38,12 @@ model BeerPongTournament {
   name              String
   randomizeTeams    Boolean
   isTihldeExclusive Boolean
-  hasBronzeFinal    Boolean
-  maxParticipants   Int?
+  maxTeamSize       Int?
+  maxTeamCount      Int?
 }
 
 model BeerPongMatch {
-  id              String             @id @default(cuid())
+  id              Int
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
   tournament      BeerPongTournament @relation(fields: [tournamentId], references: [id])
@@ -55,10 +55,11 @@ model BeerPongMatch {
   team2Id         String?
   winner          BeerPongTeam?      @relation(fields: [winnerTeamId], references: [id], name: "winnerTeam")
   winnerTeamId    String?
-  nextMatch       BeerPongMatch?     @relation(fields: [beerPongMatchId], references: [id], name: "nextMatch")
-  nextMatchId     String?
+  nextMatch       BeerPongMatch?     @relation(fields: [id, tournamentId], references: [id, tournamentId], name: "nextMatch")
+  nextMatchId     Int?
   previousMatches BeerPongMatch[]    @relation("nextMatch")
-  beerPongMatchId String?
+
+  @@id([id, tournamentId])
 }
 
 model BeerPongTeam {

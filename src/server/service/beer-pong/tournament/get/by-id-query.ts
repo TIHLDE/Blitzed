@@ -38,14 +38,24 @@ export default async function getBeerPongTournamentById(
     });
   }
 
+  tournament.matches.sort((a, b) => a.id - b.id);
+
+  const currentMatchId =
+    tournament.matches.find((m) => !m.winnerTeamId)?.id ?? null;
+
   return {
     id: tournament.id,
     name: tournament.name,
+    currentMatchId,
     creatorNickname: tournament.creator.nickname,
     isCreator: tournament.creatorId === userId,
     access: tournament.access,
     pinCode: tournament.pinCode,
     status: tournament.status,
+    isTihldeExclusive: tournament.isTihldeExclusive,
+    maxTeamCount: tournament.maxTeamCount,
+    maxTeamSize: tournament.maxTeamSize,
+    randomizeTeams: tournament.randomizeTeams,
     teams: tournament.teams.map((team) => ({
       id: team.id,
       name: team.name,
@@ -56,17 +66,17 @@ export default async function getBeerPongTournamentById(
     })),
     matches: tournament.matches.map((m) => ({
       id: m.id,
-      team1: {
+      team1: m.team1 && {
         id: m.team1.id,
         name: m.team1.name,
       },
-      team2: {
+      team2: m.team2 && {
         id: m.team2.id,
         name: m.team2.name,
       },
       winnerTeamId: m.winnerTeamId,
       round: m.round,
-      nextMatchId: m.nextMatch?.id,
+      nextMatchId: m.nextMatch?.id ?? null,
     })),
-  };
+  } satisfies BeerPongTournament;
 }

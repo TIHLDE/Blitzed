@@ -7,7 +7,11 @@
  * need to use are documented accordingly near the end.
  */
 
-import { initTRPC, TRPCError } from "@trpc/server";
+import {
+  inferProcedureBuilderResolverOptions,
+  initTRPC,
+  TRPCError,
+} from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -128,6 +132,17 @@ export const protectedProcedure = t.procedure
     });
   });
 
+export const tihldeProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (!["TIHLDE", "ADMIN"].includes(ctx.session.user.role)) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Du må være i TIHLDE",
+    });
+  }
+
+  return next();
+});
+
 /**
  * Procedure that requires admin access
  */
@@ -141,3 +156,10 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 
   return next();
 });
+
+/**
+ * Get the [ctx] type for the protected procedure
+ */
+export type ProcedureCtx = inferProcedureBuilderResolverOptions<
+  typeof protectedProcedure
+>["ctx"];

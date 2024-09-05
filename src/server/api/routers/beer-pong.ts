@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  ProcedureCtx,
+  protectedProcedure,
+} from "~/server/api/trpc";
 import getAllPublicBeerPongTournaments from "~/server/service/beer-pong/tournament/get-all-public/query";
 import { BeerPongTournamentSummarySchema } from "~/server/service/beer-pong/tournament/get-all-public/schema";
 import { BeerPongTournamentSchema } from "~/server/service/beer-pong/tournament/get/schema";
@@ -8,7 +12,7 @@ import getBeerPongTournamentById from "~/server/service/beer-pong/tournament/get
 import getBeerPongTournamentByPin from "~/server/service/beer-pong/tournament/get/by-pin-query";
 import { CreateBeerPongTournamentInputSchema } from "~/server/service/beer-pong/tournament/create/schema";
 import createBeerPongTournament from "~/server/service/beer-pong/tournament/create/mutation";
-import { assertIsTournamentOwner as assertHasTournamentControlAccess } from "~/server/service/beer-pong/tournament/access";
+import { assertHasTournamentControl as assertHasTournamentControlAccess } from "~/server/service/beer-pong/tournament/access";
 import startBeerPongTournament from "~/server/service/beer-pong/tournament/start/mutation";
 import { CreateBeerPongTeamSchema } from "~/server/service/beer-pong/team/create/schema";
 import { createBeerPongTeam } from "~/server/service/beer-pong/team/create/mutation";
@@ -20,19 +24,51 @@ import { TRPCError } from "@trpc/server";
 import { db } from "../../db";
 import { BeerPongTournamentTeamResultSchema } from "../../service/beer-pong/tournament/get-results/schema";
 import { deleteBeerPongTournament } from "../../service/beer-pong/tournament/delete/mutation";
+import { isUserRoleTihldeOrHigher } from "../../auth";
 
+/**
+ * Routes related to the beer pong tournament game
+ */
 export const beerPongRouter = createTRPCRouter({
+  /**
+   * Get all public/open beer pong tournaments
+   * This endpoint is open to all users
+   */
   getAllPublicTournaments: protectedProcedure
     .output(z.array(BeerPongTournamentSummarySchema))
     .query(getAllPublicBeerPongTournaments),
 
+  /**
+   * Get a full beer pong tournament by its id
+   *
+   * Should be used to display the tournament page to the user
+   * while in "CREATED" or "ACTIVE" status
+   *
+   * For results, use `getTournamentResults`
+   *
+   * Throws a `TRPCError` if
+   * - the tournament is not found `{ status: NOT_FOUND }`
+   * - the tournament is only available to TIHLDE users,
+   *   and the user does not meet this requirement `{ status: FORBIDDEN }`
+   */
   getTournamentById: protectedProcedure
     .input(z.string())
     .output(BeerPongTournamentSchema)
-    .query(({ input, ctx }) =>
-      getBeerPongTournamentById(input, ctx.session.user.id),
-    ),
+    .query(async ({ input, ctx }) => {
+      const tournament = await getBeerPongTournamentById(
+        input,
+        ctx.session.user.id,
+      );
 
+      assertHasTournamentAccess(tournament, ctx);
+
+      return tournament;
+    }),
+
+  /**
+   * Get a full beer pong tournament by its pin
+   * This is used to join a private tournament
+   */
   getTournamentByPin: protectedProcedure
     .input(z.string())
     .output(BeerPongTournamentSchema)
@@ -100,7 +136,7 @@ export const beerPongRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await assertHasTournamentControlAccess({
         tournamentId: input.tournamentId,
-        userId: ctx.session.user.id,
+        ctx,
       });
       await startBeerPongTournament(input.tournamentId);
     }),
@@ -171,8 +207,30 @@ export const beerPongRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await assertHasTournamentControlAccess({
         tournamentId: input.tournamentId,
-        userId: ctx.session.user.id,
+        ctx,
       });
-      await selectBeerPongMatchWinner(input.matchId, input.winnerTeamId);
+
+      await selectBeerPongMatchWinner(input);
     }),
 });
+function assertHasTournamentAccess(
+  tournament: {
+    id: string;
+    status: "CREATED" | "ACTIVE" | "FINISHED";
+    isCreator: boolean;
+    access: "PUBLIC" | "PIN";
+    pinCode: string | null;
+    isTihldeExclusive: boolean;
+  },
+  ctx: ProcedureCtx,
+) {
+  if (
+    tournament.isTihldeExclusive &&
+    !isUserRoleTihldeOrHigher(ctx.session.user.role)
+  ) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Denne turneringen er kun tilgjengelig for TIHLDE-brukere",
+    });
+  }
+}
