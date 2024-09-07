@@ -1,10 +1,9 @@
 import {
   createCallerFactory,
   createTRPCRouter,
-  publicProcedure,
+  ProcedureCtx,
 } from "~/server/api/trpc";
-import { beerPongRouter } from "./routers/beer-pong";
-import { questionsRouter } from "./routers/questions";
+import { beerPongRouter } from "./beer-pong/router";
 
 /**
  * This is the primary router
@@ -13,10 +12,13 @@ import { questionsRouter } from "./routers/questions";
  */
 export const appRouter = createTRPCRouter({
   beerPong: beerPongRouter,
-  questions: questionsRouter,
 });
 
-// export type definition of API
+/**
+ * Type definitions of the root app router
+ *
+ * Can be used to infer input and output types of all procedures
+ */
 export type AppRouter = typeof appRouter;
 
 export const createCaller = createCallerFactory(appRouter);

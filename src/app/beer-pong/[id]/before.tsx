@@ -12,7 +12,7 @@ import {
 import {
   BeerPongTournament,
   BeerPongTournamentTeam,
-} from "../../../server/service/beer-pong/tournament/get/schema";
+} from "../../../server/api/beer-pong/tournament/get/schema";
 
 interface TeamCardProps {
   team: BeerPongTournamentTeam;

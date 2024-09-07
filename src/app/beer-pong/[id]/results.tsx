@@ -1,11 +1,11 @@
 "use server";
 
 import { Card, CardHeader, CardTitle } from "../../../components/ui/card";
-import { BeerPongTournamentTeamResult } from "../../../server/service/beer-pong/tournament/get-results/schema";
+import { BeerPongTournamentTeamResult } from "../../../server/api/beer-pong/tournament/get-results/schema";
 import {
   BeerPongTournament,
   BeerPongTournamentTeam,
-} from "../../../server/service/beer-pong/tournament/get/schema";
+} from "../../../server/api/beer-pong/tournament/get/schema";
 import { api } from "../../../trpc/server";
 
 export interface ResultsPageProps {

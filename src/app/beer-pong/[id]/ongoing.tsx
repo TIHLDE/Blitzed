@@ -11,7 +11,7 @@ import {
   BeerPongTournament,
   BeerPongTournamentMatch,
   BeerPongTournamentTeam,
-} from "../../../server/service/beer-pong/tournament/get/schema";
+} from "../../../server/api/beer-pong/tournament/get/schema";
 import { cn } from "../../../util/tailwind-cn";
 
 function MatchCard({ match }: { match: BeerPongTournamentMatch }) {

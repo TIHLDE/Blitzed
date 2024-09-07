@@ -7,7 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { BeerPongTournamentSummary } from "../../server/service/beer-pong/tournament/get-all-public/schema";
+import { BeerPongTournamentSummary } from "../../server/api/beer-pong/tournament/get-all-public/schema";
 
 interface TournamentCardProps {
   tournament: BeerPongTournamentSummary;

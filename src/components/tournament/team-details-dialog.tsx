@@ -11,7 +11,7 @@ import {
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
 import React, { type ReactNode } from "react";
-import { BeerPongTournamentTeam } from "../../server/service/beer-pong/tournament/get/schema";
+import { BeerPongTournamentTeam } from "../../server/api/beer-pong/tournament/get/schema";
 
 interface TeamCard {
   team: BeerPongTournamentTeam;

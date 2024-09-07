@@ -16,9 +16,8 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
-import formSchema from "./schema";
 import { api } from "../../../trpc/react";
-import { CreateBeerPongTournamentInput } from "../../../server/service/beer-pong/tournament/create/schema";
+import { CreateBeerPongTournamentInput } from "../../../server/api/beer-pong/tournament/create/schema";
 import { useRouter } from "next/navigation";
 
 export function CreateTournamentForm() {
@@ -43,10 +42,8 @@ export function CreateTournamentForm() {
     const tournament = {
       name: values.tournamentName,
       access: values.privateTournament ? "PIN" : "PUBLIC",
-      bronzeFinal: values.bronzeFinal ?? false,
-      maxParticipants: values.maxParticipants
-        ? values.maxParticipantsNumber!
-        : null,
+      maxTeamCount: values.maxTeamCount,
+      maxTeamSize: values.maxTeamSize,
       randomTeams: values.randomTeams ?? false,
       thildeExclusive: values.thildeExclusive ?? false,
     } satisfies CreateBeerPongTournamentInput;

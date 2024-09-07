@@ -163,3 +163,14 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
 export type ProcedureCtx = inferProcedureBuilderResolverOptions<
   typeof protectedProcedure
 >["ctx"];
+
+/**
+ * Defines an endpoint controller that handles a user request for a protected (logged in) procedure
+ */
+export type Controller<Input, Output> = ({
+  input,
+  ctx,
+}: {
+  input: Input;
+  ctx: ProcedureCtx;
+}) => Promise<Output>;

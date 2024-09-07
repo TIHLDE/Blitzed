@@ -4,7 +4,7 @@ import TournamentDetails from "../../components/tournament/tournament-details";
 import { Separator } from "../../components/ui/separator";
 import JoinTournamentForm from "../../components/tournament/join-tournament/form";
 import Link from "next/link";
-import { BeerPongTournamentSummary } from "~/server/service/beer-pong/tournament/get-all-public/schema";
+import { BeerPongTournamentSummary } from "~/server/api/beer-pong/tournament/get-all-public/schema";
 import { api } from "../../trpc/server";
 
 export default async function BrowseTournamentsPage() {
