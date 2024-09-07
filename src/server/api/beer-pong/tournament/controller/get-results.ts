@@ -4,6 +4,7 @@ import { z } from "zod";
 import { protectedProcedure } from "~/server/api/trpc";
 import { db } from "../../../../db";
 import { TRPCError } from "@trpc/server";
+import { assertHasTournamentAccess } from "../../middleware";
 
 const InputSchema = z.object({
   tournamentId: z.string().cuid(),
@@ -25,6 +26,8 @@ const handler: Controller<
   z.infer<typeof InputSchema>,
   z.infer<typeof OutputSchema>
 > = async ({ input, ctx }) => {
+  await assertHasTournamentAccess({ ctx, tournamentId: input.tournamentId });
+
   const tournament = await db.beerPongTournament.findUnique({
     where: {
       id: input.tournamentId,

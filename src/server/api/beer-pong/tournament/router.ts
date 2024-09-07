@@ -63,6 +63,7 @@ export const tournamentRouter = createTRPCRouter({
    * Throws a `TRPCError` if
    * - the tournament is not finished `{ status: PRECONDITION_FAILED }`
    * - the tournament does not exist `{ status: NOT_FOUND }`
+   * - the user does not have tournament access `{ status: FORBIDDEN }`
    */
   getResults,
 

@@ -9,7 +9,7 @@ import { TRPCError } from "@trpc/server";
 const InputSchema = z.object({
   matchId: z.number().int().positive(),
   tournamentId: z.string().cuid(),
-  winnerTeamId: z.string().cuid(),
+  winnerTeamId: z.number().int(),
 });
 
 const OutputSchema = z.void();
@@ -53,7 +53,10 @@ const handler: Controller<
     data: {
       winner: {
         connect: {
-          id: input.winnerTeamId,
+          id_tournamentId: {
+            id: input.winnerTeamId,
+            tournamentId: input.tournamentId,
+          },
         },
       },
     },

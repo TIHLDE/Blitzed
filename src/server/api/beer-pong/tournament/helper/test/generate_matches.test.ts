@@ -4,7 +4,7 @@ import { generateMatches } from "../generate_matches";
 describe("generate random beer pong tournament matches", () => {
   test("no teams should throw", () => {
     // Arrange
-    const teamIds: string[] = [];
+    const teamIds: number[] = [];
 
     // Act
     const fn = () => generateMatches(teamIds);
@@ -15,7 +15,7 @@ describe("generate random beer pong tournament matches", () => {
 
   test("one team should throw", () => {
     // Arrange
-    const teamIds = ["team1"];
+    const teamIds = [1];
 
     // Act
     const fn = () => generateMatches(teamIds);
@@ -26,7 +26,7 @@ describe("generate random beer pong tournament matches", () => {
 
   test("only finale for 2 teams", () => {
     // Arrange
-    const teamIds = ["team1", "team2"];
+    const teamIds = [1, 2];
 
     // Act
     const matches = generateMatches(teamIds);
@@ -36,8 +36,8 @@ describe("generate random beer pong tournament matches", () => {
       {
         round: 1,
         matchId: 1,
-        team1Id: "team1",
-        team2Id: "team2",
+        team1Id: 1,
+        team2Id: 2,
         nextMatchId: null,
       },
     ]);
@@ -45,7 +45,7 @@ describe("generate random beer pong tournament matches", () => {
 
   test("two games for 3 teams, move team 3 to finale automatically", () => {
     // Arrange
-    const teamIds = ["team1", "team2", "team3"];
+    const teamIds = [1, 2, 3];
 
     // Act
     const matches = generateMatches(teamIds);
@@ -55,14 +55,14 @@ describe("generate random beer pong tournament matches", () => {
       {
         round: 1,
         matchId: 1,
-        team1Id: "team1",
-        team2Id: "team2",
+        team1Id: 1,
+        team2Id: 2,
         nextMatchId: 2,
       },
       {
         round: 2,
         matchId: 2,
-        team1Id: "team3",
+        team1Id: 3,
         team2Id: null,
         nextMatchId: null,
       },
@@ -71,7 +71,7 @@ describe("generate random beer pong tournament matches", () => {
 
   test("3 games for 4 teams", () => {
     // Arrange
-    const teamIds = ["team1", "team2", "team3", "team4"];
+    const teamIds = [1, 2, 3, 4];
 
     // Act
     const matches = generateMatches(teamIds);
@@ -81,15 +81,15 @@ describe("generate random beer pong tournament matches", () => {
       {
         matchId: 1,
         round: 1,
-        team1Id: "team1",
-        team2Id: "team2",
+        team1Id: 1,
+        team2Id: 2,
         nextMatchId: 3,
       },
       {
         matchId: 2,
         round: 1,
-        team1Id: "team3",
-        team2Id: "team4",
+        team1Id: 3,
+        team2Id: 4,
         nextMatchId: 3,
       },
       {
@@ -104,7 +104,7 @@ describe("generate random beer pong tournament matches", () => {
 
   test("4 games for 5 teams", () => {
     // Arrange
-    const teamIds = ["team1", "team2", "team3", "team4", "team5"];
+    const teamIds = [1, 2, 3, 4, 5];
 
     // Act
     const matches = generateMatches(teamIds);
@@ -114,21 +114,21 @@ describe("generate random beer pong tournament matches", () => {
       {
         matchId: 1,
         round: 1,
-        team1Id: "team1",
-        team2Id: "team2",
+        team1Id: 1,
+        team2Id: 2,
         nextMatchId: 3,
       },
       {
         matchId: 2,
         round: 1,
-        team1Id: "team3",
-        team2Id: "team4",
+        team1Id: 3,
+        team2Id: 4,
         nextMatchId: 4,
       },
       {
         matchId: 3,
         round: 2,
-        team1Id: "team5",
+        team1Id: 5,
         team2Id: null,
         nextMatchId: 4,
       },
@@ -144,7 +144,7 @@ describe("generate random beer pong tournament matches", () => {
 
   test("5 games for 6 teams", () => {
     // Arrange
-    const teamIds = ["team1", "team2", "team3", "team4", "team5", "team6"];
+    const teamIds = [1, 2, 3, 4, 5, 6];
 
     // Act
     const matches = generateMatches(teamIds);
@@ -154,22 +154,22 @@ describe("generate random beer pong tournament matches", () => {
       {
         matchId: 1,
         round: 1,
-        team1Id: "team1",
-        team2Id: "team2",
+        team1Id: 1,
+        team2Id: 2,
         nextMatchId: 4,
       },
       {
         matchId: 2,
         round: 1,
-        team1Id: "team3",
-        team2Id: "team4",
+        team1Id: 3,
+        team2Id: 4,
         nextMatchId: 4,
       },
       {
         matchId: 3,
         round: 1,
-        team1Id: "team5",
-        team2Id: "team6",
+        team1Id: 5,
+        team2Id: 6,
         nextMatchId: 5,
       },
       {

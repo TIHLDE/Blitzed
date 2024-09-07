@@ -49,12 +49,12 @@ model BeerPongMatch {
   tournament      BeerPongTournament @relation(fields: [tournamentId], references: [id])
   tournamentId    String
   round           Int
-  team1           BeerPongTeam?      @relation(fields: [team1Id], references: [id], name: "team1")
-  team1Id         String?
-  team2           BeerPongTeam?      @relation(fields: [team2Id], references: [id], name: "team2")
-  team2Id         String?
-  winner          BeerPongTeam?      @relation(fields: [winnerTeamId], references: [id], name: "winnerTeam")
-  winnerTeamId    String?
+  team1           BeerPongTeam?      @relation(fields: [team1Id, tournamentId], references: [id, tournamentId], name: "team1")
+  team1Id         Int?
+  team2           BeerPongTeam?      @relation(fields: [team2Id, tournamentId], references: [id, tournamentId], name: "team2")
+  team2Id         Int?
+  winner          BeerPongTeam?      @relation(fields: [winnerTeamId, tournamentId], references: [id, tournamentId], name: "winnerTeam")
+  winnerTeamId    Int?
   nextMatch       BeerPongMatch?     @relation(fields: [id, tournamentId], references: [id, tournamentId], name: "nextMatch")
   nextMatchId     Int?
   previousMatches BeerPongMatch[]    @relation("nextMatch")
@@ -63,7 +63,7 @@ model BeerPongMatch {
 }
 
 model BeerPongTeam {
-  id            String             @id @default(cuid())
+  id            Int                @default(autoincrement())
   name          String
   team1Matches  BeerPongMatch[]    @relation("team1")
   team2Matches  BeerPongMatch[]    @relation("team2")
@@ -71,13 +71,16 @@ model BeerPongTeam {
   tournament    BeerPongTournament @relation(fields: [tournamentId], references: [id])
   tournamentId  String
   members       UserBeerPongTeam[]
+
+  @@id([id, tournamentId])
 }
 
 model UserBeerPongTeam {
   user           User         @relation(fields: [userId], references: [id])
   userId         String
-  beerPongTeam   BeerPongTeam @relation(fields: [beerPongTeamId], references: [id], onDelete: Cascade)
-  beerPongTeamId String
+  beerPongTeam   BeerPongTeam @relation(fields: [beerPongTeamId, tournamentId], references: [id, tournamentId], onDelete: Cascade)
+  beerPongTeamId Int
+  tournamentId   String
 
   @@id([userId, beerPongTeamId])
 }

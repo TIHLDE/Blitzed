@@ -14,12 +14,12 @@ export interface Match {
   /**
    * Team 1 id (null if not yet decided)
    */
-  team1Id: string | null;
+  team1Id: number | null;
 
   /**
    * Team 2 id (null if not yet decided)
    */
-  team2Id: string | null;
+  team2Id: number | null;
 
   /**
    * Id of the next match in the tournament (null if this is the last match)
@@ -35,7 +35,7 @@ export interface Match {
  *
  * @author Henrik Kvamme
  */
-export const generateMatches = (teamIds: string[]): Match[] => {
+export const generateMatches = (teamIds: number[]): Match[] => {
   if (teamIds.length < 2) {
     throw new TRPCError({
       code: "BAD_REQUEST",
@@ -97,7 +97,7 @@ export const generateMatches = (teamIds: string[]): Match[] => {
   return matches;
 };
 
-const getTeam = (i: number, teamIds: string[]): string | null => {
+const getTeam = (i: number, teamIds: number[]): number | null => {
   if (i < teamIds.length) {
     return teamIds[i] ?? null;
   }

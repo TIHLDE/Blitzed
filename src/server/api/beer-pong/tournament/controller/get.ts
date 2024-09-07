@@ -8,9 +8,10 @@ import {
 } from "../../enum";
 import { db } from "../../../../db";
 import { TRPCError } from "@trpc/server";
+import { assertHasTournamentAccess } from "../../middleware";
 
 const BeerPongTournamentTeamSchema = z.object({
-  id: z.string().cuid(),
+  id: z.number().int(),
   name: z.string().min(2).max(20),
   members: z.array(
     z.object({
@@ -21,7 +22,7 @@ const BeerPongTournamentTeamSchema = z.object({
 });
 
 const BeerPongTournamentMatchTeamSchema = z.object({
-  id: z.string(),
+  id: z.number().int(),
   name: z.string(),
 });
 
@@ -31,7 +32,7 @@ const BeerPongTournamentMatchSchema = z.object({
   nextMatchId: z.number().nullable(),
   team1: BeerPongTournamentMatchTeamSchema.nullable(),
   team2: BeerPongTournamentMatchTeamSchema.nullable(),
-  winnerTeamId: z.string().nullable(),
+  winnerTeam: BeerPongTournamentMatchTeamSchema.nullable(),
 });
 
 export const BeerPongTournamentSchema = z.object({
@@ -88,6 +89,7 @@ const handler: Controller<
         include: {
           team1: true,
           team2: true,
+          winner: true,
           nextMatch: true,
         },
       },
@@ -137,11 +139,11 @@ const handler: Controller<
         id: m.team2.id,
         name: m.team2.name,
       },
-      winnerTeamId: m.winnerTeamId,
+      winnerTeam: m.winner,
       round: m.round,
       nextMatchId: m.nextMatch?.id ?? null,
     })),
-  };
+  } satisfies z.infer<typeof OutputSchema>;
 };
 
 export default protectedProcedure
