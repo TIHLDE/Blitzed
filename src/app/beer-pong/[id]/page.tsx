@@ -8,7 +8,7 @@ export default async function TournamentPage({
 }: {
   params: { id: string };
 }) {
-  const tournament = await api.beerPong.getTournamentById(params.id);
+  const tournament = await api.beerPong.tournament.get({ id: params.id });
 
   if (tournament.status === "CREATED") {
     return <BeforePage tournament={tournament} />;

@@ -1,18 +1,9 @@
+import { z } from "zod";
 import { Controller } from "~/server/api/trpc";
 
 import { db } from "~/server/db";
-import { z } from "zod";
 import { protectedProcedure } from "~/server/api/trpc";
-import { BeerPongTournamentAccessSchema } from "../../enum";
-
-const InputSchema = z.object({
-  access: BeerPongTournamentAccessSchema,
-  name: z.string(),
-  randomTeams: z.boolean(),
-  thildeExclusive: z.boolean(),
-  maxTeamCount: z.number().int().positive(),
-  maxTeamSize: z.number().int().positive(),
-});
+import { InputSchema } from "./create-schema";
 
 const OutputSchema = z.object({
   id: z.string(),

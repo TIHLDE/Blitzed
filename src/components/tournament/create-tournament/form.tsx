@@ -17,41 +17,39 @@ import {
 import { Input } from "~/components/ui/input";
 import { Switch } from "~/components/ui/switch";
 import { api } from "../../../trpc/react";
-import { CreateBeerPongTournamentInput } from "../../../server/api/beer-pong/tournament/create/schema";
 import { useRouter } from "next/navigation";
+import { InputSchema as FormSchema } from "../../../server/api/beer-pong/tournament/controller/create-schema";
+import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
+import { useEffect } from "react";
 
 export function CreateTournamentForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
-      tournamentName: "",
+      access: "PUBLIC",
+      name: "",
       randomTeams: false,
       thildeExclusive: false,
-      bronzeFinal: false,
-      maxParticipants: false,
-      maxParticipantsNumber: 8,
-      privateTournament: false,
+      maxTeamCount: 5,
+      maxTeamSize: 5,
     },
   });
-  const maxParticipantsWatch = form.watch("maxParticipants", false);
-  const { mutateAsync: createTournament } =
-    api.beerPong.createTournament.useMutation();
+
+  const {
+    mutate: createTournament,
+    status,
+    data: tournament,
+  } = api.beerPong.tournament.create.useMutation();
   const router = useRouter();
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const tournament = {
-      name: values.tournamentName,
-      access: values.privateTournament ? "PIN" : "PUBLIC",
-      maxTeamCount: values.maxTeamCount,
-      maxTeamSize: values.maxTeamSize,
-      randomTeams: values.randomTeams ?? false,
-      thildeExclusive: values.thildeExclusive ?? false,
-    } satisfies CreateBeerPongTournamentInput;
+  useEffect(() => {
+    if (status === "success") {
+      router.replace(`/beer-pong/${tournament.id}`);
+    }
+  }, [status]);
 
-    createTournament(tournament).then(({ id }) =>
-      router.replace(`/beer-pong/${id}`),
-    );
-  };
+  const onSubmit = (values: z.infer<typeof FormSchema>) =>
+    createTournament(values);
 
   return (
     <Form {...form}>
@@ -61,10 +59,10 @@ export function CreateTournamentForm() {
       >
         <FormField
           control={form.control}
-          name="tournamentName"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel></FormLabel>
+              <FormLabel>Navn</FormLabel>
               <FormControl>
                 <Input
                   className="p-9 pl-4 pr-2 text-center text-4xl"
@@ -82,9 +80,11 @@ export function CreateTournamentForm() {
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between gap-4 p-4">
               <div className="">
-                <FormLabel className="text-base">Tilfeldige lag?</FormLabel>
+                <FormLabel className="text-base">
+                  Tilfeldig rekkefølge?
+                </FormLabel>
                 <FormDescription>
-                  Alle spillere blir fordelt på tilfeldige lag
+                  Lagene blir satt i tilfeldig rekkefølge når kamper settes opp
                 </FormDescription>
               </div>
               <FormControl>
@@ -101,7 +101,7 @@ export function CreateTournamentForm() {
           name="thildeExclusive"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between gap-4 p-4">
-              <div className="">
+              <div>
                 <FormLabel className="text-base">THILDE-exclusive?</FormLabel>
                 <FormDescription>
                   Bare THILDE-medlemmer kan delta
@@ -118,82 +118,78 @@ export function CreateTournamentForm() {
         />
         <FormField
           control={form.control}
-          name="bronzeFinal"
+          name="maxTeamSize"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between gap-4 p-4">
-              <div className="">
-                <FormLabel className="text-base">Bronsefinale?</FormLabel>
-                <FormDescription>
-                  Arranger bronsefinale for de som taper semifinalen
-                </FormDescription>
+            <FormItem className="m-[0px!important] flex flex-col items-start justify-between gap-2 space-y-0 pl-4 pr-4">
+              <div className="flex w-full items-center justify-between">
+                <FormLabel className="text-lg text-white">
+                  Maks lagstørrelse
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="5"
+                    {...field}
+                    className="h-16 w-20 text-center text-4xl"
+                  />
+                </FormControl>
               </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="maxParticipants"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between gap-4 p-4">
-              <div className="">
-                <FormLabel className="text-base">Max Spillere?</FormLabel>
-                <FormDescription>
-                  Begrens antall spillere som kan delta
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        {maxParticipantsWatch && (
-          <FormField
-            control={form.control}
-            name="maxParticipantsNumber"
-            render={({ field }) => (
-              <FormItem className="m-[0px!important] flex flex-col items-start justify-between gap-2 space-y-0 pl-4 pr-4">
-                <div className="flex w-full items-center justify-between">
-                  <FormLabel className="text-lg text-white">Max: </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="8"
-                      {...field}
-                      className="h-16 w-20 text-center text-4xl"
-                    />
-                  </FormControl>
-                </div>
 
-                <FormMessage className="" />
-              </FormItem>
-            )}
-          />
-        )}
+              <FormMessage className="" />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
-          name="privateTournament"
+          name="maxTeamSize"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between gap-4 p-4">
-              <div className="">
-                <FormLabel className="text-base">Privat turnering?</FormLabel>
-                <FormDescription>Kun invitasjoner kan delta</FormDescription>
+            <FormItem className="m-[0px!important] flex flex-col items-start justify-between gap-2 space-y-0 pl-4 pr-4">
+              <div className="flex w-full items-center justify-between">
+                <FormLabel className="text-lg text-white">
+                  Maks antall spillere per lag
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="5"
+                    {...field}
+                    className="h-16 w-20 text-center text-4xl"
+                  />
+                </FormControl>
               </div>
+              <FormMessage className="" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="access"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Synlighet</FormLabel>
               <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col space-y-1"
+                >
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="PUBLIC" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Åpen for alle</FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="PIN" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Beskyttet med PIN kode
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

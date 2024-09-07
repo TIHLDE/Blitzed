@@ -4,7 +4,7 @@ import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 
-export default async function ContextProviders({
+export default function ContextProviders({
   children,
   session,
 }: {

@@ -10,13 +10,14 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import formSchema from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../trpc/react";
 import { useRouter } from "next/navigation";
 
 export default function JoinTournamentForm() {
+  const [pinCode, setPinCode] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -41,9 +42,21 @@ export default function JoinTournamentForm() {
     return () => subscription.unsubscribe();
   }, [form]);
 
-  const { mutateAsync: getTournamentByPin } =
-    api.beerPong.getTournamentByPin.useMutation();
+  const { data: tournament, error } = api.beerPong.tournament.get.useQuery(
+    { pinCode },
+    { enabled: pinCode.length === 4 },
+  );
   const router = useRouter();
+
+  useEffect(() => {
+    if (error) {
+      console.error(error);
+    }
+
+    if (tournament) {
+      router.push(`/beer-pong/${tournament.id}`);
+    }
+  }, [tournament, error]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const code = [
@@ -53,14 +66,7 @@ export default function JoinTournamentForm() {
       values.fourth,
     ].join("");
 
-    const tournament = await getTournamentByPin(code);
-    if (!tournament) {
-      // TODO show snackbar or something ...
-      console.error("Could not find tournament with pin code", code);
-      return;
-    }
-
-    router.push(`/beer-pong/${tournament.id}`);
+    setPinCode(code);
   };
 
   return (
@@ -148,16 +154,6 @@ export default function JoinTournamentForm() {
               )}
             />
           </div>
-          {/* <div className="basis-[100%] h-full">
-            <Button
-              className="h-full flex items-center justify-center w-full"
-              type="submit"
-              variant="default"
-              size="icon"
-            >
-              <CheckIcon size={36} />
-            </Button>
-          </div> */}
         </div>
       </form>
     </Form>

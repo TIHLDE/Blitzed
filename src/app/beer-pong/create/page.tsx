@@ -1,6 +1,6 @@
 import { CreateTournamentForm } from "../../../components/tournament/create-tournament/form";
 
-export default async function CreateTournamentPage() {
+export default function CreateTournamentPage() {
   return (
     <main>
       <div className="h-fit">

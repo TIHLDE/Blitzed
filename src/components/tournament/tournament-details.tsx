@@ -7,13 +7,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { BeerPongTournamentSummary } from "../../server/api/beer-pong/tournament/get-all-public/schema";
+import { AppRouterOutput } from "../../server/api/root";
 
 interface TournamentCardProps {
-  tournament: BeerPongTournamentSummary;
+  tournament: AppRouterOutput["beerPong"]["tournament"]["getAllPublic"][number];
 }
 
-export default function TournamentDetails(props: TournamentCardProps) {
+export default function TournamentSummaryDetails(props: TournamentCardProps) {
   return (
     <div className="flex gap-3 text-end">
       <TooltipProvider>

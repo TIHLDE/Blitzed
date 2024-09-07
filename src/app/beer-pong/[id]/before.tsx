@@ -9,13 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import {
-  BeerPongTournament,
-  BeerPongTournamentTeam,
-} from "../../../server/api/beer-pong/tournament/get/schema";
+import { AppRouterOutput } from "../../../server/api/root";
 
 interface TeamCardProps {
-  team: BeerPongTournamentTeam;
+  team: AppRouterOutput["beerPong"]["tournament"]["get"]["teams"][number];
 }
 
 function TeamCard({ team }: TeamCardProps) {
@@ -39,7 +36,7 @@ function TeamCard({ team }: TeamCardProps) {
 }
 
 export interface BeforePageProps {
-  tournament: BeerPongTournament;
+  tournament: AppRouterOutput["beerPong"]["tournament"]["get"];
 }
 
 export default function BeforePage({ tournament }: BeforePageProps) {

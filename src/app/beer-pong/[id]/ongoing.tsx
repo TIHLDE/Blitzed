@@ -7,14 +7,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../../../components/ui/carousel";
-import {
-  BeerPongTournament,
-  BeerPongTournamentMatch,
-  BeerPongTournamentTeam,
-} from "../../../server/api/beer-pong/tournament/get/schema";
+import { AppRouterOutput } from "../../../server/api/root";
 import { cn } from "../../../util/tailwind-cn";
 
-function MatchCard({ match }: { match: BeerPongTournamentMatch }) {
+interface MatchCardProps {
+  match: AppRouterOutput["beerPong"]["tournament"]["get"]["matches"][number];
+}
+
+function MatchCard({ match }: MatchCardProps) {
   const maxTeamNameLength = 29;
 
   return (
@@ -22,32 +22,32 @@ function MatchCard({ match }: { match: BeerPongTournamentMatch }) {
       <div
         className={
           "flex h-full w-full border-[1px] " +
-          (match.team1.id == match.winnerTeamId ? "bg-green-600" : "bg-auto") +
+          (match.team1?.id == match.winnerTeam?.id
+            ? "bg-green-600"
+            : "bg-auto") +
           " items-center justify-center text-wrap rounded-l-md p-1 text-center"
         }
       >
-        {match.team1.name.length > maxTeamNameLength
-          ? match.team1.name.slice(0, maxTeamNameLength) + "..."
-          : match.team1.name}
+        {(match.team1?.name?.length ?? 0 > maxTeamNameLength)
+          ? match.team1!.name.slice(0, maxTeamNameLength) + "..."
+          : match.team1!.name}
       </div>
       <div
-        className={cn({
-          "flex h-full w-full items-center justify-center overflow-hidden text-wrap break-all rounded-r-md border-[1px] p-1 text-center":
-            true,
-          "bg-green-600": match.team2.id == match.winnerTeamId,
-          "bg-auto": match.team2.id != match.winnerTeamId,
-        })}
+        className={cn([
+          "flex h-full w-full items-center justify-center overflow-hidden text-wrap break-all rounded-r-md border-[1px] p-1 text-center",
+          match.team2?.id == match.winnerTeam?.id ? "bg-green-600" : "bg-auto",
+        ])}
       >
-        {match.team2.name.length > maxTeamNameLength
-          ? match.team2.name.slice(0, maxTeamNameLength) + "..."
-          : match.team2.name}
+        {(match.team2?.name?.length ?? 0 > maxTeamNameLength)
+          ? match.team2!.name.slice(0, maxTeamNameLength) + "..."
+          : match.team2!.name}
       </div>
     </div>
   );
 }
 
 interface TeamCardProps {
-  team: BeerPongTournamentTeam;
+  team: AppRouterOutput["beerPong"]["tournament"]["get"]["teams"][number];
 }
 
 async function TeamCard({ team }: TeamCardProps) {
@@ -66,7 +66,7 @@ async function TeamCard({ team }: TeamCardProps) {
 }
 
 interface MatchPagesProps {
-  matches: BeerPongTournamentMatch[];
+  matches: AppRouterOutput["beerPong"]["tournament"]["get"]["matches"];
 }
 
 async function MatchPages({ matches }: MatchPagesProps) {
@@ -95,7 +95,7 @@ async function MatchPages({ matches }: MatchPagesProps) {
 }
 
 export interface ActivePageProps {
-  tournament: BeerPongTournament;
+  tournament: AppRouterOutput["beerPong"]["tournament"]["get"];
 }
 
 export default async function ActivePage({ tournament }: ActivePageProps) {

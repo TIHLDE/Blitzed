@@ -11,10 +11,10 @@ import {
 } from "~/components/ui/dialog";
 import { Label } from "~/components/ui/label";
 import React, { type ReactNode } from "react";
-import { BeerPongTournamentTeam } from "../../server/api/beer-pong/tournament/get/schema";
+import { AppRouterOutput } from "../../server/api/root";
 
 interface TeamCard {
-  team: BeerPongTournamentTeam;
+  team: AppRouterOutput["beerPong"]["tournament"]["get"]["teams"][number];
   children: ReactNode;
 }
 

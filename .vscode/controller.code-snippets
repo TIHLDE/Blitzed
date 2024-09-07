@@ -19,7 +19,7 @@
 		"scope": "typescript",
 		"prefix": "con",
 		"body": [
-			"import { Controller } from '~/server/api/root';",
+			"import { Controller } from '~/server/api/trpc';",
 			"",
 			"import { db } from '~/server/db';",
 			"import { z } from 'zod';",

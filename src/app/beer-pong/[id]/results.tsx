@@ -1,19 +1,15 @@
 "use server";
 
 import { Card, CardHeader, CardTitle } from "../../../components/ui/card";
-import { BeerPongTournamentTeamResult } from "../../../server/api/beer-pong/tournament/get-results/schema";
-import {
-  BeerPongTournament,
-  BeerPongTournamentTeam,
-} from "../../../server/api/beer-pong/tournament/get/schema";
+import { AppRouterOutput } from "../../../server/api/root";
 import { api } from "../../../trpc/server";
 
 export interface ResultsPageProps {
-  tournament: BeerPongTournament;
+  tournament: AppRouterOutput["beerPong"]["tournament"]["get"];
 }
 
 export default async function ResultsPage({ tournament }: ResultsPageProps) {
-  const results = await api.beerPong.getTournamentResults({
+  const results = await api.beerPong.tournament.getResults({
     tournamentId: tournament.id,
   });
 
@@ -31,19 +27,15 @@ export default async function ResultsPage({ tournament }: ResultsPageProps) {
   );
 }
 
-function TeamCard({
-  team,
-  place,
-}: {
-  team: BeerPongTournamentTeamResult;
-  place: number;
-}) {
+type Teams = AppRouterOutput["beerPong"]["tournament"]["getResults"];
+
+function TeamCard({ team }: { team: Teams[number] }) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex flex-col items-start gap-2">
           <CardTitle className={"font-medium"}>
-            #{place.toString()} {team.rank}
+            #{team.teamId.toString()} {team.rank}
           </CardTitle>
         </div>
       </CardHeader>
@@ -51,17 +43,17 @@ function TeamCard({
   );
 }
 
-function Losers({ teams }: { teams: BeerPongTournamentTeamResult[] }) {
+function Losers({ teams }: { teams: Teams }) {
   return (
     <div className="mt-4 flex w-full flex-col gap-4">
       {teams.slice(3).map((team, index) => (
-        <TeamCard key={index} team={team} place={index + 4} />
+        <TeamCard key={index} team={team} />
       ))}
     </div>
   );
 }
 
-function Podium({ teams }: { teams: BeerPongTournamentTeamResult[] }) {
+function Podium({ teams }: { teams: Teams }) {
   const firstPlace = teams.find((team) => team.rank === 1);
   const secondPlace = teams.find((team) => team.rank === 2);
   const thirdPlace = teams.find((team) => team.rank === 3);

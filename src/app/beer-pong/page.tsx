@@ -1,14 +1,13 @@
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
-import TournamentDetails from "../../components/tournament/tournament-details";
-import { Separator } from "../../components/ui/separator";
+import TournamentSummaryDetails from "../../components/tournament/tournament-details";
 import JoinTournamentForm from "../../components/tournament/join-tournament/form";
 import Link from "next/link";
-import { BeerPongTournamentSummary } from "~/server/api/beer-pong/tournament/get-all-public/schema";
 import { api } from "../../trpc/server";
+import { AppRouterOutput } from "../../server/api/root";
 
 export default async function BrowseTournamentsPage() {
-  const tournaments = await api.beerPong.getAllPublicTournaments();
+  const tournaments = await api.beerPong.tournament.getAllPublic();
 
   return (
     <main className="flex h-[calc(100svh-70px)] w-full flex-col items-center justify-between gap-4 px-4">
@@ -28,7 +27,10 @@ export default async function BrowseTournamentsPage() {
           ))}
         </div>
       </div>
-      <Button asChild className="mb-4 h-20 w-full max-w-md text-4xl font-bold">
+      <Button
+        asChild
+        className="mb-4 h-20 w-full max-w-md text-4xl font-bold text-white"
+      >
         <Link href="/beer-pong/create">Lag ny</Link>
       </Button>
     </main>
@@ -36,7 +38,7 @@ export default async function BrowseTournamentsPage() {
 }
 
 export interface TournameCardProps {
-  tournament: BeerPongTournamentSummary;
+  tournament: AppRouterOutput["beerPong"]["tournament"]["getAllPublic"][number];
 }
 
 function TournamentCard({ tournament }: TournameCardProps) {
@@ -44,7 +46,7 @@ function TournamentCard({ tournament }: TournameCardProps) {
     <Link href={`/beer-pong/${tournament.id}`} className="w-full">
       <Card className="flex w-full flex-col items-center justify-between gap-2 px-4 py-2 sm:flex-row">
         <div className="text-lg font-bold">{tournament.name}</div>
-        <TournamentDetails tournament={tournament} />
+        <TournamentSummaryDetails tournament={tournament} />
       </Card>
     </Link>
   );
