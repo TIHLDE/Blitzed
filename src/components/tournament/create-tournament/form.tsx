@@ -78,7 +78,7 @@ export function CreateTournamentForm() {
           control={form.control}
           name="randomTeams"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between gap-4 p-4">
+            <FormItem className="mt-4 flex flex-row items-center justify-between gap-4">
               <div className="">
                 <FormLabel className="text-base">
                   Tilfeldig rekkefølge?
@@ -100,7 +100,7 @@ export function CreateTournamentForm() {
           control={form.control}
           name="thildeExclusive"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between gap-4 p-4">
+            <FormItem className="mt-4 flex flex-row items-center justify-between gap-4">
               <div>
                 <FormLabel className="text-base">THILDE-exclusive?</FormLabel>
                 <FormDescription>
@@ -120,7 +120,7 @@ export function CreateTournamentForm() {
           control={form.control}
           name="maxTeamSize"
           render={({ field }) => (
-            <FormItem className="m-[0px!important] flex flex-col items-start justify-between gap-2 space-y-0 pl-4 pr-4">
+            <FormItem className="mt-4 flex flex-col items-start justify-between gap-2 space-y-0">
               <div className="flex w-full items-center justify-between">
                 <FormLabel className="text-lg text-white">
                   Maks lagstørrelse
@@ -143,7 +143,7 @@ export function CreateTournamentForm() {
           control={form.control}
           name="maxTeamSize"
           render={({ field }) => (
-            <FormItem className="m-[0px!important] flex flex-col items-start justify-between gap-2 space-y-0 pl-4 pr-4">
+            <FormItem className="mt-4 flex flex-col items-start justify-between gap-2 space-y-0">
               <div className="flex w-full items-center justify-between">
                 <FormLabel className="text-lg text-white">
                   Maks antall spillere per lag
@@ -166,14 +166,14 @@ export function CreateTournamentForm() {
           name="access"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel>Synlighet</FormLabel>
+              <FormLabel className="text-lg font-semibold">Synlighet</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
-                  className="flex flex-col space-y-1"
+                  className="flex flex-col gap-4 space-y-1"
                 >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-x-3 space-y-0 border-4 p-4">
                     <FormControl>
                       <RadioGroupItem value="PUBLIC" />
                     </FormControl>

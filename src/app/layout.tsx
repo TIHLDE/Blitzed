@@ -7,6 +7,7 @@ import Navbar from "../components/layout/navbar";
 import Footer from "../components/layout/footer";
 import ContextProviders from "~/components/layout/context-providers";
 import { getServerAuthSession } from "~/server/auth";
+import { Toaster } from "../components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Blitzed",
@@ -27,6 +28,7 @@ export default async function RootLayout({
             <Navbar />
             {children}
             <Footer />
+            <Toaster />
           </ContextProviders>
         </TRPCReactProvider>
       </body>

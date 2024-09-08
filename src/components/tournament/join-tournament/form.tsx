@@ -1,161 +1,61 @@
 "use client";
 
-import { type z } from "zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
 import { useEffect, useState } from "react";
-import formSchema from "./schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../trpc/react";
 import { useRouter } from "next/navigation";
+import { useToast } from "../../../hooks/use-toast";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "~/components/ui/input-otp";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
 
 export default function JoinTournamentForm() {
   const [pinCode, setPinCode] = useState("");
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
 
-  // Callback version of watch.  It's your responsibility to unsubscribe when done.
-  useEffect(() => {
-    const subscription = form.watch((data) => {
-      // Find the next formfield that is empty, and focus it
-      // this way the user automatically traverses all of the input fields :)
-      const values = [data.first, data.second, data.third, data.fourth];
-      const ids = ["first", "second", "third", "fourth"];
-      const indexNextEmpty = values.findIndex((v) => !v);
-
-      if (indexNextEmpty !== -1) {
-        const id = ids[indexNextEmpty];
-        document.getElementById(id!)?.focus();
-      } else {
-        // We should submit the form since all fields have been filled out
-        form.handleSubmit(onSubmit)();
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
-
-  const { data: tournament, error } = api.beerPong.tournament.get.useQuery(
+  const {
+    data: tournament,
+    error,
+    isLoading,
+  } = api.beerPong.tournament.get.useQuery(
     { pinCode },
-    { enabled: pinCode.length === 4 },
+    { enabled: pinCode.length === 4, retry: false },
   );
   const router = useRouter();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (tournament) {
+      router.push(`/beer-pong/${tournament!.id}`);
+    }
+  }, [tournament]);
 
   useEffect(() => {
     if (error) {
-      console.error(error);
+      toast({
+        title: error.message,
+        variant: "destructive",
+      });
+      setPinCode("");
     }
-
-    if (tournament) {
-      router.push(`/beer-pong/${tournament.id}`);
-    }
-  }, [tournament, error]);
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const code = [
-      values.first,
-      values.second,
-      values.third,
-      values.fourth,
-    ].join("");
-
-    setPinCode(code);
-  };
+  }, [error]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex h-14 w-full max-w-md flex-row items-center justify-between gap-2">
-          <div className="h-full basis-[100%]">
-            <FormField
-              control={form.control}
-              rules={{}}
-              name="first"
-              render={({ field }) => (
-                <FormItem className="h-full">
-                  <FormControl>
-                    <Input
-                      id="first"
-                      className="h-full text-center text-2xl font-medium"
-                      type="number"
-                      maxLength={1}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="h-full basis-[100%]">
-            <FormField
-              control={form.control}
-              name="second"
-              render={({ field }) => (
-                <FormItem className="h-full">
-                  <FormControl>
-                    <Input
-                      id="second"
-                      className="h-full text-center text-2xl font-medium"
-                      type="number"
-                      maxLength={1}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="h-full basis-[100%]">
-            <FormField
-              control={form.control}
-              name="third"
-              render={({ field }) => (
-                <FormItem className="h-full">
-                  <FormControl>
-                    <Input
-                      id="third"
-                      className="h-full text-center text-2xl font-medium"
-                      type="number"
-                      maxLength={1}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="h-full basis-[100%]">
-            <FormField
-              control={form.control}
-              name="fourth"
-              render={({ field }) => (
-                <FormItem className="h-full">
-                  <FormControl>
-                    <Input
-                      id="fourth"
-                      className="h-full text-center text-2xl font-medium"
-                      type="number"
-                      maxLength={1}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-      </form>
-    </Form>
+    <InputOTP
+      maxLength={4}
+      containerClassName="w-full"
+      disabled={isLoading}
+      pattern={REGEXP_ONLY_DIGITS}
+      value={pinCode}
+      onChange={setPinCode}
+    >
+      <InputOTPGroup className="flex w-full flex-1 justify-stretch">
+        <InputOTPSlot index={0} className="h-16 w-full flex-1 text-2xl" />
+        <InputOTPSlot index={1} className="h-16 w-full flex-1 text-2xl" />
+        <InputOTPSlot index={2} className="h-16 w-full flex-1 text-2xl" />
+        <InputOTPSlot index={3} className="h-16 w-full flex-1 text-2xl" />
+      </InputOTPGroup>
+    </InputOTP>
   );
 }

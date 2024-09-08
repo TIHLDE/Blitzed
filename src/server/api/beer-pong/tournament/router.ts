@@ -3,6 +3,7 @@ import create from "./controller/create";
 import destroy from "./controller/destroy";
 import get from "./controller/get";
 import getAllPublic from "./controller/get-all-public";
+import getOwned from "./controller/get-owned";
 import getResults from "./controller/get-results";
 import selectMatchWinner from "./controller/select-match-winner";
 import start from "./controller/start";
@@ -54,6 +55,11 @@ export const tournamentRouter = createTRPCRouter({
    * Shows all tournaments that are available to the current user
    */
   getAllPublic,
+
+  /**
+   * Get all owned tournaments (the ones you have created)
+   */
+  getOwned,
 
   /**
    * Retrieve a tournament's results

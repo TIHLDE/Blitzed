@@ -12,6 +12,7 @@
   },
   "aliases": {
     "components": "~/components",
-    "utils": "~/util/tailwind-cn"
+    "utils": "~/util/tailwind-cn",
+    "hooks": "~/hooks"
   }
 }
