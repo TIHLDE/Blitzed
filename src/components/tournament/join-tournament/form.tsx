@@ -14,6 +14,15 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 export default function JoinTournamentForm() {
   const [pinCode, setPinCode] = useState("");
 
+  const { mutateAsync: joinTeam } = api.beerPong.team.join.useMutation();
+
+  const joinATeam = async () => {
+    await joinTeam({
+      teamId: 2,
+      tournamentId: "tournament id",
+    });
+  };
+
   const {
     data: tournament,
     error,
