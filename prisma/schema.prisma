@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String               @id @default(cuid())
+  nickname           String
+  role               UserRole
+  createdTournaments BeerPongTournament[]
+  beerPongTeams      UserBeerPongTeam[]
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  ANONYMOUS
+}
+
+model BeerPongTournament {
+  id                String                   @id @default(cuid())
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  status            BeerPongTournamentStatus @default(CREATED)
+  access            BeerPongTournamentAccess
+  pinCode           String?                  @unique
+  creator           User                     @relation(fields: [creatorId], references: [id])
+  creatorId         String
+  matches           BeerPongMatch[]
+  teams             BeerPongTeam[]
+  name              String
+  randomizeTeams    Boolean
+  isTihldeExclusive Boolean
+  maxTeamSize       Int?
+  maxTeamCount      Int?
+}
+
+model BeerPongMatch {
+  id              Int
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  tournament      BeerPongTournament @relation(fields: [tournamentId], references: [id])
+  tournamentId    String
+  round           Int
+  team1           BeerPongTeam?      @relation(fields: [team1Id, tournamentId], references: [id, tournamentId], name: "team1")
+  team1Id         Int?
+  team2           BeerPongTeam?      @relation(fields: [team2Id, tournamentId], references: [id, tournamentId], name: "team2")
+  team2Id         Int?
+  winner          BeerPongTeam?      @relation(fields: [winnerTeamId, tournamentId], references: [id, tournamentId], name: "winnerTeam")
+  winnerTeamId    Int?
+  nextMatch       BeerPongMatch?     @relation(fields: [id, tournamentId], references: [id, tournamentId], name: "nextMatch")
+  nextMatchId     Int?
+  previousMatches BeerPongMatch[]    @relation("nextMatch")
+
+  @@id([id, tournamentId])
+}
+
+model BeerPongTeam {
+  id            Int                @default(autoincrement())
+  name          String
+  team1Matches  BeerPongMatch[]    @relation("team1")
+  team2Matches  BeerPongMatch[]    @relation("team2")
+  winnerMatches BeerPongMatch[]    @relation("winnerTeam")
+  tournament    BeerPongTournament @relation(fields: [tournamentId], references: [id])
+  tournamentId  String
+  members       UserBeerPongTeam[]
+
+  @@id([id, tournamentId])
+}
+
+model UserBeerPongTeam {
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  beerPongTeam   BeerPongTeam @relation(fields: [beerPongTeamId, tournamentId], references: [id, tournamentId], onDelete: Cascade)
+  beerPongTeamId Int
+  tournamentId   String
+
+  @@id([userId, beerPongTeamId])
+}
+
+enum BeerPongTournamentAccess {
+  PUBLIC
+  PIN
+}
+
+enum BeerPongTournamentStatus {
+  CREATED
+  ACTIVE
+  FINISHED
+}
