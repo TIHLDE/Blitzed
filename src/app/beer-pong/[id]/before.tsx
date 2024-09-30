@@ -59,7 +59,7 @@ export default function BeforePage({ tournament }: BeforePageProps) {
             ))}
           </div>
         </div>
-        <Button className="mb-4 h-20 w-full max-w-md text-4xl font-bold text-foreground">
+        <Button className="mb-4 h-20 w-full max-w-md text-4xl font-bold text-foreground text-white">
           Start!
         </Button>
       </main>
