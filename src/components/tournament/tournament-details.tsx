@@ -1,12 +1,6 @@
 "use client";
 
-import { User as UserIcon, Users as TeamIcon } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import { User as UserIcon, Award, Users as TeamIcon } from "lucide-react";
 import { AppRouterOutput } from "../../server/api/root";
 
 interface TournamentCardProps {
@@ -15,29 +9,13 @@ interface TournamentCardProps {
 
 export default function TournamentSummaryDetails(props: TournamentCardProps) {
   return (
-    <div className="flex gap-3 text-end">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <span className="flex gap-1 text-lg font-medium">
-              {props.tournament.playerCount} <UserIcon />
+    <div className="flex gap-3 text-end h-fit gap-3">
+            <span className="gap-1 text-xs font-medium flex">
+              <TeamIcon className="h-[0.9rem] w-fit"/> <p> {props.tournament.playerCount} deltakere </p>
             </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Antall deltagere</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <div className="flex gap-1 text-lg font-medium">
-              {props.tournament.teamCount} <TeamIcon />
+            <div className="gap-1 text-xs font-medium flex">
+              <Award className="h-[0.9rem] w-fit"/> <p> {props.tournament.teamCount} lag </p>
             </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Antall lag</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
     </div>
   );
 }

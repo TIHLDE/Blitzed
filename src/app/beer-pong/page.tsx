@@ -6,6 +6,7 @@ import Link from "next/link";
 import { api } from "../../trpc/server";
 import { AppRouterOutput } from "../../server/api/root";
 import { EmptyCard } from "../../components/ui/empty-card";
+import LogoSmall from '~/components/logo-small';
 
 export default async function BrowseTournamentsPage() {
   const publicTournaments = await api.beerPong.tournament.getAllPublic();
@@ -17,7 +18,7 @@ export default async function BrowseTournamentsPage() {
         <div className="mb-2 ml-2 mt-8 text-2xl font-bold">
           Mine turneringer
         </div>
-        <div className="flex w-full max-w-md flex-col items-center justify-start gap-2">
+        <div className="flex w-full max-w-md flex-row flex-wrap items-center justify-start gap-2">
           {ownedTournaments.map((t) => (
             <TournamentCard tournament={t} key={t.id} />
           ))}
@@ -67,10 +68,14 @@ export interface TournameCardProps {
 
 function TournamentCard({ tournament }: TournameCardProps) {
   return (
-    <Link href={`/beer-pong/${tournament.id}`} className="w-full">
-      <Card className="flex w-full flex-col items-center justify-between gap-2 px-4 py-2 sm:flex-row">
-        <div className="text-lg font-bold">{tournament.name}</div>
+    <Link href={`/beer-pong/${tournament.id}`} className="w-fit">
+      <Card className="flex h-24 gap-2 flex-col px-2 py-2 w-full">
+        <div className="flex justify-between w-full">
+          <div className="h-fit text-lg font-bold">{tournament.name}</div>
+          <LogoSmall className="w-fit"></LogoSmall>
+        </div>
         <TournamentSummaryDetails tournament={tournament} />
+        <div className="border h-20 mt-1"></div>
       </Card>
     </Link>
   );
