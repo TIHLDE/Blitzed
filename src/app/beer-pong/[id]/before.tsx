@@ -10,12 +10,16 @@ import {
   CardTitle,
 } from "../../../components/ui/card";
 import { AppRouterOutput } from "../../../server/api/root";
+import { api } from "../../../trpc/react";
+import { useParams } from "next/navigation";
 
 interface TeamCardProps {
   team: AppRouterOutput["beerPong"]["tournament"]["get"]["teams"][number];
 }
 
 function TeamCard({ team }: TeamCardProps) {
+  const { mutateAsync: joinTeam } = api.beerPong.team.join.useMutation();
+  const { id } = useParams();
   return (
     <TeamDetailsDialog team={team}>
       <Card>
@@ -26,7 +30,16 @@ function TeamCard({ team }: TeamCardProps) {
               Antall spillere: {team.members.length}
             </CardDescription>
           </div>
-          <Button className="z-50 mt-[0px!important]" variant={"outline"}>
+          <Button
+            className="z-50 mt-[0px!important]"
+            variant={"outline"}
+            onClick={() =>
+              joinTeam({
+                teamId: team.id,
+                tournamentId: id as string,
+              })
+            }
+          >
             Bli med
           </Button>
         </CardHeader>
@@ -41,25 +54,27 @@ export interface BeforePageProps {
 
 export default function BeforePage({ tournament }: BeforePageProps) {
   return (
-    <div>
+    <div className="mx-auto max-w-sm">
       <main className="flex h-[calc(100svh-70px)] w-full flex-col items-center justify-between gap-4 px-4">
-        <div className="flex w-full flex-col justify-center">
-          <div className="mb-1 mt-4">My tournament title</div>
-          <div className="mb-4 flex flex-row items-center justify-between">
-            {Boolean(tournament.pinCode) && (
-              <div className="text-3xl font-bold">
-                Kode: {tournament.pinCode}
-              </div>
-            )}
-            <CreateTeamDialog />
+        <div className="flex w-full flex-row items-center justify-between">
+          <div className="flex w-full flex-col justify-center">
+            <div className="mb-1 mt-4 text-xl">{tournament.name}</div>
+            <div className="mb-4 flex flex-row items-center justify-between">
+              {Boolean(tournament.pinCode) && (
+                <div className="text-3xl font-bold">
+                  Kode: {tournament.pinCode}
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            {tournament.teams.map((t) => (
-              <TeamCard team={t} key={t.name} />
-            ))}
-          </div>
+          <CreateTeamDialog />
         </div>
-        <Button className="mb-4 h-20 w-full max-w-md text-4xl font-bold text-foreground">
+        <div className="flex h-full w-full flex-col gap-2">
+          {tournament.teams.map((t) => (
+            <TeamCard team={t} key={t.name} />
+          ))}
+        </div>
+        <Button className="mb-4 h-20 w-full max-w-md text-4xl font-bold text-white">
           Start!
         </Button>
       </main>

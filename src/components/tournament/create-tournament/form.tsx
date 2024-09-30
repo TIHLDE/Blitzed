@@ -107,8 +107,9 @@ export function CreateTournamentForm() {
                   Bare THILDE-medlemmer kan delta
                 </FormDescription>
               </div>
-              <FormControl>
+              <FormControl className="h-20 w-20">
                 <Switch
+                  className="h-20 w-20"
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
