@@ -1,16 +1,9 @@
-import { as } from "vitest/dist/chunks/reporters.WnPwkmgA.js";
 import { z } from "zod";
 import { Controller, protectedProcedure } from "~/server/api/trpc";
 import { assertHasCreateQuestionGameControl } from "../../middleware";
+import { InputSchema, OutputSchema } from "../schema/create";
 import { db } from "~/server/db";
 
-export const InputSchema = z.object({
-    title: z.string()
-});
-
-export const OutputSchema = z.object({
-    questionGameId: z.string()
-});
 
 const handler: Controller<
     z.infer<typeof InputSchema>,
