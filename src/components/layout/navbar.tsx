@@ -1,7 +1,4 @@
 "use server";
-
-import Logo from "~/components/logo";
-import LogoSmall from "~/components/logo-small";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { ThemeModeToggler } from "~/components/ui/theme-mode-toggler";
@@ -11,18 +8,17 @@ export default async function Navbar() {
   return (
     <nav className="flex flex-col content-start bg-background">
       <div className="flex items-center justify-between border-b-[1px] p-3">
-        <a href="/home">
-          <Logo
-            className="hidden fill-primary sm:block"
-            width={200}
-            height={"auto"}
-          />
-          <LogoSmall
-            className="block fill-primary sm:hidden"
-            width={200}
-            height={"auto"}
-          />
-        </a>
+        <div className="flex items-end">
+          <a href="/home">
+            <img
+              src="img/blitzed-logo.svg"
+              width={50}
+              height={"auto"}
+              alt="blitzed-logo"
+            />
+          </a>
+          <p className="hidden text-4xl text-primary md:flex"> Blitzed </p>
+        </div>
         <div className="flex gap-3">
           <Button size={"icon"} variant={"ghost"}>
             <Avatar className="duration-100 hover:brightness-90">
