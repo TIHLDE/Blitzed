@@ -17,7 +17,7 @@ export default async function Navbar() {
               alt="blitzed-logo"
             />
           </a>
-          <p className="hidden text-4xl text-blue-600 md:flex"> Blitzed </p>
+          <p className="hidden text-4xl text-primary md:flex"> Blitzed </p>
         </div>
         <div className="flex gap-3">
           <Button size={"icon"} variant={"ghost"}>
