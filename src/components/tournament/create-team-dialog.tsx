@@ -34,10 +34,16 @@ const InputSchema = z.object({
   joinTeam: z.boolean().default(true),
 });
 
-export function CreateTeamDialog() {
+export interface CreateTeamDialogProps {
+  refetchTournament: () => void;
+}
+
+export function CreateTeamDialog({ refetchTournament }: CreateTeamDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
-  const { mutateAsync: createTeam } = api.beerPong.team.create.useMutation();
+  const { mutateAsync: createTeam } = api.beerPong.team.create.useMutation({
+    onSuccess: refetchTournament,
+  });
 
   const form = useForm<z.infer<typeof InputSchema>>({
     resolver: zodResolver(InputSchema),

@@ -25,9 +25,11 @@ export default async function RootLayout({
       <body>
         <TRPCReactProvider>
           <ContextProviders session={session}>
-            <Navbar />
-            {children}
-            <Footer />
+            <main className="flex flex-col items-center justify-start">
+              <Navbar />
+              {children}
+              <Footer />
+            </main>
             <Toaster />
           </ContextProviders>
         </TRPCReactProvider>
