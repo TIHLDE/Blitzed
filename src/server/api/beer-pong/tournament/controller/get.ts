@@ -8,15 +8,14 @@ import {
 } from "../../enum";
 import { db } from "../../../../db";
 import { TRPCError } from "@trpc/server";
-import { assertHasTournamentAccess } from "../../middleware";
 
 const BeerPongTournamentTeamSchema = z.object({
   id: z.number().int(),
-  name: z.string().min(2).max(20),
+  name: z.string(),
   members: z.array(
     z.object({
-      id: z.string().cuid(),
-      nickname: z.string().min(2).max(20),
+      id: z.string(),
+      nickname: z.string(),
     }),
   ),
 });
@@ -36,7 +35,7 @@ const BeerPongTournamentMatchSchema = z.object({
 });
 
 export const BeerPongTournamentSchema = z.object({
-  id: z.string().cuid(),
+  id: z.string(),
   name: z.string().min(2).max(20),
   currentMatchId: z.number().nullable(),
   /**
