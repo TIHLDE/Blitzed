@@ -11,7 +11,7 @@ export default async function Navbar() {
         <div className="flex items-end">
           <a href="/home">
             <img
-              src="img/blitzed-logo.svg"
+              src="/img/blitzed-logo.svg"
               width={35}
               height={"auto"}
               alt="blitzed-logo"
