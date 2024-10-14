@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Controller, protectedProcedure } from "~/server/api/trpc";
+import { adminProcedure, Controller } from '~/server/api/trpc';
 import { assertHasCreateQuestionGameControl } from "../../middleware";
 import { InputSchema, OutputSchema } from "../schema/create";
 import { db } from "~/server/db";
@@ -14,11 +14,6 @@ const handler: Controller<
     const game = await db.questionGame.create({
         data: {
             title: input.title,
-            user: {
-                connect: {
-                    id: ctx.session.user.id
-                }
-            }
         },
         select: {
             id: true
@@ -30,7 +25,7 @@ const handler: Controller<
     }
 }
 
-export default protectedProcedure
+export default adminProcedure
     .input(InputSchema)
     .output(OutputSchema)
     .mutation(handler);
