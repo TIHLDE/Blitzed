@@ -6,18 +6,21 @@ import { UserRound } from "lucide-react";
 
 export default async function Navbar() {
   return (
-    <nav className="flex flex-col content-start bg-background">
-      <div className="flex items-center justify-between border-b-[1px] p-3">
+    <nav className="flex w-full flex-col content-start bg-background">
+      <div className="flex w-full items-center justify-between gap-3 border-b-[1px] p-3">
         <div className="flex items-end">
           <a href="/home">
             <img
               src="img/blitzed-logo.svg"
-              width={50}
+              width={35}
               height={"auto"}
               alt="blitzed-logo"
             />
           </a>
-          <p className="hidden text-4xl text-primary md:flex"> Blitzed </p>
+          <p className="hidden self-center text-3xl font-bold text-primary md:flex">
+            {" "}
+            Blitzed{" "}
+          </p>
         </div>
         <div className="flex gap-3">
           <Button size={"icon"} variant={"ghost"}>
