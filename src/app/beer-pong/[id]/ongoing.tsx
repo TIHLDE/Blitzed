@@ -1,5 +1,7 @@
-"use server";
+"use client";
 
+import { useMemo } from "react";
+import { Card, CardDescription, CardTitle } from "../../../components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -9,28 +11,39 @@ import {
 } from "../../../components/ui/carousel";
 import { AppRouterOutput } from "../../../server/api/root";
 import { cn } from "../../../util/tailwind-cn";
+import { Button } from "../../../components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "../../../components/ui/dialog";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { api } from "../../../trpc/react";
+import { useRouter } from "next/navigation";
 
 interface MatchCardProps {
   match: AppRouterOutput["beerPong"]["tournament"]["get"]["matches"][number];
 }
 
-function MatchCard({ match }: MatchCardProps) {
-  const maxTeamNameLength = 29;
+const maxNameLength = 29;
+const truncateName = (name?: string | null) => {
+  if (!name) return "";
+  return name.length > maxNameLength
+    ? name.slice(0, maxNameLength) + "..."
+    : name;
+};
 
+function MatchCard({ match }: MatchCardProps) {
   return (
     <div className="flex h-24 text-xs min-[400px]:text-sm min-[440px]:text-base min-[500px]:text-lg">
       <div
-        className={
-          "flex h-full w-full border-[1px] " +
-          (match.team1?.id == match.winnerTeam?.id
-            ? "bg-green-600"
-            : "bg-auto") +
-          " items-center justify-center text-wrap rounded-l-md p-1 text-center"
-        }
+        className={cn(
+          "flex h-full w-full border-[1px]",
+          match.team1?.id == match.winnerTeam?.id ? "bg-green-600" : "bg-auto",
+          "items-center justify-center text-wrap rounded-l-md p-1 text-center",
+        )}
       >
-        {(match.team1?.name?.length ?? 0 > maxTeamNameLength)
-          ? match.team1!.name.slice(0, maxTeamNameLength) + "..."
-          : match.team1!.name}
+        {truncateName(match.team1?.name)}
       </div>
       <div
         className={cn([
@@ -38,28 +51,7 @@ function MatchCard({ match }: MatchCardProps) {
           match.team2?.id == match.winnerTeam?.id ? "bg-green-600" : "bg-auto",
         ])}
       >
-        {(match.team2?.name?.length ?? 0 > maxTeamNameLength)
-          ? match.team2!.name.slice(0, maxTeamNameLength) + "..."
-          : match.team2!.name}
-      </div>
-    </div>
-  );
-}
-
-interface TeamCardProps {
-  team: AppRouterOutput["beerPong"]["tournament"]["get"]["teams"][number];
-}
-
-async function TeamCard({ team }: TeamCardProps) {
-  return (
-    <div className="flex max-h-60 w-full flex-col rounded-md border-[1px] p-2">
-      <div className="truncate font-bold">{team.name}</div>
-      <div className="truncate">
-        {team.members.reduce(
-          (p, c, i) =>
-            p + (i == team.members.length - 1 ? " og " : ", ") + c.nickname,
-          "",
-        )}
+        {truncateName(match.team2?.name)}
       </div>
     </div>
   );
@@ -69,7 +61,7 @@ interface MatchPagesProps {
   matches: AppRouterOutput["beerPong"]["tournament"]["get"]["matches"];
 }
 
-async function MatchPages({ matches }: MatchPagesProps) {
+function MatchPages({ matches }: MatchPagesProps) {
   const pagesAmount = Math.floor(Math.log2(matches.length)) + 1;
   return (
     <>
@@ -83,9 +75,9 @@ async function MatchPages({ matches }: MatchPagesProps) {
               Runde {i + 1}{" "}
             </h1>
             {matches
-              .filter((_) => _.round == i + 1)
-              .map((t) => (
-                <MatchCard match={t} key={1}></MatchCard>
+              .filter((m) => m.round == i + 1)
+              .map((m) => (
+                <MatchCard match={m} key={1}></MatchCard>
               ))}
           </CarouselItem>
         );
@@ -94,35 +86,118 @@ async function MatchPages({ matches }: MatchPagesProps) {
   );
 }
 
-export interface ActivePageProps {
+export interface TournamentProps {
   tournament: AppRouterOutput["beerPong"]["tournament"]["get"];
 }
 
-export default async function ActivePage({ tournament }: ActivePageProps) {
+export default function ActivePage({ tournament }: TournamentProps) {
   return (
-    <div className={"w-screen"}>
-      <div className="mx-auto max-w-2xl">
+    <div className={"min-h-[100svh] w-full"}>
+      <div className="mx-auto flex w-full flex-col items-center">
         <div className="mt-2 text-center text-xl font-bold">
           {tournament.name}
         </div>
-        <div>
-          <Carousel
-            className="my-10 overflow-hidden px-10"
-            opts={{ align: "start" }}
-          >
-            <CarouselPrevious />
-            <CarouselContent>
-              <MatchPages matches={tournament.matches} />
-            </CarouselContent>
-            <CarouselNext />
-          </Carousel>
-          <div className="mt-5 flex w-full flex-col gap-5 px-4">
-            {tournament.teams.slice(1).map((t) => (
-              <TeamCard team={t} key={t.name} />
-            ))}
-          </div>
-        </div>
+        <Carousel
+          className="my-10 w-full overflow-hidden px-10"
+          opts={{ align: "start" }}
+        >
+          <CarouselPrevious />
+          <CarouselContent>
+            <MatchPages matches={tournament.matches} />
+          </CarouselContent>
+          <CarouselNext />
+        </Carousel>
+        <CurrentMatchCard tournament={tournament} />
       </div>
     </div>
+  );
+}
+
+function CurrentMatchCard({ tournament }: TournamentProps) {
+  const match = useMemo(
+    () => tournament.matches.find((m) => m.id == tournament.currentMatchId),
+    [tournament],
+  );
+  const router = useRouter();
+
+  return (
+    <>
+      {Boolean(match) && (
+        <Card className="flex w-full max-w-xs flex-col items-center px-4 py-2">
+          <CardDescription>Nåværende kamp</CardDescription>
+          <CardTitle>
+            <span className="font-semibold">{match?.team1?.name}</span>
+            <span className="text-base font-semibold"> mot </span>
+            <span className="font-semibold">{match?.team2?.name}</span>
+          </CardTitle>
+          {tournament.isCreator && (
+            <SelectWinnerDialog
+              tournament={tournament}
+              refetchTournament={() => router.refresh()}
+            />
+          )}
+        </Card>
+      )}
+    </>
+  );
+}
+
+interface SelectWinnerDialogProps {
+  tournament: AppRouterOutput["beerPong"]["tournament"]["get"];
+  refetchTournament: () => void;
+}
+
+function SelectWinnerDialog({
+  refetchTournament,
+  tournament,
+}: SelectWinnerDialogProps) {
+  const router = useRouter();
+  const { mutateAsync: selectWinner } =
+    api.beerPong.tournament.selectMatchWinner.useMutation({
+      onSuccess: () => router.refresh(),
+    });
+  const match = useMemo(
+    () => tournament.matches.find((m) => m.id == tournament.currentMatchId),
+    [tournament],
+  );
+
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Button variant={"outline"} className="mt-2 w-full">
+          Avslutt kamp
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Velg vinneren av kampen</DialogTitle>
+        <DialogDescription>
+          Da går turneringen videre til neste kamp
+        </DialogDescription>
+        <Button
+          variant={"outline"}
+          onClick={() =>
+            selectWinner({
+              matchId: match!.id!,
+              winnerTeamId: match!.team1!.id,
+              tournamentId: tournament.id,
+            })
+          }
+        >
+          {match?.team1?.name}
+        </Button>
+        <Button
+          variant={"outline"}
+          onClick={() =>
+            selectWinner({
+              matchId: match!.id!,
+              winnerTeamId: match!.team2!.id,
+              tournamentId: tournament.id,
+            })
+          }
+        >
+          {match?.team2?.name}
+        </Button>
+      </DialogContent>
+    </Dialog>
   );
 }

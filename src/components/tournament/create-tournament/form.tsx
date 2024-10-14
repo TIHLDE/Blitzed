@@ -107,8 +107,9 @@ export function CreateTournamentForm() {
                   Bare THILDE-medlemmer kan delta
                 </FormDescription>
               </div>
-              <FormControl>
+              <FormControl className="h-20 w-20">
                 <Switch
+                  className="h-20 w-20"
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
@@ -118,12 +119,12 @@ export function CreateTournamentForm() {
         />
         <FormField
           control={form.control}
-          name="maxTeamSize"
+          name="maxTeamCount"
           render={({ field }) => (
             <FormItem className="mt-4 flex flex-col items-start justify-between gap-2 space-y-0">
               <div className="flex w-full items-center justify-between">
-                <FormLabel className="text-lg text-white">
-                  Maks lagstørrelse
+                <FormLabel className="text-lg">
+                  Maks lagstørrelsMaks antall spillee
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -145,7 +146,7 @@ export function CreateTournamentForm() {
           render={({ field }) => (
             <FormItem className="mt-4 flex flex-col items-start justify-between gap-2 space-y-0">
               <div className="flex w-full items-center justify-between">
-                <FormLabel className="text-lg text-white">
+                <FormLabel className="text-lg">
                   Maks antall spillere per lag
                 </FormLabel>
                 <FormControl>
@@ -173,17 +174,17 @@ export function CreateTournamentForm() {
                   defaultValue={field.value}
                   className="flex flex-col gap-4 space-y-1"
                 >
-                  <FormItem className="flex items-center space-x-3 space-y-0 border-4 p-4">
+                  <FormItem className="flex items-center space-x-3 space-y-0 px-4">
                     <FormControl>
                       <RadioGroupItem value="PUBLIC" />
                     </FormControl>
-                    <FormLabel className="font-normal">Åpen for alle</FormLabel>
+                    <FormLabel className="text-xl">Åpen for alle</FormLabel>
                   </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-x-3 space-y-0 px-4">
                     <FormControl>
                       <RadioGroupItem value="PIN" />
                     </FormControl>
-                    <FormLabel className="font-normal">
+                    <FormLabel className="text-xl">
                       Beskyttet med PIN kode
                     </FormLabel>
                   </FormItem>

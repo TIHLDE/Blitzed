@@ -11,88 +11,117 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Trash2Icon as DeleteIcon, PlusIcon } from "lucide-react";
+import { api } from "../../trpc/react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormDescription,
+  FormControl,
+  FormMessage,
+  Form,
+} from "../ui/form";
+import { useParams } from "next/navigation";
 import { useState } from "react";
-import { Card } from "../ui/card";
+import { Switch } from "../ui/switch";
 
-export function CreateTeamDialog() {
-  const [users, setUsers] = useState<string[]>([]);
+const InputSchema = z.object({
+  tournamentId: z.string(),
+  teamName: z.string(),
+  joinTeam: z.boolean().default(true),
+});
 
-  const handleAddUser = () => {
-    const element = document.getElementById("username") as unknown as {
-      value: string;
-    };
-    const text = element.value;
-    setUsers((u) => [...u, text]);
-    element.value = "";
+export interface CreateTeamDialogProps {
+  refetchTournament: () => void;
+}
+
+export function CreateTeamDialog({ refetchTournament }: CreateTeamDialogProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { id } = useParams();
+  const { mutateAsync: createTeam } = api.beerPong.team.create.useMutation({
+    onSuccess: refetchTournament,
+  });
+
+  const form = useForm<z.infer<typeof InputSchema>>({
+    resolver: zodResolver(InputSchema),
+    defaultValues: {
+      teamName: "",
+      joinTeam: true,
+      tournamentId: id as string,
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof InputSchema>) => {
+    await createTeam(values);
+    setIsOpen(false);
+    form.reset();
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary">Opprett lag</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="text-left">Opprett et lag</DialogTitle>
-          <DialogDescription className="text-left">
-            Gi laget et navn og velg hvem som skal være med
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4">
-          <div>
-            <Label htmlFor="name" className="text-right">
-              Teamnavn
-            </Label>
-            <Input id="name" defaultValue="" className="mt-2" />
-          </div>
-          <div>
-            <Label htmlFor="username" className="w-full">
-              Legg til spiller
-            </Label>
-            <div className="mt-2 flex flex-row gap-2">
-              <Input
-                id="username"
-                defaultValue=""
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleAddUser();
-                  }
-                }}
-              />
-              <Button
-                size="icon"
-                variant="outline"
-                className="aspect-square"
-                onClick={handleAddUser}
-              >
-                <PlusIcon />
-              </Button>
-            </div>
-          </div>
-          <div className="flex w-full flex-col items-center gap-2">
-            {users.map((user, idx) => (
-              <Card
-                key={user}
-                className="flex w-full items-center gap-2 px-4 py-2"
-              >
-                <div>#{idx + 1}</div>
-                <div className="flex-grow p-2 text-lg font-medium">{user}</div>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => setUsers((u) => u.filter((_, i) => i !== idx))}
-                >
-                  <DeleteIcon />
-                </Button>
-              </Card>
-            ))}
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Lagre</Button>
-        </DialogFooter>
+      <DialogContent className="w-full sm:max-w-[425px]">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full max-w-md space-y-4"
+          >
+            <DialogHeader>
+              <DialogTitle className="text-left">Opprett et lag</DialogTitle>
+              <DialogDescription className="text-left">
+                Gi laget et navn og velg hvem som skal være med
+              </DialogDescription>
+            </DialogHeader>
+            <FormField
+              control={form.control}
+              name="teamName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Teamnavn</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="p-9 pl-4 pr-2 text-center text-4xl"
+                      placeholder="Min turnering"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="joinTeam"
+              render={({ field }) => (
+                <FormItem className="mt-4 flex flex-row items-center justify-between gap-4">
+                  <div>
+                    <FormLabel className="text-base">
+                      Bli med i laget?
+                    </FormLabel>
+                    <FormDescription>
+                      Hvis du er med i et annet lag allerede, blir du flyttet
+                      til dette laget.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit">Lagre</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
