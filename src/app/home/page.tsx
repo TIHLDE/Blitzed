@@ -26,7 +26,7 @@ const games: Game[] = [
 export default function UserHomePage() {
   return (
     <div className={"flex h-[90vh] w-full flex-col justify-center"}>
-      <h1 className={"color:black text-center text-3xl font-bold"}>
+      <h1 className={"text-center text-3xl font-bold"}>
         Velg et spill for å fortsette
       </h1>
       <div className="mt-4 flex h-fit w-full flex-col items-center justify-center gap-6 md:flex-row">
