@@ -5,5 +5,5 @@ export const InputSchema = z.object({
 });
 
 export const OutputSchema = z.object({
-    questionGameId: z.string()
+    questionGameId: z.number().int().nonnegative()
 });
