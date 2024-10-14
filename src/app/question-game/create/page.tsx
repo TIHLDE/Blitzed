@@ -12,7 +12,6 @@ export default function CreateQuestionPage() {
                     Her kan du lage din personlige “100 spørsmål”
                 </p>
             </div>
-            
             <QuestionGameForm />
         </main>
     )
