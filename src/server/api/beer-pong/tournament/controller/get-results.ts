@@ -5,6 +5,7 @@ import { protectedProcedure } from "~/server/api/trpc";
 import { db } from "../../../../db";
 import { TRPCError } from "@trpc/server";
 import { assertHasTournamentAccess } from "../../middleware";
+import generateResults, { TournamentResult } from "../helper/generate_results";
 
 const InputSchema = z.object({
   tournamentId: z.string().cuid(),
@@ -47,8 +48,20 @@ const handler: Controller<
       message: "Turneringen er ikke ferdig enda",
     });
   }
-  // TODO implement
-  return [];
+
+  const teams = await db.beerPongTeam.findMany({
+    where: {
+      tournamentId: input.tournamentId,
+    },
+    include: {
+      team1Matches: true,
+      team2Matches: true,
+      winnerMatches: true,
+      members: true,
+    },
+  });
+
+  return generateResults(teams as unknown as TournamentResult[]);
 };
 
 export default protectedProcedure
