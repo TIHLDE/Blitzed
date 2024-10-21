@@ -8,6 +8,7 @@ import { TRPCError } from '@trpc/server';
 const QuestionGameSchema = z.object({
   id: z.number(),
   title: z.string(),
+  imageUrl: z.string(),
 })
 
 const InputSchema = z.object({});
@@ -24,6 +25,7 @@ const handler: Controller<
     select: {
       id: true,
       title: true,
+      imageUrl: true,
     },
   },)
 

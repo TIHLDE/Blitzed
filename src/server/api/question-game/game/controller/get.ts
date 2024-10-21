@@ -17,6 +17,7 @@ const InputSchema = z.object({
 const OutputSchema = z.object({
   id: z.number(),
   title: z.string(),
+  imageUrl: z.string(),
   questions: z.array(QuestionSchema),
 });
 
@@ -31,6 +32,7 @@ const handler: Controller<
     select: {
       id: true,
       title: true,
+      imageUrl: true,
       questions: true,
     },
   },);
@@ -45,6 +47,7 @@ const handler: Controller<
   return {
     id: questionGame.id,
     title: questionGame.title,
+    imageUrl: questionGame.imageUrl,
     questions: questionGame.questions,
   };
 };
