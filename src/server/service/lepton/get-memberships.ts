@@ -8,12 +8,15 @@ import { env } from "../../../env";
 export const getTIHLDEMemberships = async (
   token: string,
 ): Promise<MembershipResponse> => {
-  const response = await fetch(`${env.LEPTON_API_URL}/users/me/memberships/`, {
-    headers: {
-      "Content-Type": "application/json",
-      "x-csrf-token": token,
+  const response = await fetch(
+    `${env.NEXT_PUBLIC_LEPTON_API_URL}/users/me/memberships/`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": token,
+      },
     },
-  });
+  );
 
   if (!response.ok) {
     console.error(response.status, response.statusText, await response.json());
