@@ -22,10 +22,6 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url(),
     ),
-    LEPTON_API_URL: z.string({
-      message:
-        "Legg til en URL som peker til Lepton backenden vår. Hvis du kjører denne lokalt, bruk 'http://localhost:8000', eller den offisielle på 'https://api.tihlde.org'",
-    }),
     ALLOWED_GROUP_SLUGS: z
       .string()
       .refine((i) => i.split(",").length > 0, {
@@ -43,6 +39,10 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_LEPTON_API_URL: z.string({
+      message:
+        "Legg til en URL som peker til Lepton backenden vår. Hvis du kjører denne lokalt, bruk 'http://localhost:8000', eller den offisielle på 'https://api.tihlde.org'",
+    }),
   },
 
   /**
@@ -54,7 +54,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    LEPTON_API_URL: process.env.LEPTON_API_URL,
+    NEXT_PUBLIC_LEPTON_API_URL: process.env.NEXT_PUBLIC_LEPTON_API_URL,
     ALLOWED_GROUP_SLUGS: process.env.ALLOWED_GROUP_SLUGS,
   },
   /**
