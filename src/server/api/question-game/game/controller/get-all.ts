@@ -10,9 +10,7 @@ const QuestionGameSchema = z.object({
   imageUrl: z.string(),
 });
 
-const OutputSchema = z.object({
-  questionGames: z.array(QuestionGameSchema),
-});
+const OutputSchema = z.array(QuestionGameSchema);
 
 const handler: Controller<void, z.infer<typeof OutputSchema>> = async () => {
   const questionGames = await db.questionGame.findMany({
@@ -23,9 +21,7 @@ const handler: Controller<void, z.infer<typeof OutputSchema>> = async () => {
     },
   });
 
-  return {
-    questionGames,
-  };
+  return questionGames;
 };
 
 export default protectedProcedure.output(OutputSchema).query(handler);
