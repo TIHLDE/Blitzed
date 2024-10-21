@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const InputSchema = z.object({
-  title: z.string(),
+  title: z.string().min(2).max(10),
   imageUrl: z.string().url(),
 });
 

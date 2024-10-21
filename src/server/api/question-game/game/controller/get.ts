@@ -1,9 +1,9 @@
-import { Controller } from '~/server/api/trpc';
+import { Controller } from "~/server/api/trpc";
 
-import { db } from '~/server/db';
-import { z } from 'zod';
-import { protectedProcedure } from '~/server/api/trpc';
-import { TRPCError } from '@trpc/server';
+import { db } from "~/server/db";
+import { z } from "zod";
+import { protectedProcedure } from "~/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 
 const QuestionSchema = z.object({
   id: z.number(),
@@ -11,13 +11,13 @@ const QuestionSchema = z.object({
 });
 
 const InputSchema = z.object({
-  id: z.number(),
+  id: z.number().nonnegative(),
 });
 
 const OutputSchema = z.object({
   id: z.number(),
   title: z.string(),
-  imageUrl: z.string(),
+  imageUrl: z.string().url(),
   questions: z.array(QuestionSchema),
 });
 
@@ -27,15 +27,15 @@ const handler: Controller<
 > = async ({ input, ctx }) => {
   const questionGame = await db.questionGame.findUnique({
     where: {
-        id: input.id,
-      },
+      id: input.id,
+    },
     select: {
       id: true,
       title: true,
       imageUrl: true,
       questions: true,
     },
-  },);
+  });
 
   if (!questionGame) {
     throw new TRPCError({
