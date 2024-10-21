@@ -21,6 +21,7 @@ declare module "next-auth" {
     id: string;
     nickname: string;
     role: UserRole;
+    tihldeJWT?: string;
   }
 
   // The session object only contains the user info
@@ -38,6 +39,7 @@ declare module "next-auth/jwt" {
       nickname: string;
       role: UserRole;
       id: string;
+      tihldeJWT?: string;
     };
   }
 }
@@ -51,6 +53,7 @@ export const authOptions: NextAuthOptions = {
           id: token.user.id,
           nickname: token.user.nickname,
           role: token.user.role,
+          tihldeJWT: token.user.tihldeJWT,
         },
       };
     },
@@ -62,6 +65,7 @@ export const authOptions: NextAuthOptions = {
             nickname: user.nickname,
             role: user.role,
             id: user.id,
+            tihldeJWT: user.tihldeJWT,
           },
         };
       }
@@ -129,12 +133,12 @@ export const authOptions: NextAuthOptions = {
           });
         }
 
-        const session = {
+        return {
           id: userId,
           nickname,
           role: getRoleForUser(memberships),
+          tihldeJWT: token,
         };
-        return session;
       },
     }),
     // Users can log in anonymously, using only a nickname,
