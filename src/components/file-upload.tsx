@@ -68,6 +68,8 @@ export default function FileUploader({ onSelect }: FileUploaderProps) {
             title: "Filen din ble lastet opp",
           });
           onSelect(url);
+        } else {
+          throw new Error("Du er ikke logget inn")
         }
       }
     } catch (e) {
