@@ -24,7 +24,7 @@ const handler: Controller<
 > = async ({ input, ctx }) => {
   const questions = await db.question.findMany({
     where: {
-      id: input.questionGameId,
+      questionGameId: input.questionGameId,
     },
   })
 
