@@ -27,7 +27,9 @@ function PartnershipCol() {
           <li className="mb-4">
             <a href="https://vercel.com/?utm_source=kvark&utm_campaign=oss">
               <img
-                src="favicon.ico"
+                // NEVER USE favicon.ico IN A COMPONENT
+                // Next.js fetch this with server side params for dynamic routes
+                // src="favicon.ico"
                 alt="vercel"
                 className="mr-2 inline h-5 w-5"
               />
