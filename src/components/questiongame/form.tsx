@@ -39,7 +39,7 @@ export const QuestionGameForm = () => {
   useEffect(() => {
     if (status === "success") {
       console.log("Spill opprettet med ID:", game?.questionGameId);
-      router.replace(`/question-game/${game.questionGameId}/questions`);
+      router.replace(`/question-game/${game.questionGameId}/add`);
     }
   }, [status]);
 
