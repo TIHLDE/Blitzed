@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardTitle } from "../../../components/ui/card";
-import Link from "next/link";
 import { Button } from "../../../components/ui/button";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 
@@ -32,7 +30,6 @@ export default function UserHomePage() {
     <div className="mx-auto w-full max-w-md space-y-4 p-6">
       <h1 className="text-2xl font-bold"> Opprett en ny 100 spørsmål </h1>
 
-      {/* Inputfelt oog knapp */}
       <div className="flex w-full space-x-2">
         <input
           placeholder="Feks 'Hvem er best på takta'"
@@ -51,7 +48,6 @@ export default function UserHomePage() {
         </Button>
       </div>
 
-      {/* Liste over spørsmål */}
       <h2 className="text-xl font-semibold">Dine spørsmål</h2>
       <ul className="space-y-2">
         {questions.map((question, index) => (
