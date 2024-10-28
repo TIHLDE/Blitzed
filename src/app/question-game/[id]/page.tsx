@@ -20,15 +20,10 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
     });
 
     const shuffleArray = (arr: Question[]): Question[] => {
-        // Clone the array to avoid mutating the original
         const array = [...arr];
 
-        // Loop through the array from the last to the second element
         for (let i = array.length - 1; i > 0; i--) {
-            // Generate a random index from 0 to i
             const j = Math.floor(Math.random() * (i + 1));
-
-            // Use type assertions to satisfy TypeScript
             [array[i], array[j]] = [array[j] as Question, array[i] as Question];
         }
 
@@ -40,7 +35,7 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
             <Carousel className="w-full max-w-xs">
                 <CarouselContent>
                     {shuffleArray(data.questions).map((question, index) => (
-                        <CarouselItem className="md:basis-1/2 lg:basis-1/3" key={index}>
+                        <CarouselItem key={index}>
                             <div className="p-1">
                                 <Card>
                                     <CardContent className="flex aspect-square items-center justify-center p-6">
