@@ -5,6 +5,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erDiagram {
+  provider = "prisma-erd-generator"
+  output   = "../ER_diagram.pdf"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -94,4 +99,18 @@ enum BeerPongTournamentStatus {
   CREATED
   ACTIVE
   FINISHED
+}
+
+model QuestionGame {
+  id        Int        @id @default(autoincrement())
+  title     String
+  imageUrl  String
+  questions Question[]
+}
+
+model Question {
+  id             Int          @id @default(autoincrement())
+  question       String
+  questionGame   QuestionGame @relation(fields: [questionGameId], references: [id], onDelete: Cascade)
+  questionGameId Int
 }

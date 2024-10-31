@@ -6,6 +6,6 @@ export const InputSchema = z.object({
   name: z.string(),
   randomTeams: z.boolean(),
   thildeExclusive: z.boolean(),
-  maxTeamCount: z.number().int().positive().min(2).max(10),
-  maxTeamSize: z.number().int().positive().min(2).max(10),
+  maxTeamCount: z.coerce.number().int().positive().min(2).max(10),
+  maxTeamSize: z.coerce.number().int().positive().min(2).max(10),
 });

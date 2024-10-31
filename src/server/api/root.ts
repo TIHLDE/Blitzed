@@ -5,6 +5,7 @@ import {
 } from "~/server/api/trpc";
 import { beerPongRouter } from "./beer-pong/router";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { questionGameRouter } from "./question-game/router";
 
 /**
  * This is the primary router
@@ -13,6 +14,7 @@ import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
  */
 export const appRouter = createTRPCRouter({
   beerPong: beerPongRouter,
+  questionGame: questionGameRouter
 });
 
 /**
