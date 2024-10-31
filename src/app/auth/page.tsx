@@ -4,7 +4,9 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import { useSession } from "next-auth/react";
-import { signIn } from "next-auth/react";
+import LoginForm from "./login-form";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
   return (
@@ -34,17 +36,20 @@ export default function AuthPage() {
 
 function LoginButtons() {
   const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/home");
+    }
+  }, [status]);
 
   if (status === "loading") {
     return <div>Laster ...</div>;
   }
 
   if (status === "unauthenticated") {
-    return (
-      <Button className="h-12 w-52" onClick={() => signIn("credentials")}>
-        Logg inn
-      </Button>
-    );
+    return <LoginForm />;
   }
 
   return (

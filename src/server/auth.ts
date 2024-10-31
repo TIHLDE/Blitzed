@@ -159,6 +159,10 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        if (credentials.nickname.length < 2) {
+          throw new Error("Kallenavnet må ha minst 2 bokstaver");
+        }
+
         // Create anon user in db
         const user = await db.user.create({
           data: {
