@@ -1,10 +1,12 @@
 "use server";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
+
 import { ThemeModeToggler } from "~/components/ui/theme-mode-toggler";
-import { UserRound } from "lucide-react";
+import { getServerAuthSession } from "../../server/auth";
+import AvatarDropdown from "./avatar-dropdown";
 
 export default async function Navbar() {
+  const user = await getServerAuthSession();
+
   return (
     <nav className="flex w-full flex-col content-start bg-background">
       <div className="flex w-full items-center justify-between gap-3 border-b-[1px] p-3">
@@ -23,14 +25,7 @@ export default async function Navbar() {
           </p>
         </div>
         <div className="flex gap-3">
-          <Button size={"icon"} variant={"ghost"}>
-            <Avatar className="duration-100 hover:brightness-90">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@profile" />
-              <AvatarFallback>
-                <UserRound className="text-foreground" />
-              </AvatarFallback>
-            </Avatar>
-          </Button>
+          <AvatarDropdown user={user} />
           <ThemeModeToggler />
         </div>
       </div>
