@@ -74,6 +74,9 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
   },
+  pages: {
+    signIn: "/auth",
+  },
   session: {
     strategy: "jwt",
   },
@@ -154,6 +157,10 @@ export const authOptions: NextAuthOptions = {
         if (!credentials) {
           console.error("No credentials sent in login request!");
           return null;
+        }
+
+        if (credentials.nickname.length < 2) {
+          throw new Error("Kallenavnet må ha minst 2 bokstaver");
         }
 
         // Create anon user in db
