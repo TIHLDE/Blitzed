@@ -65,17 +65,13 @@ function SocialMedia() {
     <div>
       <div>følg oss på sosiale medier</div>
       <div className="mt-2 flex flex-row items-center justify-center gap-2">
-        <Button type="button" variant={"outline"} className="bg-gray-200">
+        <Button type="button" variant={"outline"}>
           <Facebook size={24} />
         </Button>
-        <Button
-          type="button"
-          variant={"outline"}
-          className="aspect-square bg-gray-200"
-        >
+        <Button type="button" variant={"outline"} className="aspect-square">
           <Instagram size={24} />
         </Button>
-        <Button type="button" variant={"outline"} className="bg-gray-200">
+        <Button type="button" variant={"outline"}>
           <Twitter size={24} />
         </Button>
       </div>
