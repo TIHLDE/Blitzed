@@ -3,7 +3,6 @@ name: Deploy
 on:
   push:
     branches:
-      - devops(dockerfile)/dev
       - main
   pull_request:
     branches:
