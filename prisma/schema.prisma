@@ -5,11 +5,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erDiagram {
-  provider = "prisma-erd-generator"
-  output   = "../ER_diagram.pdf"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
