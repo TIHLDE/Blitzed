@@ -15,7 +15,7 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string()
         : z.string().optional(),
-    NEXTAUTH_URL: z.string().url(),
+    NEXTAUTH_URL: z.string(),
     //
     // We are no longer deploying to Vercel. Drift is Vercel v2.0 ;) 
     // 

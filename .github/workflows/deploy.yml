@@ -2,7 +2,15 @@ name: Deploy
 
 on:
   push:
-    branches: ["devops(dockerfile)/dev"]
+    branches:
+      - devops(dockerfile)/dev
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
 
 jobs:
   deploy:
@@ -30,12 +38,11 @@ jobs:
           echo 'ALLOWED_GROUP_SLUGS="${{ secrets.ALLOWED_GROUP_SLUGS }}"' >> .env
           echo 'NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}"' >> .env
         
-      - name: Copy .env to VPS
+      - name: Copy .env to OpenStack server
         run: |
           scp -v -i ~/.ssh/key .env ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.PATH }}
 
-
-      - name: Deploy to VPS
+      - name: Deploy to OpenStack server
         run: |
           ssh -v -i ~/.ssh/key ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
           cd ${{ secrets.PATH }}
