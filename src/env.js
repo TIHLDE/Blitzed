@@ -17,7 +17,7 @@ export const env = createEnv({
         : z.string().optional(),
     NEXTAUTH_URL: z.string(),
     //
-    // We are no longer deploying to Vercel. Drift is Vercel v2.0 ;) 
+    // We are no longer deploying to Vercel, the cash cow. Drift is Vercel v2.0 ;) 
     // 
     // NEXTAUTH_URL: z.preprocess(
     //   // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
