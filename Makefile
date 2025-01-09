@@ -8,4 +8,5 @@ prod:
 	docker container stop blitzed
 	docker container rm blitzed
 	- prisma migrate deploy
-	docker run --env-file .env -p 4000:3000 --name blitzed -d blitzed:latest
+	docker run --env-file .env -p 4000:3000 --name blitze --restart unless-stopped -d blitzed:latest
+	docker image prune -f
