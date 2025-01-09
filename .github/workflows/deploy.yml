@@ -40,6 +40,6 @@ jobs:
           ssh -v -i ~/.ssh/key ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
           cd ${{ secrets.PATH }}
           chmod 0600 .env
-          git pull
+          git pull -f
           make prod
           ENDSSH
