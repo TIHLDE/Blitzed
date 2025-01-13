@@ -99,7 +99,7 @@ export default function LoginForm() {
                 <FormItem>
                   <FormLabel>Passord</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type={'password'}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
