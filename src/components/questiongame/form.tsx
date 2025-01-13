@@ -63,7 +63,7 @@ export const QuestionGameForm = () => {
               <FormControl>
                 <Input
                   {...field}
-                  className="w-full rounded-md border-gray-300"
+                  className="w-full rounded border-gray-300 dark:border-gray-700 bg-background"
                 />
               </FormControl>
             </FormItem>
