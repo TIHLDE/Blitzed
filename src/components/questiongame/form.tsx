@@ -52,7 +52,7 @@ export const QuestionGameForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto flex w-full max-w-md flex-col items-center justify-center space-y-6 rounded-md bg-white p-6 shadow-lg"
+        className="mx-auto flex w-full max-w-md flex-col items-center justify-center space-y-6 rounded-md p-6 shadow-lg"
       >
         <FormField
           control={form.control}
