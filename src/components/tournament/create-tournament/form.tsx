@@ -123,9 +123,7 @@ export function CreateTournamentForm() {
           render={({ field }) => (
             <FormItem className="mt-4 flex flex-col items-start justify-between gap-2 space-y-0">
               <div className="flex w-full items-center justify-between">
-                <FormLabel className="text-lg">
-                  Maks lagstørrelsMaks antall spillee
-                </FormLabel>
+                <FormLabel className="text-lg">Maks antall lag</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
