@@ -1,6 +1,5 @@
 "use client";
 
-import { TeamDetailsDialog } from "../../../components/tournament/team-details-dialog";
 import { CreateTeamDialog } from "../../../components/tournament/create-team-dialog";
 import { Button } from "../../../components/ui/button";
 import {
@@ -82,8 +81,8 @@ export default function BeforePage({
                 </div>
               )}
             </div>
+            <CreateTeamDialog refetchTournament={refetchTournament} />
           </div>
-          <CreateTeamDialog refetchTournament={refetchTournament} />
         </div>
         <div className="flex h-full w-full flex-col gap-2">
           {tournament.teams.map((t) => (
