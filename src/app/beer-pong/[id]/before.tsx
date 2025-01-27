@@ -27,7 +27,7 @@ function TeamCard({ team, refetchTournament }: TeamCardProps) {
   const { data } = useSession();
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between gap-4">
         <div className="flex flex-col items-start gap-1">
           <CardTitle>{team.name}</CardTitle>
           <CardDescription>
