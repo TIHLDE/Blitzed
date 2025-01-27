@@ -183,6 +183,7 @@ function SelectWinnerDialog({
           Da går turneringen videre til neste kamp
         </DialogDescription>
         <Button
+          className="overflow-hidden overflow-ellipsis"
           variant={"outline"}
           onClick={() =>
             selectWinner({
@@ -195,6 +196,7 @@ function SelectWinnerDialog({
           {match?.team1?.name}
         </Button>
         <Button
+          className="overflow-hidden overflow-ellipsis"
           variant={"outline"}
           onClick={() =>
             selectWinner({
