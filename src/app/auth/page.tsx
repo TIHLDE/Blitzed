@@ -14,7 +14,7 @@ export default function AuthPage() {
       <img
         src="/img/login_background.png"
         alt="bakgrunn"
-        className="absolute h-full w-full object-cover"
+        className="absolute h-full w-full object-cover brightness-75"
       />
       <div className="absolute z-10 flex h-full w-full items-center justify-center">
         <Card className="flex min-w-96 max-w-sm flex-col items-center justify-between gap-8 px-4 py-8">

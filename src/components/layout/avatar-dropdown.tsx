@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Session } from "next-auth";
 import { useMemo } from "react";
 import { signIn, signOut } from "next-auth/react";
+import { Fallback } from "@radix-ui/react-avatar";
 
 interface DropdownItem {
   name: string;
@@ -25,7 +26,15 @@ export default function AvatarDropdown({ user }: { user: Session | null }) {
       ];
     }
 
-    return [{ name: "Logg ut", onClick: () => signOut() }];
+    return [
+      {
+        name: "Logg ut",
+        onClick: async () => {
+          await signOut();
+          window.location.href = "/";
+        },
+      },
+    ];
   }, [user]);
 
   return (

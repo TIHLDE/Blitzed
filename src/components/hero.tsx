@@ -29,7 +29,7 @@ export default function HeroCard() {
         </CardDescription>
         <CardTitle
           className={
-            "mt-0 space-y-0 text-center text-2xl font-bold lg:text-3xl"
+            "mt-0 max-w-full space-y-0 text-center text-2xl font-bold lg:text-3xl"
           }
         >
           DRIKKELEKER
