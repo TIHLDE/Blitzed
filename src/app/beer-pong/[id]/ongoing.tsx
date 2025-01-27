@@ -40,14 +40,14 @@ function MatchCard({ match }: MatchCardProps) {
         className={cn(
           "flex h-full w-full border-[1px]",
           match.team1?.id == match.winnerTeam?.id ? "bg-green-600" : "bg-auto",
-          "items-center justify-center text-wrap rounded-l-md p-1 text-center",
+          "max-w-[50%] items-center justify-center overflow-hidden overflow-ellipsis text-wrap rounded-l-md p-1 text-center",
         )}
       >
         {truncateName(match.team1?.name)}
       </div>
       <div
         className={cn([
-          "flex h-full w-full items-center justify-center overflow-hidden text-wrap break-all rounded-r-md border-[1px] p-1 text-center",
+          "flex h-full w-full max-w-[50%] items-center justify-center overflow-hidden text-wrap break-all rounded-r-md border-[1px] p-1 text-center",
           match.team2?.id == match.winnerTeam?.id ? "bg-green-600" : "bg-auto",
         ])}
       >
