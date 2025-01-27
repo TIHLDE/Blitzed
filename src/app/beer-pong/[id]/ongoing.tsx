@@ -125,9 +125,11 @@ function CurrentMatchCard({ tournament }: TournamentProps) {
       {Boolean(match) && (
         <Card className="flex w-full max-w-xs flex-col items-center px-4 py-2">
           <CardDescription>Nåværende kamp</CardDescription>
-          <CardTitle>
+          <CardTitle className="text-center">
             <span className="font-semibold">{match?.team1?.name}</span>
-            <span className="text-base font-semibold"> mot </span>
+            <span className="text-base font-semibold">
+              <br /> <br /> mot <br /> <br />
+            </span>
             <span className="font-semibold">{match?.team2?.name}</span>
           </CardTitle>
           {tournament.isCreator && (

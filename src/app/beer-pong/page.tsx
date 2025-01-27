@@ -68,7 +68,7 @@ export interface TournameCardProps {
 function TournamentCard({ tournament }: TournameCardProps) {
   return (
     <Link href={`/beer-pong/${tournament.id}`} className="w-full">
-      <Card className="flex w-full flex-col items-center justify-between gap-2 px-4 py-2 sm:flex-row">
+      <Card className="flex w-full flex-col justify-between gap-2 px-4 py-2 sm:flex-row">
         <div className="text-lg font-bold">{tournament.name}</div>
         <TournamentSummaryDetails tournament={tournament} />
       </Card>

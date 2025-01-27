@@ -69,7 +69,7 @@ export default function BeforePage({
     api.beerPong.tournament.start.useMutation({ onSuccess: refetchTournament });
 
   return (
-    <div className="mx-auto max-w-sm">
+    <div className="mx-auto w-screen max-w-sm">
       <main className="flex w-full flex-col items-center justify-between gap-4 px-2">
         <div className="flex w-full flex-row items-center justify-between">
           <div className="flex w-full flex-col justify-center">
