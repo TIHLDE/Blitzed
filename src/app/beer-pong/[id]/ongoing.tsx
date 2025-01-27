@@ -126,11 +126,18 @@ function CurrentMatchCard({ tournament }: TournamentProps) {
         <Card className="flex w-full max-w-xs flex-col items-center px-4 py-2">
           <CardDescription>Nåværende kamp</CardDescription>
           <CardTitle className="text-center">
-            <span className="font-semibold">{match?.team1?.name}</span>
-            <span className="text-base font-semibold">
+            <span className="font-semibold">
+              <br />
+              {match?.team1?.name}
+            </span>
+            <span className="text-base/none font-semibold">
               <br /> <br /> mot <br /> <br />
             </span>
-            <span className="font-semibold">{match?.team2?.name}</span>
+            <span className="font-semibold">
+              {match?.team2?.name}
+              <br />
+              <br />
+            </span>
           </CardTitle>
           {tournament.isCreator && (
             <SelectWinnerDialog
