@@ -35,7 +35,7 @@ export default async function BrowseTournamentsPage() {
           {publicTournaments.map((t) => (
             <TournamentCard tournament={t} key={t.id} />
           ))}
-          {!Boolean(ownedTournaments.length) && (
+          {!Boolean(publicTournaments) && (
             <EmptyCard
               title={"Ingen offentlige turneringer"}
               description={"Kanskje du trenger en PIN-kode?"}
