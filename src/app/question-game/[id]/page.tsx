@@ -30,6 +30,25 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
         return array;
     }
 
+    const cardBackgroundImages = [
+                    '/img/backgroundImg1.jpg',
+                    '/img/backgroundImg2.jpg',
+                    '/img/backgroundImg3.jpg',
+                    '/img/backgroundImg4.jpg',
+                    '/img/backgroundImg5.jpg',
+                    '/img/backgroundImg6.jpg',
+                    '/img/backgroundImg7.jpg',
+                    '/img/backgroundImg8.jpg',
+                    '/img/backgroundImg9.jpg',
+                    '/img/backgroundIm10.jpg',
+                    '/img/backgroundImg11.jpg',
+                ];
+                
+    const getRandomCardBackground = () => {
+        return cardBackgroundImages[Math.floor(Math.random() * cardBackgroundImages.length)];
+    }
+
+
     return (
         <main className="h-screen">
             <Carousel className="w-full max-w-xs">
@@ -38,7 +57,14 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
                         <CarouselItem key={index}>
                             <div className="p-1">
                                 <Card>
-                                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                                    <CardContent 
+                                        className="flex aspect-square items-center justify-center p-6"
+                                            style={{
+                                                backgroundImage: `url(${getRandomCardBackground()})`,
+                                                backgroundSize: "cover",
+                                                backgroundPosition: "center"
+                                            }}
+                                    >
                                         <span className="text-4xl font-semibold">{question.question}</span>
                                     </CardContent>
                                 </Card>
