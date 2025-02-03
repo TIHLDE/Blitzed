@@ -40,14 +40,14 @@ function MatchCard({ match }: MatchCardProps) {
         className={cn(
           "flex h-full w-full border-[1px]",
           match.team1?.id == match.winnerTeam?.id ? "bg-green-600" : "bg-auto",
-          "items-center justify-center text-wrap rounded-l-md p-1 text-center",
+          "max-w-[50%] items-center justify-center overflow-hidden overflow-ellipsis text-wrap rounded-l-md p-1 text-center",
         )}
       >
         {truncateName(match.team1?.name)}
       </div>
       <div
         className={cn([
-          "flex h-full w-full items-center justify-center overflow-hidden text-wrap break-all rounded-r-md border-[1px] p-1 text-center",
+          "flex h-full w-full max-w-[50%] items-center justify-center overflow-hidden text-wrap break-all rounded-r-md border-[1px] p-1 text-center",
           match.team2?.id == match.winnerTeam?.id ? "bg-green-600" : "bg-auto",
         ])}
       >
@@ -125,10 +125,19 @@ function CurrentMatchCard({ tournament }: TournamentProps) {
       {Boolean(match) && (
         <Card className="flex w-full max-w-xs flex-col items-center px-4 py-2">
           <CardDescription>Nåværende kamp</CardDescription>
-          <CardTitle>
-            <span className="font-semibold">{match?.team1?.name}</span>
-            <span className="text-base font-semibold"> mot </span>
-            <span className="font-semibold">{match?.team2?.name}</span>
+          <CardTitle className="text-center">
+            <span className="font-semibold">
+              <br />
+              {match?.team1?.name}
+            </span>
+            <span className="text-base/none font-semibold">
+              <br /> <br /> mot <br /> <br />
+            </span>
+            <span className="font-semibold">
+              {match?.team2?.name}
+              <br />
+              <br />
+            </span>
           </CardTitle>
           {tournament.isCreator && (
             <SelectWinnerDialog
@@ -174,6 +183,7 @@ function SelectWinnerDialog({
           Da går turneringen videre til neste kamp
         </DialogDescription>
         <Button
+          className="overflow-hidden overflow-ellipsis"
           variant={"outline"}
           onClick={() =>
             selectWinner({
@@ -186,6 +196,7 @@ function SelectWinnerDialog({
           {match?.team1?.name}
         </Button>
         <Button
+          className="overflow-hidden overflow-ellipsis"
           variant={"outline"}
           onClick={() =>
             selectWinner({
