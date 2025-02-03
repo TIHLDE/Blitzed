@@ -18,7 +18,7 @@ export default async function Navbar() {
               height={"auto"}
               alt="blitzed-logo"
             />
-            <p className="hidden self-center text-3xl font-bold text-primary md:flex">
+            <p className="ml-3 hidden self-center text-3xl font-bold text-primary md:flex">
               {" "}
               Blitzed{" "}
             </p>

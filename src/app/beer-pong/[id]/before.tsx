@@ -1,6 +1,5 @@
 "use client";
 
-import { TeamDetailsDialog } from "../../../components/tournament/team-details-dialog";
 import { CreateTeamDialog } from "../../../components/tournament/create-team-dialog";
 import { Button } from "../../../components/ui/button";
 import {
@@ -28,7 +27,7 @@ function TeamCard({ team, refetchTournament }: TeamCardProps) {
   const { data } = useSession();
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between gap-4">
         <div className="flex flex-col items-start gap-1">
           <CardTitle>{team.name}</CardTitle>
           <CardDescription>
@@ -70,7 +69,7 @@ export default function BeforePage({
     api.beerPong.tournament.start.useMutation({ onSuccess: refetchTournament });
 
   return (
-    <div className="mx-auto max-w-sm">
+    <div className="mx-auto w-screen max-w-sm">
       <main className="flex w-full flex-col items-center justify-between gap-4 px-2">
         <div className="flex w-full flex-row items-center justify-between">
           <div className="flex w-full flex-col justify-center">
@@ -82,8 +81,8 @@ export default function BeforePage({
                 </div>
               )}
             </div>
+            <CreateTeamDialog refetchTournament={refetchTournament} />
           </div>
-          <CreateTeamDialog refetchTournament={refetchTournament} />
         </div>
         <div className="flex h-full w-full flex-col gap-2">
           {tournament.teams.map((t) => (
