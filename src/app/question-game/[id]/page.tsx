@@ -79,6 +79,7 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
                     <CarouselNext variant="default" className="relative rounded-sm w-full" />
                 </div>
             </Carousel>
+            <a href={`/question-game/${params.id}/add`}>Edit questions</a>
         </main>
     )
 };
