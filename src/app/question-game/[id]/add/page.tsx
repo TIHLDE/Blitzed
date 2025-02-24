@@ -1,22 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { api } from "~/trpc/react";
 
+const DEFAULT_QUESTIONS = [
+  "Har finest dialekt?",
+  "Kommer til å gifte seg først?",
+  "Nørder mest?",
+  "Har dårligst musikksmak?",
+  "Kunne du vært med på en øde øy med?",
+];
+
 export default function UserHomePage() {
-  const [questions, setQuestions] = useState([
-    "Har finest dialekt?",
-    "Kommer til å gifte seg først?",
-    "Nørder mest?",
-    "Har dårligst musikksmak?",
-    "Kunne du vært med på en øde øy med?",
-  ]);
+  const [questions, setQuestions] = useState<string[]>([]);
   const [newQuestion, setNewQuestion] = useState("");
 
-  const setQuestionsMutation =
-    api.questionGame.question.createMany.useMutation();
+  const { data, isLoading, isError } =
+    api.questionGame.question.getAll.useQuery({
+      questionGameId: 1,
+    });
+
+  useEffect(() => {
+    if (data?.questions) {
+      if (data.questions.length === 0) {
+        setQuestions(DEFAULT_QUESTIONS);
+      } else {
+        setQuestions(data.questions.map((q) => q.question));
+      }
+    }
+  }, [data]);
 
   const addQuestion = () => {
     if (newQuestion.trim() !== "") {
@@ -29,9 +43,11 @@ export default function UserHomePage() {
     setQuestions((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const createManyMutation = api.questionGame.question.createMany.useMutation();
+
   const handleSave = async () => {
     try {
-      await setQuestionsMutation.mutateAsync({
+      await createManyMutation.mutateAsync({
         questGameId: 1,
         questions,
       });
@@ -41,6 +57,13 @@ export default function UserHomePage() {
       alert("Noe gikk galt under lagring :(");
     }
   };
+
+  if (isLoading) {
+    return <p>Laster spørsmål...</p>;
+  }
+  if (isError) {
+    return <p>Kunne ikke laste spørsmål.</p>;
+  }
 
   return (
     <div className="mx-auto w-full max-w-md space-y-4 p-6">
@@ -54,11 +77,7 @@ export default function UserHomePage() {
           className="flex-grow rounded-lg bg-white p-3 shadow"
           style={{ height: "48px" }}
         />
-        <Button
-          onClick={addQuestion}
-          className="flex h-12 items-center justify-center"
-          size="icon"
-        >
+        <Button onClick={addQuestion} size="icon">
           <PlusIcon className="h-4 w-4" />
         </Button>
       </div>
@@ -74,15 +93,13 @@ export default function UserHomePage() {
               <span className="mr-2 w-full font-bold">#{index + 1}</span>
               {question}
             </div>
-
             <Button
               variant="ghost"
               size="icon"
               onClick={() => deleteQuestion(index)}
-              className="h-8 w-8 p-0"
             >
               <Trash2Icon className="h-4 w-4" />
-              <span className="sr-only"> Delete question </span>
+              <span className="sr-only">Delete question</span>
             </Button>
           </li>
         ))}
