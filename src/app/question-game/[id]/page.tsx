@@ -40,7 +40,7 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
                     '/img/backgroundImg7.jpg',
                     '/img/backgroundImg8.jpg',
                     '/img/backgroundImg9.jpg',
-                    '/img/backgroundIm10.jpg',
+                    '/img/backgroundImg10.jpg',
                     '/img/backgroundImg11.jpg',
                 ];
                 
@@ -58,21 +58,23 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
                             <div className="p-1">
                                 <Card>
                                     <CardContent 
-                                        className="flex aspect-square items-center justify-center p-6"
+                                        className="relative flex items-center justify-items-center w-[400px] h-[600px] px-10"
                                             style={{
                                                 backgroundImage: `url(${getRandomCardBackground()})`,
                                                 backgroundSize: "cover",
-                                                backgroundPosition: "center"
+                                                backgroundPosition: "center",
+                                                backgroundRepeat: "no-repeat"
                                             }}
                                     >
-                                        <span className="text-4xl font-semibold">{question.question}</span>
+
+                                        <span className="relative text-5xl font-semibold break-words w-[90%] leading-relaxed">{question.question}</span>
                                     </CardContent>
                                 </Card>
                             </div>
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <div className="flex mt-8 w-full items-center justify-center space-x-6">
+                <div className="flex mt-8 w-full items-center justify-center rounded-lg space-x-6">
                     <CarouselPrevious variant="default" className="relative rounded-sm w-full" />
                     <CarouselNext variant="default" className="relative rounded-sm w-full" />
                 </div>
