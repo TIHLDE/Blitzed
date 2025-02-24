@@ -91,6 +91,7 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
           />
         </div>
       </Carousel>
+      <a href={`/question-game/${params.id}/add`}>Edit questions</a>
     </main>
   );
 };
