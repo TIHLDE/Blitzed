@@ -1,5 +1,6 @@
 import GameLinkCard from "../../components/ui/game-link-card";
 import { api } from "../../trpc/server";
+import { Button } from "~/components/ui/button";
 
 export default async function QuestionGamesPage() {
   const games = await api.questionGame.game.getAll();
@@ -7,8 +8,8 @@ export default async function QuestionGamesPage() {
   return (
     <div className="mt-6 min-h-[100svh]">
   
-      <div className="flex justify-end pb-6">
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> Create new </button>
+      <div className="flex justify-end pb-3">
+        <Button variant={"outline"}> Create New </Button>
       </div>
       <div className="grid grid-cols-2 gap-6">
         {games.map((g) => (
