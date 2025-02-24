@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "../../../../components/ui/button";
+import { Button } from "~/components/ui/button";
 import { PlusIcon, Trash2Icon } from "lucide-react";
+import { api } from "~/trpc/react";
 
 export default function UserHomePage() {
   const [questions, setQuestions] = useState([
@@ -14,16 +15,31 @@ export default function UserHomePage() {
   ]);
   const [newQuestion, setNewQuestion] = useState("");
 
+  const setQuestionsMutation =
+    api.questionGame.question.createMany.useMutation();
+
   const addQuestion = () => {
     if (newQuestion.trim() !== "") {
-      setQuestions([...questions, newQuestion]);
+      setQuestions((prev) => [...prev, newQuestion]);
       setNewQuestion("");
     }
   };
 
   const deleteQuestion = (index: number) => {
-    const updatedQuestions = questions.filter((_, i) => i !== index);
-    setQuestions(updatedQuestions);
+    setQuestions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSave = async () => {
+    try {
+      await setQuestionsMutation.mutateAsync({
+        questGameId: 1,
+        questions,
+      });
+      alert("Spørsmål lagret i databasen!");
+    } catch (error) {
+      console.error(error);
+      alert("Noe gikk galt under lagring :(");
+    }
   };
 
   return (
@@ -38,7 +54,6 @@ export default function UserHomePage() {
           className="flex-grow rounded-lg bg-white p-3 shadow"
           style={{ height: "48px" }}
         />
-
         <Button
           onClick={addQuestion}
           className="flex h-12 items-center justify-center"
@@ -59,7 +74,7 @@ export default function UserHomePage() {
               <span className="mr-2 w-full font-bold">#{index + 1}</span>
               {question}
             </div>
-            
+
             <Button
               variant="ghost"
               size="icon"
@@ -72,7 +87,8 @@ export default function UserHomePage() {
           </li>
         ))}
       </ul>
-      <Button className="w-full" onClick={() => alert("Spørsmål lagret!")}>
+
+      <Button className="w-full" onClick={handleSave}>
         Lagre
       </Button>
     </div>

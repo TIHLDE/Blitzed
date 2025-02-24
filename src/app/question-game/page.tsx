@@ -6,6 +6,7 @@ export default async function QuestionGamesPage() {
 
   return (
     <div className="mt-6 min-h-[100svh]">
+      <a href="/question-game/create">Create new</a>
       <div className="grid grid-cols-2 gap-6">
         {games.map((g) => (
           <GameLinkCard
