@@ -6,10 +6,14 @@ export default async function QuestionGamesPage() {
 
   return (
     <div className="mt-6 min-h-[100svh]">
-      <a href="/question-game/create">Create new</a>
+  
+      <div className="flex justify-end pb-6">
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> Create new </button>
+      </div>
       <div className="grid grid-cols-2 gap-6">
         {games.map((g) => (
           <GameLinkCard
+            key={g.id}
             title={g.title}
             img={g.imageUrl}
             url={`/question-game/${g.id}`}
