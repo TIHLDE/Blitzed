@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { api } from "~/trpc/react";
-import { a } from "vitest/dist/chunks/suite.CcK46U-P.js";
-import QuestionGame from "../page";
+import { usePathname } from "next/navigation";
 
 const DEFAULT_QUESTIONS = [
   "Har finest dialekt?",
@@ -15,14 +14,14 @@ const DEFAULT_QUESTIONS = [
   "Kunne du vært med på en øde øy med?",
 ];
 
-
-export default function UserHomePage() {
+export default function AddQuestionsPage() {
+  const id = parseInt(usePathname().split("/")[2]!);
   const [questions, setQuestions] = useState<string[]>([]);
   const [newQuestion, setNewQuestion] = useState("");
 
   const { data, isLoading, isError } =
     api.questionGame.question.getAll.useQuery({
-      questionGameId: 1,
+      questionGameId: id,
     });
 
   useEffect(() => {
@@ -112,9 +111,7 @@ export default function UserHomePage() {
         Lagre
       </Button>
       <Button className="w-full" variant={"outline"}>
-      <a href={`/question-game/1/`}>
-        Tilbake til spill
-        </a>
+        <a href={"/question-game/" + id + "/"}>Tilbake til spill</a>
       </Button>
     </div>
   );
