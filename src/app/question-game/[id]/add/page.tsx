@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { api } from "~/trpc/react";
+import { a } from "vitest/dist/chunks/suite.CcK46U-P.js";
+import QuestionGame from "../page";
 
 const DEFAULT_QUESTIONS = [
   "Har finest dialekt?",
@@ -12,6 +14,7 @@ const DEFAULT_QUESTIONS = [
   "Har dårligst musikksmak?",
   "Kunne du vært med på en øde øy med?",
 ];
+
 
 export default function UserHomePage() {
   const [questions, setQuestions] = useState<string[]>([]);
@@ -67,7 +70,7 @@ export default function UserHomePage() {
 
   return (
     <div className="mx-auto w-full max-w-md space-y-4 p-6">
-      <h1 className="text-2xl font-bold"> Opprett en ny 100 spørsmål </h1>
+      <h1 className="text-2xl font-bold"> Legg til spørsmål </h1>
 
       <div className="flex w-full space-x-2">
         <input
@@ -107,6 +110,11 @@ export default function UserHomePage() {
 
       <Button className="w-full" onClick={handleSave}>
         Lagre
+      </Button>
+      <Button className="w-full" variant={"outline"}>
+      <a href={`/question-game/1/`}>
+        Tilbake til spill
+        </a>
       </Button>
     </div>
   );
