@@ -7,10 +7,12 @@ export default async function QuestionGamesPage() {
 
   return (
     <div className="mt-6 min-h-[100svh]">
-  
-      <div className="flex justify-end pb-3">
+      <a href="/question-game/create">
+        <div className="flex justify-end pb-3">
         <Button variant={"outline"}> Create New </Button>
-      </div>
+      </div> 
+      </a>
+      
       <div className="grid grid-cols-2 gap-6">
         {games.map((g) => (
           <GameLinkCard
