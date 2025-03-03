@@ -92,7 +92,10 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
         </div>
       </Carousel>
       <div className="flex w-full justify-center">
-        <Button variant={"outline"} asChild className="px-4 py-2 font-bold">
+      <Button className="w-full" variant={"outline"}>
+          <a href={`/question-game/`}> Tilbake til spill </a>
+        </Button>
+      <Button className="w-full" variant={"outline"}>
           <a href={`/question-game/${params.id}/add`}> Edit questions </a>
         </Button>
       </div>
