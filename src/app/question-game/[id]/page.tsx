@@ -65,13 +65,13 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
 
   return (
     <main className="h-screen">
-      <Carousel className="mx-auto w-full max-w-sm">
+      <Carousel className="mx-auto w-screen max-w-sm overflow-hidden px-5">
         <CarouselContent>
           {shuffleArray(data.questions).map((question, index) => (
             <CarouselItem key={index}>
               <Card>
                 <CardContent
-                  className="relative flex h-[600px] w-[400px] items-center justify-items-center px-10"
+                  className="relative flex h-[72vh] items-center justify-items-center rounded-lg"
                   style={{
                     backgroundImage: `url(${getRandomCardBackground()})`,
                     backgroundSize: "cover",
