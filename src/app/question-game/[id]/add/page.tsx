@@ -76,7 +76,7 @@ export default function AddQuestionsPage() {
           placeholder="Feks 'Hvem er best på takta'"
           value={newQuestion}
           onChange={(e) => setNewQuestion(e.target.value)}
-          className="flex-grow rounded-lg bg-white p-3 shadow"
+          className="flex-grow rounded-lg dark:bg-slate-900 p-3 shadow"
           style={{ height: "48px" }}
         />
         <Button onClick={addQuestion} size="icon">
@@ -89,7 +89,7 @@ export default function AddQuestionsPage() {
         {questions.map((question, index) => (
           <li
             key={index}
-            className="flex items-center justify-between rounded-lg bg-white p-3 shadow"
+            className="flex items-center justify-between rounded-lg bg-slate-900 p-3 shadow"
           >
             <div className="flex-grow">
               <span className="mr-2 w-full font-bold">#{index + 1}</span>
