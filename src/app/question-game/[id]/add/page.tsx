@@ -50,7 +50,7 @@ export default function AddQuestionsPage() {
   const handleSave = async () => {
     try {
       await createManyMutation.mutateAsync({
-        questGameId: 1,
+        questGameId: id,
         questions,
       });
       alert("Spørsmål lagret i databasen!");
