@@ -8,6 +8,8 @@ import {
 } from "~/components/ui/carousel";
 import { api } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
+import { getServerAuthSession } from "~/server/auth";
+import { redirect } from "next/navigation";
 
 interface QuestionGameProps {
   params: {
@@ -56,6 +58,11 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
     ];
   };
 
+  const session = await getServerAuthSession();
+  if (!session) {
+    return redirect(`/login`);
+  }
+
   return (
     <main className="h-screen">
       <Carousel className="mx-auto w-full max-w-sm">
@@ -92,12 +99,14 @@ const QuestionGame = async ({ params }: QuestionGameProps) => {
         </div>
       </Carousel>
       <div className="flex w-full justify-center">
-      <Button className="w-full" variant={"outline"}>
+        <Button className="w-full" variant={"outline"}>
           <a href={`/question-game/`}> Tilbake til spill </a>
         </Button>
-      <Button className="w-full" variant={"outline"}>
-          <a href={`/question-game/${params.id}/add`}> Edit questions </a>
-        </Button>
+        {session.user.role == "ADMIN" && (
+          <Button className="w-full" variant={"outline"}>
+            <a href={`/question-game/${params.id}/add`}> Edit questions </a>
+          </Button>
+        )}
       </div>
     </main>
   );
