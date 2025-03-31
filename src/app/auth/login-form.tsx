@@ -49,15 +49,15 @@ export default function LoginForm() {
     }
 
     const response = isTihldeValid
-      ? await signIn("credentials", {
-        username: data.tihldeUsername,
-        password: data.tihldePassword,
-        callbackUrl: "/home",
-      })
+      ? await signIn("tihlde", {
+          username: data.tihldeUsername,
+          password: data.tihldePassword,
+          callbackUrl: "/home",
+        })
       : await signIn("anonymous", {
-        nickname: data.nickname,
-        callbackUrl: "/home",
-      });
+          nickname: data.nickname,
+          callbackUrl: "/home",
+        });
 
     if (response?.error) {
       toast({
@@ -99,7 +99,7 @@ export default function LoginForm() {
                 <FormItem>
                   <FormLabel>Passord</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type={"password"} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

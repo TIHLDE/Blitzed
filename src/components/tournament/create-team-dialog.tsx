@@ -86,7 +86,7 @@ export function CreateTeamDialog({ refetchTournament }: CreateTeamDialogProps) {
                   <FormControl>
                     <Input
                       className="p-9 pl-4 pr-2 text-center text-4xl"
-                      placeholder="Min turnering"
+                      placeholder="Mitt lag"
                       {...field}
                     />
                   </FormControl>
