@@ -7,6 +7,6 @@ prod:
 	docker build -t blitzed:latest .
 	- docker container stop blitzed
 	- docker container rm blitzed
-	- prisma migrate deploy
+	- pnpx prisma migrate deploy
 	docker run --env-file .env -p 4000:3000 --name blitzed --restart unless-stopped -d blitzed:latest
 	- docker image prune -f
