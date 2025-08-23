@@ -19,27 +19,17 @@ jobs:
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.KEY }}" > ~/.ssh/key
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/key
           chmod 600 ~/.ssh/key
           ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Create .env file
-        run: |
-          echo 'DATABASE_URL="${{ secrets.DATABASE_URL }}"' >> .env
-          echo 'NEXTAUTH_URL="${{ secrets.NEXTAUTH_URL }}"' >> .env
-          echo 'NEXT_PUBLIC_LEPTON_API_URL="${{ secrets.NEXT_PUBLIC_LEPTON_API_URL }}"' >> .env
-          echo 'ALLOWED_GROUP_SLUGS="${{ secrets.ALLOWED_GROUP_SLUGS }}"' >> .env
-          echo 'NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}"' >> .env
-        
-      - name: Copy .env to OpenStack server
-        run: |
-          scp -v -i ~/.ssh/key .env ${{ secrets.USER }}@${{ secrets.HOST }}:${{ secrets.PATH }}
-
       - name: Deploy to OpenStack server
         run: |
-          ssh -v -i ~/.ssh/key ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
-          cd ${{ secrets.PATH }}
+          ssh -v -i ~/.ssh/key -A ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
+          cd ${{ secrets.WORKING_DIR }}
           chmod 0600 .env
-          git pull -f
+          git fetch
+          git reset --hard origin/main
+          echo ${{ secrets.ENV }} > .env
           make prod
           ENDSSH

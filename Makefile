@@ -4,9 +4,8 @@ db:
 
 .PHONY: prod
 prod:
-	docker build -t blitzed:latest .
-	- docker container stop blitzed
-	- docker container rm blitzed
-	- pnpx prisma migrate deploy
-	docker run --env-file .env -p 4000:3000 --name blitzed --restart unless-stopped -d blitzed:latest
-	- docker image prune -f
+	docker build -t blitzed.tihlde.org .
+	prisma migrate deploy
+	- docker rm -f blitzed.tihlde.org
+	docker run --env-file .env -p 4000:3000 --name blitzed.tihlde.org --restart unless-stopped -d blitzed.tihlde.org
+
