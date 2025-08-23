@@ -25,7 +25,8 @@ jobs:
 
       - name: Deploy to OpenStack server
         run: |
-          ssh -v -i ~/.ssh/key -A ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
+          ssh-add ~/.ssh/key
+          ssh -v -A ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
           cd ${{ secrets.WORKING_DIR }}
           chmod 0600 .env
           git fetch
