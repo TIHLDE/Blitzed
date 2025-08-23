@@ -28,7 +28,7 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/key
           ssh -v -A ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
-          whoami
+          sudo -i
           cd ${{ secrets.WORKING_DIR }}
           chmod 0600 .env
           git fetch
