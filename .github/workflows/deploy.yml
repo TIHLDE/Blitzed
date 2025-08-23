@@ -25,6 +25,7 @@ jobs:
 
       - name: Deploy to OpenStack server
         run: |
+          eval $(ssha-agent -s)
           ssh-add ~/.ssh/key
           ssh -v -A ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
           cd ${{ secrets.WORKING_DIR }}
