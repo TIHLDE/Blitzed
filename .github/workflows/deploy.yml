@@ -27,12 +27,12 @@ jobs:
         run: |
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/key
-          ssh -v -A ${{ secrets.USER }}@${{ secrets.HOST }} << 'ENDSSH'
+          ssh -v -A ${{ secrets.USER }}@${{ secrets.HOST }} << ENDSSH
           sudo -i
           cd ${{ secrets.WORKING_DIR }}
           chmod 0600 .env
           git fetch
           git reset --hard origin/main
-          echo ${{ secrets.ENV }} > .env
+          echo "${{ secrets.ENV }}" > .env
           make prod
           ENDSSH
