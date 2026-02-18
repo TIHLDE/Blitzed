@@ -26,7 +26,18 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: ./.github/workflows/_ci_ghcr.yml
+    uses: TIHLDE/tihlde-workflows/.github/workflows/_ci_ghcr.yml@v1
     with:
       tag-prefix: ""
       push: ${{ github.event_name != 'pull_request' }}
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    uses: TIHLDE/tihlde-workflows/.github/workflows/_notify_deploy.yml@v1
+    with:
+      image: ghcr.io/${{ github.repository }}
+      tag: latest
+      environment: prod
+    secrets:
+      DEPLOY_RECEIVER_TOKEN: ${{ secrets.DEPLOY_RECEIVER_TOKEN }}
