@@ -1,0 +1,31 @@
+name: "CI - Build and push with reusable workflow (Development)"
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - ./**
+      - .github/workflows/ci_dev.yml
+  pull_request:
+    branches: [dev]
+    paths:
+      - ./**
+      - .github/workflows/ci_dev.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/_ci_ghcr.yml
+    with:
+      tag-prefix: dev
+      push: ${{ github.event_name != 'pull_request' }}
