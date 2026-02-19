@@ -31,13 +31,24 @@ jobs:
       tag-prefix: ""
       push: ${{ github.event_name != 'pull_request' }}
 
+  # Github container registry pusblisher imagenavn i lowercase, så image navnet må være lowercase
+  resolve:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.lower.outputs.image }}
+    steps:
+      - name: Lowercase image name
+        id: lower
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
   deploy:
-    needs: build
+    needs: [build, resolve]
     if: github.event_name != 'pull_request'
     uses: TIHLDE/tihlde-workflows/.github/workflows/_notify_deploy.yml@v1.1.2
     with:
-      image: ghcr.io/${{ github.repository }}
+      image: ${{ needs.resolve.outputs.image }}
       tag: latest
       environment: prod
     secrets:
       DEPLOY_RECEIVER_TOKEN: ${{ secrets.DEPLOY_RECEIVER_TOKEN }}
+
