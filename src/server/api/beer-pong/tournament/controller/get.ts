@@ -62,13 +62,44 @@ const InputSchema = z
   })
   .refine(({ id, pinCode }) => Boolean(id) !== Boolean(pinCode));
 
+type TournamentDetail = {
+  id: string;
+  name: string;
+  creatorId: string;
+  access: z.infer<typeof BeerPongTournamentAccessSchema>;
+  pinCode: string | null;
+  status: z.infer<typeof BeerPongTournamentStatusSchema>;
+  isTihldeExclusive: boolean;
+  maxTeamCount: number | null;
+  maxTeamSize: number | null;
+  randomizeTeams: boolean;
+  creator: { nickname: string };
+  teams: {
+    id: number;
+    name: string;
+    members: {
+      userId: string;
+      user: { nickname: string };
+    }[];
+  }[];
+  matches: {
+    id: number;
+    round: number;
+    winnerTeamId: string | null;
+    team1: { id: number; name: string } | null;
+    team2: { id: number; name: string } | null;
+    winner: { id: number; name: string } | null;
+    nextMatch: { id: number } | null;
+  }[];
+};
+
 const OutputSchema = BeerPongTournamentSchema;
 
 const handler: Controller<
   z.infer<typeof InputSchema>,
   z.infer<typeof OutputSchema>
 > = async ({ input, ctx }) => {
-  const tournament = await db.beerPongTournament.findUnique({
+  const tournament = (await db.beerPongTournament.findUnique({
     where: {
       id: input.id,
       pinCode: input.pinCode,
@@ -93,7 +124,7 @@ const handler: Controller<
         },
       },
     },
-  });
+  })) as TournamentDetail | null;
 
   if (!tournament) {
     throw new TRPCError({

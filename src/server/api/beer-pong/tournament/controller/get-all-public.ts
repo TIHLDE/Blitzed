@@ -4,7 +4,6 @@ import { db } from "~/server/db";
 import { z } from "zod";
 import { protectedProcedure } from "~/server/api/trpc";
 import { BeerPongTournamentStatusSchema } from "../../enum";
-
 const InputSchema = z.undefined();
 
 const OutputSchema = z.array(
@@ -19,68 +18,48 @@ const OutputSchema = z.array(
   }),
 );
 
+type TournamentRow = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  status: z.infer<typeof BeerPongTournamentStatusSchema>;
+  creator: { nickname: string };
+  _count: { teams: number };
+  teams: { _count: { members: number } }[];
+};
+
 const handler: Controller<
   z.infer<typeof InputSchema>,
   z.infer<typeof OutputSchema>
 > = async ({ ctx }) => {
-  const include = {
-    _count: {
-      select: {
-        teams: true,
-      },
-    },
-    creator: true,
-    teams: {
-      select: {
-        _count: {
-          select: {
-            members: true,
-          },
-        },
-      },
-    },
-  };
-  const publicTournaments = await db.beerPongTournament.findMany({
-    where: {
-      AND: [
-        {
-          access: "PUBLIC",
-        },
-        {
-          isTihldeExclusive: false,
-        },
-        {
-          NOT: {
-            creatorId: ctx.session.user.id,
-          },
-        },
-      ],
-    },
-    include,
-  });
+  const isTihldeUser = ctx.session.user.role === "USER";
 
-  if (ctx.session.user.role === "USER") {
-    const tihldeTournaments = await db.beerPongTournament.findMany({
-      where: {
-        AND: [
-          {
-            access: "PUBLIC",
-            isTihldeExclusive: true,
-          },
-          {
-            NOT: {
-              creatorId: ctx.session.user.id,
+  const tournaments = (await db.beerPongTournament.findMany({
+    where: {
+      access: "PUBLIC",
+      isTihldeExclusive: isTihldeUser ? undefined : false,
+      NOT: { creatorId: ctx.session.user.id },
+    },
+    include: {
+      _count: {
+        select: {
+          teams: true,
+        },
+      },
+      creator: true,
+      teams: {
+        select: {
+          _count: {
+            select: {
+              members: true,
             },
           },
-        ],
+        },
       },
-      include,
-    });
+    },
+  })) as TournamentRow[];
 
-    publicTournaments.push(...tihldeTournaments);
-  }
-
-  return publicTournaments.map((t) => ({
+  return tournaments.map((t) => ({
     name: t.name,
     id: t.id,
     creatorNickname: t.creator.nickname,

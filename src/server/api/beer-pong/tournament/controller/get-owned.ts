@@ -5,6 +5,16 @@ import { z } from "zod";
 import { protectedProcedure } from "~/server/api/trpc";
 import { BeerPongTournamentStatusSchema } from "../../enum";
 
+type TournamentRow = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  status: z.infer<typeof BeerPongTournamentStatusSchema>;
+  creator: { nickname: string };
+  _count: { teams: number };
+  teams: { _count: { members: number } }[];
+};
+
 const InputSchema = z.undefined();
 
 const OutputSchema = z.array(
@@ -23,7 +33,7 @@ const handler: Controller<
   z.infer<typeof InputSchema>,
   z.infer<typeof OutputSchema>
 > = async ({ input, ctx }) => {
-  const tournaments = await db.beerPongTournament.findMany({
+  const tournaments = (await db.beerPongTournament.findMany({
     where: {
       creator: {
         id: ctx.session.user.id,
@@ -46,7 +56,7 @@ const handler: Controller<
         },
       },
     },
-  });
+  })) as TournamentRow[];
 
   return tournaments.map((t) => ({
     name: t.name,

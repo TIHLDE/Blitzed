@@ -40,7 +40,7 @@ const handler: Controller<
     });
   }
 
-  const matches = generateMatches(tournament.teams.map((team) => team.id));
+  const matches = generateMatches(tournament.teams.map((team: { id: number }) => team.id));
 
   await db.beerPongTournament.update({
     where: {

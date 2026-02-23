@@ -29,6 +29,8 @@ jobs:
     with:
       tag-prefix: dev
       push: ${{ github.event_name != 'pull_request' }}
+      build-args: |
+        NEXT_PUBLIC_LEPTON_API_URL=https://api.tihlde.org
 
   deploy:
     needs: build
