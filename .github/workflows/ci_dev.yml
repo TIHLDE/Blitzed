@@ -33,9 +33,8 @@ jobs:
   deploy:
     needs: build
     if: github.event_name != 'pull_request'
-    uses: TIHLDE/tihlde-workflows/.github/workflows/_notify_deploy.yml@v1
+    uses: TIHLDE/tihlde-workflows/.github/workflows/_notify_deploy.yml@v1.1.3
     with:
-      image: ghcr.io/${{ github.repository }}
       tag: dev
       environment: dev
     secrets:
