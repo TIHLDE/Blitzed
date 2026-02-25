@@ -25,7 +25,7 @@ export default function HeroCard() {
     >
       <CardHeader>
         <CardDescription className={"text-center text-lg lg:text-xl"}>
-          Tihldes nettside for:
+          TIHLDEs nettside for
         </CardDescription>
         <CardTitle
           className={
